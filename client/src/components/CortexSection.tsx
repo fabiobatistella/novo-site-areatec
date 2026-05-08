@@ -201,26 +201,29 @@ export default function CortexSection() {
               transition: "all 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
             }}
           >
-            {/* Red label */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-full">
-              <Brain className="w-3.5 h-3.5 text-[#2F6FD0]" />
-              <span className="text-xs font-semibold text-[#2F6FD0] uppercase tracking-wider">
-                Inteligência Artificial
-              </span>
-            </div>
+            {/* Badges — um por linha */}
+            <div className="flex flex-col items-start gap-3">
+              {/* Badge Inteligência Artificial */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-full">
+                <Brain className="w-3.5 h-3.5 text-[#2F6FD0]" />
+                <span className="text-xs font-semibold text-[#2F6FD0] uppercase tracking-wider">
+                  Inteligência Artificial
+                </span>
+              </div>
 
-            {/* Badge tiffany pulsante */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full shadow-sm">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0ABAB5] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#0ABAB5]" />
-              </span>
-              <span
-                className="text-xs font-semibold uppercase tracking-wider"
-                style={{ fontFamily: "'IBM Plex Mono', monospace", color: "#0ABAB5" }}
-              >
-                Redes Neurais em Tempo Real
-              </span>
+              {/* Badge tiffany pulsante */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full shadow-sm">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0ABAB5] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#0ABAB5]" />
+                </span>
+                <span
+                  className="text-xs font-semibold uppercase tracking-wider"
+                  style={{ fontFamily: "'IBM Plex Mono', monospace", color: "#0ABAB5" }}
+                >
+                  Redes Neurais em Tempo Real
+                </span>
+              </div>
             </div>
 
             {/* Title */}
