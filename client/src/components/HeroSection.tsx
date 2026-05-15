@@ -5,10 +5,11 @@ import { ArrowRight, MessageCircle } from "lucide-react";
 import { useCountUp } from "@/hooks/useInView";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const HERO_VIDEO = "/assets/video_areatec_final.mp4";
+const HERO_VIDEO_WEBM = "/assets/areatec_hero_video_completo.webm";
+const HERO_VIDEO_MP4 = "/assets/areatec_hero_video_completo.mp4";
 const HERO_POSTER = "/assets/keyframe_inicial.png";
 
-const SEGMENT_2_START = 7;
+const SEGMENT_2_START = 10;
 
 interface CaptionProps {
   title: string;
@@ -102,13 +103,16 @@ export default function HeroSection({ onOpenVideo }: HeroSectionProps) {
         <video
           ref={videoRef}
           className="w-full h-full object-cover"
-          src={HERO_VIDEO}
           poster={HERO_POSTER}
+          preload="none"
           autoPlay
           muted
           loop
           playsInline
-        />
+        >
+          <source src={HERO_VIDEO_WEBM} type="video/webm" />
+          <source src={HERO_VIDEO_MP4} type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/60 to-slate-900/90" />
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 to-transparent" />
       </div>

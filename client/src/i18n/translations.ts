@@ -54,7 +54,7 @@ const pt: Record<string, string> = {
 
   "solucoes.1.title": "Olho Vivo Patrol",
   "solucoes.1.tagline": "Fiscalização inteligente com IA embarcada",
-  "solucoes.1.description": "Nosso veículo lê placas automaticamente com 99,9% de acerto. Além de fiscalizar, identifica buracos nas vias, problemas na sinalização vertical e horizontal e no mobiliário urbano. Tudo em tempo real, com geolocalização autenticada e cadeia de custódia digital.",
+  "solucoes.1.description": "Se a visão humana pode ver, nossa IA CORTEX também consegue analisar. Nosso veículo lê placas automaticamente com 99,9% de acerto. O sistema identifica buracos nas vias, problemas na sinalização vertical e horizontal e no mobiliário urbano. Tudo em tempo real, com geolocalização autenticada e cadeia de custódia digital.",
   "solucoes.2.title": "Olho Vivo Parking",
   "solucoes.2.tagline": "Gestão completa de estacionamento rotativo",
   "solucoes.2.description": "Operação de Zona Azul do início ao fim: captura automática de placas, controle de permanência e emissão de autos com prova material. Sensores, câmeras e parquímetros conectados em uma única plataforma.",
@@ -205,7 +205,7 @@ const en: Record<string, string> = {
 
   "solucoes.1.title": "Olho Vivo Patrol",
   "solucoes.1.tagline": "Smart enforcement with embedded AI",
-  "solucoes.1.description": "Our vehicle reads plates automatically with 99.9% accuracy. Beyond enforcement, it spots potholes, checks vertical and horizontal signage, and inventories urban furniture. All in real time, with authenticated geolocation and digital chain of custody.",
+  "solucoes.1.description": "If human vision can see it, our CORTEX AI can analyze it. Our vehicle reads plates automatically with 99.9% accuracy. The system identifies potholes, checks vertical and horizontal signage, and inventories urban furniture. All in real time, with authenticated geolocation and digital chain of custody.",
   "solucoes.2.title": "Olho Vivo Parking",
   "solucoes.2.tagline": "Complete rotational parking management",
   "solucoes.2.description": "Blue Zone operation end to end: automatic plate capture, stay-time control and violation notices with material evidence. Sensors, cameras and parking meters connected on a single platform.",
@@ -356,7 +356,7 @@ const es: Record<string, string> = {
 
   "solucoes.1.title": "Olho Vivo Patrol",
   "solucoes.1.tagline": "Fiscalización inteligente con IA integrada",
-  "solucoes.1.description": "Nuestro vehículo lee placas automáticamente con 99,9% de acierto. Además de fiscalizar, identifica baches en las vías, problemas en la señalización vertical y horizontal y en el mobiliario urbano. Todo en tiempo real, con geolocalización autenticada y cadena de custodia digital.",
+  "solucoes.1.description": "Si la visión humana puede verlo, nuestra IA CORTEX también puede analizarlo. Nuestro vehículo lee placas automáticamente con 99,9% de acierto. El sistema identifica baches en las vías, problemas en la señalización vertical y horizontal y en el mobiliario urbano. Todo en tiempo real, con geolocalización autenticada y cadena de custodia digital.",
   "solucoes.2.title": "Olho Vivo Parking",
   "solucoes.2.tagline": "Gestión completa de estacionamiento rotativo",
   "solucoes.2.description": "Operación de Zona Azul de principio a fin: captura automática de placas, control de permanencia y emisión de actas con prueba material. Sensores, cámaras y parquímetros conectados en una sola plataforma.",
