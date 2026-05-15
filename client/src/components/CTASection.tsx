@@ -1,8 +1,8 @@
-// CTASection — Areatec Original (Luminous Tech Noir)
-// Dark CTA section with cityscape background and contact form
+// CTASection — Areatec + i18n
 import { motion } from "framer-motion";
 import { ArrowRight, Phone, Mail } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const CTA_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663455526845/8qVNj49snqzVP2qLuHSLCr/cta-cityscape-myLvYUBhk3w4MoyWy3uL77.webp";
 
@@ -12,6 +12,7 @@ interface CTASectionProps {
 
 export default function CTASection({ onOpenVideo }: CTASectionProps) {
   const { ref, isVisible } = useInView(0.1);
+  const { t } = useLanguage();
 
   return (
     <section
@@ -19,13 +20,11 @@ export default function CTASection({ onOpenVideo }: CTASectionProps) {
       ref={ref as React.RefObject<HTMLElement>}
       className="relative py-24 lg:py-32 overflow-hidden"
     >
-      {/* Background */}
       <div className="absolute inset-0">
-        <img src={CTA_IMAGE} alt="Cidade inteligente" className="w-full h-full object-cover" />
+        <img src={CTA_IMAGE} alt="" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/85 via-slate-900/75 to-slate-900/90" />
       </div>
 
-      {/* Glows */}
       <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="container relative">
@@ -37,7 +36,7 @@ export default function CTASection({ onOpenVideo }: CTASectionProps) {
             className="inline-block text-xs font-semibold text-blue-400 tracking-[0.2em] uppercase mb-6"
             style={{ fontFamily: "'IBM Plex Mono', monospace" }}
           >
-            Solicitar Demonstração
+            {t("cta.label")}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -46,7 +45,7 @@ export default function CTASection({ onOpenVideo }: CTASectionProps) {
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6"
             style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
           >
-            Pronto para transformar sua cidade?
+            {t("cta.title")}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 15 }}
@@ -54,7 +53,7 @@ export default function CTASection({ onOpenVideo }: CTASectionProps) {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg text-white/70 leading-relaxed mb-10"
           >
-            Entre em contato com nossa equipe e descubra como as soluções Areatec podem modernizar a gestão urbana do seu município.
+            {t("cta.subtitle")}
           </motion.p>
 
           <motion.div
@@ -66,22 +65,21 @@ export default function CTASection({ onOpenVideo }: CTASectionProps) {
             <a
               href="mailto:contato@areatec.com.br"
               className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-[#2F6FD0] to-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-300 transform hover:-translate-y-0.5"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
-              Solicitar Demonstração
+              {t("cta.primary")}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
             <button
               onClick={onOpenVideo}
               className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white/10 backdrop-blur-md text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               <Phone className="w-4 h-4 text-blue-400" />
-              Falar com Especialista
+              {t("cta.secondary")}
             </button>
           </motion.div>
 
-          {/* Contact info */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={isVisible ? { opacity: 1 } : {}}

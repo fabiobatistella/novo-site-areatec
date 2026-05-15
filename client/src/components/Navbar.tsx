@@ -1,42 +1,41 @@
-// Navbar — Areatec Brand Guidelines Update
-// Fixed top navbar with scroll-based glass effect, language dropdown (PT/EN/ES), mobile menu
-// Logo: New SVG symbol + "Areatec" wordmark in Barlow Condensed
+// Navbar — Areatec Brand Guidelines + i18n
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, ChevronDown, Menu, X, Check } from "lucide-react";
+import { ChevronDown, Menu, X, Check } from "lucide-react";
+import { useLanguage, type Language } from "@/contexts/LanguageContext";
 
-const navLinks = [
-  { label: "Soluções", href: "#solucoes" },
-  { label: "Tecnologias", href: "#diferenciais" },
-  { label: "Setores", href: "#setores" },
-  { label: "Blog", href: "#blog" },
-  { label: "Sobre", href: "#sobre" },
-];
-
-const languages = [
-  { code: "PT", label: "Português", flag: "🇧🇷" },
-  { code: "EN", label: "English", flag: "🇺🇸" },
-  { code: "ES", label: "Español", flag: "🇪🇸" },
+const languages: { code: Language; label: string; flag: string }[] = [
+  { code: "pt", label: "Português", flag: "\u{1F1E7}\u{1F1F7}" },
+  { code: "en", label: "English", flag: "\u{1F1FA}\u{1F1F8}" },
+  { code: "es", label: "Español", flag: "\u{1F1EA}\u{1F1F8}" },
 ];
 
 function AreatecLogoSVG({ variant = "light", size = 32 }: { variant?: "light" | "colored" | "dark"; size?: number }) {
   const fill = variant === "colored" ? "#2F6FD0" : variant === "light" ? "#FFFFFF" : "#21212D";
   return (
     <svg width={size} height={size} viewBox="0 0 316 316" fill={fill} xmlns="http://www.w3.org/2000/svg">
-      {/* Right stem + top hook - traced from official logo */}
       <path d="M 271 0 L 281 2 L 290 6 L 296 10 L 305 19 L 305 20 L 307 22 L 308 25 L 311 29 L 312 34 L 313 35 L 313 38 L 314 39 L 314 44 L 315 45 L 315 271 L 314 272 L 314 277 L 313 278 L 311 286 L 307 293 L 304 296 L 304 297 L 296 305 L 290 309 L 281 313 L 271 315 L 240 315 L 240 97 L 239 96 L 238 90 L 234 85 L 234 84 L 230 80 L 222 76 L 128 75 L 117 72 L 109 67 L 102 60 L 102 59 L 98 54 L 98 52 L 96 48 L 96 45 L 95 44 L 95 31 L 96 30 L 96 27 L 97 26 L 97 24 L 100 18 L 102 16 L 102 14 L 104 13 L 110 7 L 119 2 L 128 0 Z" />
-      {/* Left body - traced from official logo */}
       <path d="M 181 115 L 190 119 L 195 124 L 195 125 L 198 129 L 199 135 L 200 136 L 200 143 L 199 144 L 199 315 L 90 315 L 70 311 L 59 307 L 51 303 L 39 295 L 24 281 L 24 280 L 17 272 L 15 268 L 13 266 L 8 256 L 8 254 L 5 248 L 4 243 L 3 242 L 3 239 L 2 238 L 2 235 L 1 234 L 1 228 L 0 227 L 0 203 L 1 202 L 2 192 L 3 191 L 3 188 L 4 187 L 4 185 L 5 184 L 7 176 L 13 164 L 24 149 L 35 138 L 49 128 L 61 122 L 73 118 L 90 115 Z" />
     </svg>
   );
 }
 
 export default function Navbar() {
+  const { lang, setLang, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState("PT");
   const langRef = useRef<HTMLDivElement>(null);
+
+  const navLinks = [
+    { label: t("nav.solucoes"), href: "#solucoes" },
+    { label: t("nav.tecnologias"), href: "#diferenciais" },
+    { label: t("nav.setores"), href: "#setores" },
+    { label: t("nav.blog"), href: "#blog" },
+    { label: t("nav.sobre"), href: "#sobre" },
+  ];
+
+  const currentLangObj = languages.find((l) => l.code === lang) ?? languages[0];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -54,8 +53,8 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const selectLang = (code: string) => {
-    setCurrentLang(code);
+  const selectLang = (code: Language) => {
+    setLang(code);
     setLangOpen(false);
   };
 
@@ -72,12 +71,8 @@ export default function Navbar() {
     >
       <div className="container">
         <nav className="flex items-center justify-between h-[72px] lg:h-20">
-          {/* Logo — New Brand Guidelines SVG */}
           <a href="#inicio" className="flex items-center gap-2 group">
-            <AreatecLogoSVG
-              variant={scrolled ? "colored" : "light"}
-              size={34}
-            />
+            <AreatecLogoSVG variant={scrolled ? "colored" : "light"} size={34} />
             <span
               className={`text-xl font-semibold tracking-tight transition-colors duration-300 ${scrolled ? "text-[#21212D]" : "text-white"}`}
               style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
@@ -97,7 +92,7 @@ export default function Navbar() {
                     ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80"
                     : "text-white/80 hover:text-white hover:bg-white/10"
                 }`}
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 {link.label}
               </a>
@@ -116,8 +111,8 @@ export default function Navbar() {
                     : "text-white/80 hover:text-white hover:bg-white/10"
                 }`}
               >
-                <span className="text-lg leading-none">🇧🇷</span>
-                <span style={{ fontFamily: "'DM Sans', sans-serif" }} className="font-medium">{currentLang}</span>
+                <span className="text-lg leading-none">{currentLangObj.flag}</span>
+                <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }} className="font-medium">{currentLangObj.code.toUpperCase()}</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${langOpen ? "rotate-180" : ""}`} />
               </button>
               <AnimatePresence>
@@ -130,27 +125,24 @@ export default function Navbar() {
                     className="absolute right-0 top-full mt-2 w-52 bg-white/95 backdrop-blur-xl rounded-xl border border-slate-200/80 shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)] overflow-hidden"
                   >
                     <div className="p-1.5">
-                      {languages.map((lang) => (
+                      {languages.map((l) => (
                         <button
-                          key={lang.code}
-                          onClick={() => selectLang(lang.code)}
-                          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 group ${
-                            currentLang === lang.code
+                          key={l.code}
+                          onClick={() => selectLang(l.code)}
+                          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 ${
+                            lang === l.code
                               ? "bg-blue-50 text-[#2F6FD0]"
                               : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                           }`}
                         >
-                          <span className="text-base leading-none">{lang.flag}</span>
+                          <span className="text-base leading-none">{l.flag}</span>
                           <div className="flex flex-col items-start">
-                            <span className="font-semibold" style={{ fontFamily: "'DM Sans', sans-serif" }}>{lang.label}</span>
-                            <span className="text-[10px] text-slate-400 font-medium" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{lang.code}</span>
+                            <span className="font-semibold" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{l.label}</span>
+                            <span className="text-[10px] text-slate-400 font-medium" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{l.code.toUpperCase()}</span>
                           </div>
-                          {currentLang === lang.code && <Check className="w-4 h-4 text-[#2F6FD0] ml-auto" />}
+                          {lang === l.code && <Check className="w-4 h-4 text-[#2F6FD0] ml-auto" />}
                         </button>
                       ))}
-                    </div>
-                    <div className="px-4 py-2.5 bg-slate-50/80 border-t border-slate-100">
-                      <p className="text-[10px] text-slate-400" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>Tradução em breve</p>
                     </div>
                   </motion.div>
                 )}
@@ -160,9 +152,9 @@ export default function Navbar() {
             <a
               href="#contato"
               className="px-5 py-2.5 bg-[#2F6FD0] text-white text-sm font-semibold rounded-lg shadow-md shadow-blue-600/25 hover:shadow-lg hover:shadow-blue-600/35 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
-              Fale Conosco
+              {t("nav.contato")}
             </a>
           </div>
 
@@ -193,26 +185,26 @@ export default function Navbar() {
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
                   className="block px-4 py-3 text-slate-700 hover:text-[#2F6FD0] hover:bg-blue-50/50 rounded-lg transition-colors font-medium"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   {link.label}
                 </a>
               ))}
               <div className="px-4 pt-3 pb-1">
-                <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-2 font-semibold" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>Idioma</p>
+                <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-2 font-semibold" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{t("nav.idioma")}</p>
                 <div className="flex gap-2">
-                  {languages.map((lang) => (
+                  {languages.map((l) => (
                     <button
-                      key={lang.code}
-                      onClick={() => selectLang(lang.code)}
+                      key={l.code}
+                      onClick={() => selectLang(l.code)}
                       className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        currentLang === lang.code
+                        lang === l.code
                           ? "bg-blue-50 text-[#2F6FD0] border border-blue-200"
                           : "bg-slate-50 text-slate-500 border border-slate-100 hover:bg-slate-100"
                       }`}
                     >
-                      <span className="text-sm">{lang.flag}</span>
-                      <span style={{ fontFamily: "'DM Sans', sans-serif" }}>{lang.code}</span>
+                      <span className="text-sm">{l.flag}</span>
+                      <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{l.code.toUpperCase()}</span>
                     </button>
                   ))}
                 </div>
@@ -222,7 +214,7 @@ export default function Navbar() {
                 onClick={() => setMobileOpen(false)}
                 className="block mt-3 px-4 py-3 bg-[#2F6FD0] text-white text-center rounded-lg font-semibold hover:bg-[#2563C4] transition-colors"
               >
-                Fale Conosco
+                {t("nav.contato")}
               </a>
             </div>
           </motion.div>

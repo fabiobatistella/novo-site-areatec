@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Camera, Cpu, MapPin, Wifi, ArrowRight } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
-const HB20_IMAGE = "/manus-storage/keyframe_inicial_3318a362.png";
+const HB20_IMAGE = "/assets/keyframe_inicial.png";
 const features = [
   { icon: Camera, label: "Câmeras OCR de Alta Resolução" },
   { icon: Cpu, label: "Processamento Edge AI" },
