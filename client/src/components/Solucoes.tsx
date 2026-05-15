@@ -133,8 +133,9 @@ function FeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: boolean;
       <div className="absolute top-0 right-0 w-64 h-64 bg-[#2F6FD0]/15 rounded-full blur-[80px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-500/8 rounded-full blur-[60px] pointer-events-none" />
 
-      <div className="relative flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-10">
-        <div className="flex-1">
+      <div className="relative flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12">
+        {/* Left: Text content */}
+        <div className="flex-1 min-w-0">
           {/* Brand + tag row */}
           <div className="flex items-center gap-3 mb-5">
             <div className="flex items-center gap-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg px-3 py-2">
@@ -158,26 +159,42 @@ function FeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: boolean;
             {t(sol.descriptionKey)}
           </p>
           <div className="mt-6">
-            <a href="#contato" className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2F6FD0] text-white text-sm font-semibold rounded-lg shadow-md shadow-blue-600/25 hover:shadow-lg hover:shadow-blue-600/35 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            <a href="/olhovivo-patrol" className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2F6FD0] text-white text-sm font-semibold rounded-lg shadow-md shadow-blue-600/25 hover:shadow-lg hover:shadow-blue-600/35 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               {t("solucoes.saiba_mais")} <ArrowRight className="w-4 h-4" />
             </a>
           </div>
         </div>
 
-        {/* Stats column */}
-        <div className="hidden lg:flex flex-col items-end gap-3 text-right min-w-[180px]">
-          <div className="text-4xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-            <span className="text-[#2F6FD0]">99,9</span>%
+        {/* Right: Vehicle image + stats */}
+        <div className="flex flex-col items-center lg:items-end gap-5">
+          {/* HB20 Vehicle image */}
+          <div className="relative w-full lg:w-[320px] h-44 lg:h-52 rounded-xl overflow-hidden border border-slate-600/30 shadow-[0_8px_24px_rgba(47,111,208,0.15)] group-hover:shadow-[0_12px_36px_rgba(47,111,208,0.25)] transition-shadow duration-500">
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 via-transparent to-transparent pointer-events-none z-10" />
+            <img
+              src="/assets/hb20_areatec_rack_final.png"
+              alt="Olho Vivo Patrol - HB20 OCR Vehicle"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            />
           </div>
-          <div className="text-xs text-white/50 tracking-wider uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-            {t("solucoes.precisao_ocr")}
-          </div>
-          <div className="w-px h-8 bg-white/10 my-1" />
-          <div className="text-4xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-            <span className="text-[#2F6FD0]">+200</span>
-          </div>
-          <div className="text-xs text-white/50 tracking-wider uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-            {t("solucoes.cidades")}
+          {/* Stats below image */}
+          <div className="hidden lg:flex items-center gap-6 text-center">
+            <div>
+              <div className="text-2xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+                <span className="text-[#2F6FD0]">99,9</span>%
+              </div>
+              <div className="text-[10px] text-white/50 tracking-wider uppercase mt-1" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                {t("solucoes.precisao_ocr")}
+              </div>
+            </div>
+            <div className="w-px h-10 bg-white/10" />
+            <div>
+              <div className="text-2xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+                <span className="text-[#2F6FD0]">+200</span>
+              </div>
+              <div className="text-[10px] text-white/50 tracking-wider uppercase mt-1" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                {t("solucoes.cidades")}
+              </div>
+            </div>
           </div>
         </div>
       </div>
