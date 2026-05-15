@@ -152,6 +152,22 @@ const pt: Record<string, string> = {
   // 404
   "notfound.title": "Página não encontrada",
   "notfound.desc": "A página que você procura não existe ou foi movida.",
+
+  // Olho Vivo Patrol - Página detalhada
+  "olhovivo_patrol.cortex.title": "CORTEX AI",
+  "olhovivo_patrol.cortex.content": "A inteligência artificial da Areatec foi forjada no asfalto. O CORTEX é um motor proprietário treinado especificamente para a realidade das vias brasileiras. Ele compreende os padrões de placas do Mercosul, a iluminação precária de algumas rodovias e a sinalização com desgaste natural. Nossa equipe de engenharia desenvolveu esta rede neural internamente. O CORTEX processa dados na borda (Edge AI) e toma decisões em milissegundos. Ele transforma o caos visual urbano em dados estruturados.",
+  "olhovivo_patrol.ocr.title": "Motor OCR Proprietário",
+  "olhovivo_patrol.ocr.content": "A precisão na leitura de placas exige mais do que software de prateleira. Nosso sistema de reconhecimento óptico de caracteres captura imagens em alta velocidade sob qualquer condição climática. O processamento ocorre diretamente no veículo. O motor OCR identifica padrões alfanuméricos e realiza validação cruzada instantânea. O resultado é um índice de acerto de 99,9%. O sistema opera de dia, à noite e sob chuva forte.",
+  "olhovivo_patrol.buracos.title": "Detecção de Buracos",
+  "olhovivo_patrol.buracos.content": "A manutenção viária precisa de dados precisos. O CORTEX identifica defeitos no pavimento em tempo real. O algoritmo classifica as anomalias conforme as normas técnicas do DNIT. O sistema distingue entre panelas, trincas e afundamentos. A IA avalia a severidade do dano automaticamente. A prefeitura recebe um mapeamento georreferenciado exato para direcionar as equipes de zeladoria.",
+  "olhovivo_patrol.sinalizacao.title": "Detecção de Sinalização",
+  "olhovivo_patrol.sinalizacao.content": "A segurança no trânsito depende de sinalização clara. Nossa tecnologia avalia o estado de conservação de placas e faixas de rolamento continuamente. O sistema detecta placas danificados, ilegíveis ou ausentes. Ele também identifica pintura de solo desgastada. A plataforma gera relatórios automáticos sobre a qualidade da sinalização. O gestor público visualiza o inventário completo do mobiliário urbano em um painel central.",
+  "olhovivo_patrol.anonimizacao.title": "Anonimização Facial Avançada",
+  "olhovivo_patrol.anonimizacao.content": "A privacidade do cidadão é inegociável. Nosso sistema emprega uma tecnologia superior ao desfoque tradicional de imagens. O motor de busca detecta rostos humanos e substitui a face original por uma face sintética gerada por IA. Esta técnica preserva a direção do olhar, a posição da cabeça e as proporções originais. A imagem mantém a utilidade contextual para análise de trânsito sem o aspecto visual de censura. A face sintética impede qualquer tentativa de engenharia reversa. O processo garante conformidade absoluta com a Lei Geral de Proteção de Dados (LGPD).",
+  "olhovivo_patrol.geotrust.title": "GeoTrust",
+  "olhovivo_patrol.geotrust.content": "A prova material exige localização incontestável. O protocolo GeoTrust autentica o sinal de satélite recebido pelo veículo. A tecnologia utiliza o Open Service Navigation Message Authentication (OSNMA) da constelação europeia Galileo. O sistema gera uma assinatura digital que comprova a posição exata no momento da captura. Esta autenticação protege contra fraudes de GPS e garante validade jurídica total no Brasil.",
+  "olhovivo_patrol.areachain.title": "AreaChain",
+  "olhovivo_patrol.areachain.content": "A confiabilidade do sistema é selada com criptografia. A AreaChain é nossa blockchain privada desenvolvida para proteger a cadeia de custódia digital. O sistema registra cada imagem capturada, cada detecção do CORTEX e cada coordenada do GeoTrust de forma imutável. O ciclo de auditoria é fechado e transparente. A integridade das evidências é garantida desde a rua até o processamento final.",
   "notfound.cta": "Voltar ao início",
 };
 
