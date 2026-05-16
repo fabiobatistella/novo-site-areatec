@@ -181,7 +181,7 @@ export default function OlhoVivoPatrol() {
       id: "ocr_motor",
       title: t("olhovivo_patrol.ocr.title"),
       icon: Eye,
-      image: "/assets/screen_ocr_placa.jpg",
+      image: "/assets/tablet_ocr_interior.jpg",
       content: t("olhovivo_patrol.ocr.content"),
       side: "right",
     },
