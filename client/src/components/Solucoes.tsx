@@ -197,57 +197,56 @@ function FeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: boolean;
   );
 }
 
-/* ── Semi-featured Card (Olho Vivo Parking) ── */
+/* ── Semi-featured Card (Olho Vivo Parking) — Dark Theme ── */
 function SemiFeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: boolean; t: (k: string) => string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay: 0.35 }}
-      className="relative group bg-gradient-to-br from-slate-50 to-white rounded-2xl p-7 lg:p-8 border-2 border-emerald-200/60 shadow-[0_4px_20px_rgba(16,185,129,0.08)] overflow-hidden"
+      className="relative group bg-gradient-to-br from-[#21212D] to-slate-800 rounded-2xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
     >
-      <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-50 rounded-full blur-[60px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-[#2F6FD0]/10 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-500/8 rounded-full blur-[60px] pointer-events-none" />
 
-      <div className="relative flex flex-col lg:flex-row lg:items-center gap-6">
-        <div className="flex-1">
-          {/* Brand + tag row */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-lg px-2.5 py-1.5">
-              <OlhoVivoSymbol size={20} />
-              <span className="text-[10px] font-bold text-emerald-600 tracking-[0.1em] uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                Olho Vivo®
-              </span>
-            </div>
-            <span className={`px-2.5 py-1 text-[10px] font-bold rounded-full tracking-wider uppercase ${sol.tagColor}`}>
-              {sol.tag}
+      {/* Hero image */}
+      <div className="relative w-full h-48 lg:h-56 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#21212D] via-transparent to-transparent z-10 pointer-events-none" />
+        <img
+          src="/assets/parking_hero_cgi.jpg"
+          alt="Olho Vivo Parking - Fiscalização Inteligente de Estacionamento"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="relative p-7 lg:p-8">
+        {/* Brand + tag row */}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg px-3 py-2">
+            <OlhoVivoSymbol size={22} />
+            <span className="text-[10px] font-bold text-emerald-400 tracking-[0.12em] uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+              Olho Vivo®
             </span>
           </div>
-
-          <h3 className="text-xl lg:text-2xl font-bold text-slate-900 mb-1.5" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-            {t(sol.titleKey)}
-          </h3>
-          <p className="text-xs text-emerald-600 font-medium mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            {t(sol.taglineKey)}
-          </p>
-          <p className="text-slate-600 leading-relaxed text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            {t(sol.descriptionKey)}
-          </p>
-          <div className="mt-5">
-            <a href="/olhovivo-parking" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#2F6FD0] hover:text-blue-700 transition-colors group/link" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              {t("solucoes.saiba_mais")} <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform" />
-            </a>
-          </div>
+          <span className={`px-2.5 py-1 text-[10px] font-bold rounded-full tracking-wider uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20`}>
+            {sol.tag}
+          </span>
         </div>
 
-        {/* Screenshot do sistema */}
-        <div className="lg:w-[280px] flex-shrink-0">
-          <div className="relative rounded-xl overflow-hidden border border-emerald-200/50 shadow-[0_4px_16px_rgba(16,185,129,0.12)] group/img hover:shadow-[0_8px_24px_rgba(16,185,129,0.2)] transition-shadow duration-500">
-            <img
-              src="/assets/screen_cortex_rastreamento.jpg"
-              alt="CORTEX Rastreamento Inteligente de Vaga"
-              className="w-full h-auto object-cover group-hover/img:scale-105 transition-transform duration-700"
-            />
-          </div>
+        <h3 className="text-xl lg:text-2xl font-bold text-white mb-2" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+          {t(sol.titleKey)}
+        </h3>
+        <p className="text-xs text-emerald-400/80 font-medium mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          {t(sol.taglineKey)}
+        </p>
+        <p className="text-white/70 leading-relaxed text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          {t(sol.descriptionKey)}
+        </p>
+        <div className="mt-6">
+          <a href="/olhovivo-parking" className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2F6FD0] text-white text-sm font-semibold rounded-lg shadow-md shadow-blue-600/25 hover:shadow-lg hover:shadow-blue-600/35 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            {t("solucoes.saiba_mais")} <ArrowRight className="w-4 h-4" />
+          </a>
         </div>
       </div>
     </motion.div>
