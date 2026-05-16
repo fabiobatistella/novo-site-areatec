@@ -3,6 +3,29 @@ import { motion } from "framer-motion";
 import { FileText, Radio, Satellite, Bike, ArrowRight, ExternalLink } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState } from "react";
+
+/* ── LazyImage with blur-up loading effect ── */
+function LazyImage({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div className="relative w-full h-full">
+      {/* Skeleton placeholder */}
+      <div className={`absolute inset-0 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 animate-pulse transition-opacity duration-500 ${loaded ? "opacity-0" : "opacity-100"}`} />
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+        className={`${className} transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
+      />
+    </div>
+  );
+}
+
+
+
+
 
 /* ── Olho Vivo Official Symbol (inline SVG) ── */
 function OlhoVivoSymbol({ size = 28, className = "" }: { size?: number; className?: string }) {
@@ -116,81 +139,78 @@ function SolIcon({ sol, size = 24 }: { sol: Solucao; size?: number }) {
   return null;
 }
 
-/* ── Featured Card (Olho Vivo Patrol) ── */
+/* ── Featured Card (Olho Vivo Patrol) — Hero-on-top layout ── */
 function FeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: boolean; t: (k: string) => string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay: 0.25 }}
-      className="relative group bg-gradient-to-br from-[#21212D] to-slate-800 rounded-2xl p-8 lg:p-10 border border-slate-700/50 shadow-[0_8px_32px_rgba(0,0,0,0.2)] overflow-hidden"
+      className="relative group bg-gradient-to-br from-[#21212D] to-slate-800 rounded-2xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
     >
       <div className="absolute top-0 right-0 w-64 h-64 bg-[#2F6FD0]/15 rounded-full blur-[80px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-500/8 rounded-full blur-[60px] pointer-events-none" />
 
-      <div className="relative flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12">
-        {/* Left: Text content */}
-        <div className="flex-1 min-w-0">
-          {/* Brand + tag row */}
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex items-center gap-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg px-3 py-2">
-              <OlhoVivoSymbol size={24} />
-              <span className="text-[11px] font-bold text-emerald-400 tracking-[0.12em] uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                Olho Vivo®
-              </span>
-            </div>
-            <span className={`px-3 py-1 text-[10px] font-bold rounded-full tracking-wider uppercase ${sol.tagColor}`}>
-              {sol.tag}
+      {/* Hero image */}
+      <div className="relative w-full h-48 lg:h-56 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#21212D] via-transparent to-transparent z-10 pointer-events-none" />
+        <LazyImage
+          src="/assets/hb20_areatec_rack_final.png"
+          alt="Olho Vivo Patrol - HB20 OCR Vehicle"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="relative p-8 lg:p-10">
+        {/* Brand + tag row */}
+        <div className="flex items-center gap-3 mb-5">
+          <div className="flex items-center gap-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg px-3 py-2">
+            <OlhoVivoSymbol size={24} />
+            <span className="text-[11px] font-bold text-emerald-400 tracking-[0.12em] uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+              Olho Vivo®
             </span>
           </div>
+          <span className={`px-3 py-1 text-[10px] font-bold rounded-full tracking-wider uppercase ${sol.tagColor}`}>
+            {sol.tag}
+          </span>
+        </div>
 
-          <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-            {t(sol.titleKey)}
-          </h3>
-          <p className="text-sm text-emerald-400/80 font-medium mb-4" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            {t(sol.taglineKey)}
-          </p>
-          <p className="text-white/70 leading-relaxed text-sm lg:text-base" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            {t(sol.descriptionKey)}
-          </p>
-          <div className="mt-6">
-            <a href="/olhovivo-patrol" className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2F6FD0] text-white text-sm font-semibold rounded-lg shadow-md shadow-blue-600/25 hover:shadow-lg hover:shadow-blue-600/35 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              {t("solucoes.saiba_mais")} <ArrowRight className="w-4 h-4" />
-            </a>
+        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+          {t(sol.titleKey)}
+        </h3>
+        <p className="text-sm text-emerald-400/80 font-medium mb-4" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          {t(sol.taglineKey)}
+        </p>
+        <p className="text-white/70 leading-relaxed text-sm lg:text-base" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          {t(sol.descriptionKey)}
+        </p>
+
+        {/* Stats row */}
+        <div className="flex items-center gap-6 mt-6 mb-6">
+          <div>
+            <div className="text-2xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+              <span className="text-[#2F6FD0]">99,9</span>%
+            </div>
+            <div className="text-[10px] text-white/50 tracking-wider uppercase mt-1" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+              {t("solucoes.precisao_ocr")}
+            </div>
+          </div>
+          <div className="w-px h-10 bg-white/10" />
+          <div>
+            <div className="text-2xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+              <span className="text-[#2F6FD0]">+200</span>
+            </div>
+            <div className="text-[10px] text-white/50 tracking-wider uppercase mt-1" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+              {t("solucoes.cidades")}
+            </div>
           </div>
         </div>
 
-        {/* Right: Vehicle image + stats */}
-        <div className="flex flex-col items-center lg:items-end gap-5">
-          {/* HB20 Vehicle image */}
-          <div className="relative w-full lg:w-[320px] h-44 lg:h-52 rounded-xl overflow-hidden border border-slate-600/30 shadow-[0_8px_24px_rgba(47,111,208,0.15)] group-hover:shadow-[0_12px_36px_rgba(47,111,208,0.25)] transition-shadow duration-500">
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 via-transparent to-transparent pointer-events-none z-10" />
-            <img
-              src="/assets/hb20_areatec_rack_final.png"
-              alt="Olho Vivo Patrol - HB20 OCR Vehicle"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-            />
-          </div>
-          {/* Stats below image */}
-          <div className="hidden lg:flex items-center gap-6 text-center">
-            <div>
-              <div className="text-2xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-                <span className="text-[#2F6FD0]">99,9</span>%
-              </div>
-              <div className="text-[10px] text-white/50 tracking-wider uppercase mt-1" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                {t("solucoes.precisao_ocr")}
-              </div>
-            </div>
-            <div className="w-px h-10 bg-white/10" />
-            <div>
-              <div className="text-2xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-                <span className="text-[#2F6FD0]">+200</span>
-              </div>
-              <div className="text-[10px] text-white/50 tracking-wider uppercase mt-1" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                {t("solucoes.cidades")}
-              </div>
-            </div>
-          </div>
+        <div>
+          <a href="/olhovivo-patrol" className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2F6FD0] text-white text-sm font-semibold rounded-lg shadow-md shadow-blue-600/25 hover:shadow-lg hover:shadow-blue-600/35 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            {t("solucoes.saiba_mais")} <ArrowRight className="w-4 h-4" />
+          </a>
         </div>
       </div>
     </motion.div>
@@ -212,7 +232,7 @@ function SemiFeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: bool
       {/* Hero image */}
       <div className="relative w-full h-48 lg:h-56 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#21212D] via-transparent to-transparent z-10 pointer-events-none" />
-        <img
+        <LazyImage
           src="/assets/parking_hero_cgi.jpg"
           alt="Olho Vivo Parking - Fiscalização Inteligente de Estacionamento"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
