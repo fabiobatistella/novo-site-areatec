@@ -123,7 +123,7 @@ export default function OlhoVivoPatrol() {
   const techSections: TechSection[] = [
     {
       id: "cortex_ai",
-      title: "CORTEX AI",
+      title: "CORTEX Inteligência Artificial",
       icon: Brain,
       image: "/assets/screen_cortex_rastreamento.jpg",
       content: t("olhovivo_patrol.cortex.content"),

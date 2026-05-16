@@ -156,7 +156,7 @@ function FeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: boolean;
         <div className="absolute inset-0 bg-gradient-to-t from-[#21212D] via-transparent to-transparent z-10 pointer-events-none" />
         <LazyImage
           src="/assets/hb20_areatec_rack_final.png"
-          alt="Olho Vivo Patrol - HB20 OCR Vehicle"
+          alt="Olho Vivo Patrol - Maior frota de veículos OCR do mundo - HB20 Areatec"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
         />
       </div>
@@ -186,24 +186,26 @@ function FeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: boolean;
           {t(sol.descriptionKey)}
         </p>
 
-        {/* Stats row */}
-        <div className="flex items-center gap-6 mt-6 mb-6">
-          <div>
-            <div className="text-2xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-              <span className="text-[#2F6FD0]">99,9</span>%
-            </div>
-            <div className="text-[10px] text-white/50 tracking-wider uppercase mt-1" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-              {t("solucoes.precisao_ocr")}
+        {/* Stats + Achievement Badge */}
+        <div className="flex flex-col gap-4 mt-6 mb-6">
+          <div className="flex items-center gap-6">
+            <div>
+              <div className="text-2xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+                <span className="text-[#2F6FD0]">99,9</span>%
+              </div>
+              <div className="text-[10px] text-white/50 tracking-wider uppercase mt-1" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                {t("solucoes.precisao_ocr")}
+              </div>
             </div>
           </div>
-          <div className="w-px h-10 bg-white/10" />
-          <div>
-            <div className="text-2xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-              <span className="text-[#2F6FD0]">+200</span>
-            </div>
-            <div className="text-[10px] text-white/50 tracking-wider uppercase mt-1" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-              {t("solucoes.cidades")}
-            </div>
+          {/* Achievement Seal */}
+          <div className="inline-flex items-start gap-3 bg-gradient-to-r from-amber-500/10 to-yellow-400/5 border border-amber-400/30 rounded-xl px-4 py-3 max-w-sm">
+            <svg className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+            <h3 className="text-[11px] font-bold text-amber-300/90 leading-snug" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+              A maior frota de veículos OCR para estacionamento rotativo do planeta
+            </h3>
           </div>
         </div>
 
@@ -234,7 +236,7 @@ function SemiFeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: bool
         <div className="absolute inset-0 bg-gradient-to-t from-[#21212D] via-transparent to-transparent z-10 pointer-events-none" />
         <LazyImage
           src="/assets/parking_hero_cgi.jpg"
-          alt="Olho Vivo Parking - Fiscalização Inteligente de Estacionamento"
+          alt="Olho Vivo Parking - Fiscalização inteligente de estacionamento rotativo - Areatec"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
         />
       </div>

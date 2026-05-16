@@ -22,7 +22,7 @@ export default function Footer() {
       { label: t("solucoes.6.title"), href: "#solucoes" },
     ],
     [t("footer.tecnologias")]: [
-      { label: "CORTEX AI Engine", href: "#cortex" },
+      { label: "CORTEX Inteligência Artificial", href: "#cortex" },
       { label: "Olho Vivo", href: "#olho-vivo" },
       { label: "SyncRealTime", href: "#diferenciais" },
       { label: "GeoTrust", href: "#diferenciais" },

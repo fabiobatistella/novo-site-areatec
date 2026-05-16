@@ -21,7 +21,7 @@ const technologies = [
   {
     id: "cortex",
     icon: Brain,
-    title: "AreaCORTEX AI",
+    title: "AreaCORTEX Inteligência Artificial",
     subtitle: "Edge Computing",
     description:
       "Motor de IA proprietário de geolocalização e contexto urbano embarcado nos veículos OCR. Processa posição centimétrica (GPS 4 constelações, ±0.03m) para decisão em tempo real.",
@@ -323,7 +323,7 @@ export default function NucleoTecnologico() {
               className="text-[10px] font-bold text-[#2F6FD0] tracking-[0.15em] uppercase"
               style={{ fontFamily: "'DM Mono', monospace" }}
             >
-              CORTEX AI / Operation Layer
+              CORTEX Inteligência Artificial / Operation Layer
             </span>
           </div>
           <div className="h-px w-12 bg-gradient-to-l from-transparent to-blue-300" />

@@ -7,7 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const HERO_VIDEO_WEBM = "/assets/areatec_hero_video_completo.webm";
 const HERO_VIDEO_MP4 = "/assets/areatec_hero_video_completo.mp4";
-const HERO_POSTER = "/assets/keyframe_inicial.png";
+const HERO_POSTER = "/assets/hero_poster.jpg";
 
 const SEGMENT_2_START = 10;
 
@@ -47,15 +47,15 @@ function VideoCaption({ title, subtitle, visible }: CaptionProps) {
 }
 
 function StatItem({ value, suffix, label, isDecimal, delay }: { value: number; suffix: string; label: string; isDecimal?: boolean; delay: number }) {
-  const { count, ref } = useCountUp(isDecimal ? Math.floor(value * 10) : value, 2500);
+  const { count, ref } = useCountUp(isDecimal ? Math.floor(value * 10) : value, 2000, true, true);
   const display = isDecimal ? (count / 10).toFixed(1) : count.toLocaleString("pt-BR");
 
   return (
     <motion.div
       ref={ref as React.RefObject<HTMLDivElement>}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 1.2 + delay * 0.1 }}
+      transition={{ duration: 0.4, delay: 0.2 + delay * 0.08 }}
       className="text-center"
     >
       <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
@@ -99,12 +99,12 @@ export default function HeroSection({ onOpenVideo }: HeroSectionProps) {
 
   return (
     <section id="inicio" className="relative min-h-screen flex flex-col justify-center overflow-hidden">
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 bg-slate-900">
         <video
           ref={videoRef}
           className="w-full h-full object-cover"
           poster={HERO_POSTER}
-          preload="none"
+          preload="metadata"
           autoPlay
           muted
           loop
