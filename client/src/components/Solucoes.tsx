@@ -15,13 +15,11 @@ function OlhoVivoSymbol({ size = 28, className = "" }: { size?: number; classNam
   );
 }
 
-/* ── Digipare Symbol (official logo - teal/cyan #23b4c1 brand color) ── */
+/* ── Digipare Symbol (official SVG logo - #23B4C1) ── */
 function DigipareSymbol({ size = 28, className = "" }: { size?: number; className?: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-label="Digipare">
-      <rect x="4" y="4" width="92" height="92" rx="22" fill="#23b4c1" opacity="0.08"/>
-      <rect x="12" y="12" width="76" height="76" rx="18" fill="#23b4c1" opacity="0.15"/>
-      <path d="M35 28h20c14.36 0 26 11.64 26 26v0c0 14.36-11.64 26-26 26h-4v-16h4c5.52 0 10-4.48 10-10v0c0-5.52-4.48-10-10-10H51v52H35V28z" fill="#23b4c1"/>
+    <svg width={size} height={size} viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-label="Digipare">
+      <path d="M944 674C944 823.117 823.117 944 674 944H147.5C110.221 944 80 913.779 80 876.5V737H602C676.558 737 737 676.558 737 602V422C737 347.442 676.558 287 602 287H449C429.118 287 413 303.118 413 323V593C413 612.882 396.882 629 377 629H80V147.5C80 110.221 110.221 80 147.5 80H674C823.117 80 944 200.883 944 350V674Z" fill="#23B4C1"/>
     </svg>
   );
 }
