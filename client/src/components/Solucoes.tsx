@@ -15,17 +15,14 @@ function OlhoVivoSymbol({ size = 28, className = "" }: { size?: number; classNam
   );
 }
 
-/* ── Digipare Symbol (official logo) ── */
+/* ── Digipare Symbol (official logo - teal/cyan brand color) ── */
 function DigipareSymbol({ size = 28, className = "" }: { size?: number; className?: string }) {
   return (
-    <img
-      src="/assets/digipare_logo.svg"
-      alt="Digipare"
-      width={size}
-      height={size}
-      className={className}
-      style={{ display: "inline-block" }}
-    />
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-label="Digipare">
+      <rect x="8" y="8" width="84" height="84" rx="20" fill="#23b4c1" opacity="0.12"/>
+      <rect x="16" y="16" width="68" height="68" rx="14" fill="#23b4c1" opacity="0.25"/>
+      <text x="50" y="68" textAnchor="middle" fontFamily="'Barlow Condensed', sans-serif" fontWeight="700" fontSize="52" fill="#23b4c1">D</text>
+    </svg>
   );
 }
 
