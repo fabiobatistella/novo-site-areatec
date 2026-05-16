@@ -198,14 +198,56 @@ function FeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: boolean;
               </div>
             </div>
           </div>
-          {/* Achievement Seal */}
-          <div className="inline-flex items-start gap-3 bg-gradient-to-r from-amber-500/10 to-yellow-400/5 border border-amber-400/30 rounded-xl px-4 py-3 max-w-sm">
-            <svg className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-            <h3 className="text-[11px] font-bold text-amber-300/90 leading-snug" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-              A maior frota de veículos OCR para estacionamento rotativo do planeta
-            </h3>
+          {/* Achievement Seal — World Record Badge */}
+          <div className="relative inline-flex items-center gap-4 max-w-md">
+            {/* Shield/Badge Icon */}
+            <div className="relative flex-shrink-0">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 p-[2px] shadow-[0_0_20px_rgba(245,158,11,0.3)]">
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-amber-900/90 to-amber-950/95 flex items-center justify-center">
+                  <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="url(#goldGrad)" strokeWidth="1.5" />
+                    <ellipse cx="12" cy="12" rx="4" ry="9" stroke="url(#goldGrad)" strokeWidth="1" />
+                    <line x1="3" y1="12" x2="21" y2="12" stroke="url(#goldGrad)" strokeWidth="1" />
+                    <line x1="5" y1="7" x2="19" y2="7" stroke="url(#goldGrad)" strokeWidth="0.7" />
+                    <line x1="5" y1="17" x2="19" y2="17" stroke="url(#goldGrad)" strokeWidth="0.7" />
+                    <path d="M12 2l1.2 2.4 2.6.4-1.9 1.8.5 2.6L12 7.9 9.6 9.2l.5-2.6L8.2 4.8l2.6-.4L12 2z" fill="url(#goldGrad)" />
+                    <defs>
+                      <linearGradient id="goldGrad" x1="0" y1="0" x2="24" y2="24">
+                        <stop offset="0%" stopColor="#F59E0B" />
+                        <stop offset="50%" stopColor="#FBBF24" />
+                        <stop offset="100%" stopColor="#D97706" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
+              <svg className="absolute -left-2 top-1 w-5 h-14 text-amber-500/60" viewBox="0 0 20 56" fill="currentColor">
+                <path d="M16 4c-4 4-8 12-8 24s4 20 8 24c-8-4-14-14-14-24S8 8 16 4z" />
+              </svg>
+              <svg className="absolute -right-2 top-1 w-5 h-14 text-amber-500/60" viewBox="0 0 20 56" fill="currentColor">
+                <path d="M4 4c4 4 8 12 8 24s-4 20-8 24c8-4 14-14 14-24S12 8 4 4z" />
+              </svg>
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="text-[9px] font-bold text-amber-500/80 tracking-[0.2em] uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                World Record
+              </span>
+              <h3 className="text-[12px] lg:text-[13px] font-bold leading-snug bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 bg-clip-text text-transparent" style={{ fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '0.02em' }}>
+                A maior frota de veículos OCR para estacionamento rotativo do planeta
+              </h3>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-2.5 h-2.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <span className="text-[8px] text-amber-500/60 tracking-wider uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                  +200 cidades
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -235,9 +277,9 @@ function SemiFeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: bool
       <div className="relative w-full h-48 lg:h-56 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#21212D] via-transparent to-transparent z-10 pointer-events-none" />
         <LazyImage
-          src="/assets/parking_hero_cgi.jpg"
-          alt="Olho Vivo Parking - Fiscalização inteligente de estacionamento rotativo - Areatec"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          src="/assets/hb20_areatec_rack_final.png"
+          alt="Olho Vivo Parking - Veículo OCR Areatec para estacionamento rotativo"
+          className="w-full h-full object-cover object-[center_60%] group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.85] contrast-[1.1]"
         />
       </div>
 
