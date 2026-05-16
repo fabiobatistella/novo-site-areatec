@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Brain, Eye, AlertTriangle, MapPin, Shield, Lock } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -45,7 +46,7 @@ function HeroSection() {
             Fiscalização inteligente com IA embarcada
           </p>
           <p className="text-base text-white/60 leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            A fiscalização inteligente começa com tecnologia que compreende a realidade das ruas brasileiras.
+            A fiscalização inteligente começa com tecnologia que compreende a realidade das ruas brasileiras. O Olho Vivo Patrol é mais que um veículo. É um sistema integrado de captura, processamento e prova jurídica de infrações.
           </p>
         </motion.div>
       </div>
@@ -58,6 +59,7 @@ interface TechSection {
   title: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   content: string;
+  image?: string;
   side: "left" | "right";
 }
 
@@ -86,17 +88,27 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
             </p>
           </div>
           <div className="flex-1 flex items-center justify-center">
-            <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 bg-gradient-to-br from-slate-800 to-slate-900 shadow-[0_8px_32px_rgba(47,111,208,0.1)]">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#2F6FD0]/5 via-transparent to-emerald-500/5" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <section.icon className="w-24 h-24 text-[#2F6FD0]/30 mx-auto mb-4" />
-                  <p className="text-white/40 text-sm" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                    {section.id.toUpperCase()}
-                  </p>
+            {section.image ? (
+              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] group hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500">
+                <img
+                  src={section.image}
+                  alt={section.title}
+                  className="w-full h-full object-cover rounded-xl hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+            ) : (
+              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 bg-gradient-to-br from-slate-800 to-slate-900 shadow-[0_8px_32px_rgba(47,111,208,0.1)]">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#2F6FD0]/5 via-transparent to-emerald-500/5" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <section.icon className="w-24 h-24 text-[#2F6FD0]/30 mx-auto mb-4" />
+                    <p className="text-white/40 text-sm" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                      {section.id.toUpperCase()}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -106,55 +118,61 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
 
 export default function OlhoVivoPatrol() {
   const { ref: sectionsRef, visible: sectionsVisible } = useInViewSimple();
+  const { t } = useLanguage();
 
   const techSections: TechSection[] = [
     {
       id: "cortex_ai",
       title: "CORTEX AI",
       icon: Brain,
-      content: "A inteligência artificial da Areatec foi forjada no asfalto. O CORTEX é um motor proprietário treinado especificamente para a realidade das vias brasileiras.",
+      image: "/assets/screen_cortex_rastreamento.jpg",
+      content: t("olhovivo_patrol.cortex.content"),
       side: "left",
     },
     {
       id: "ocr_motor",
-      title: "Motor OCR Proprietário",
+      title: t("olhovivo_patrol.ocr.title"),
       icon: Eye,
-      content: "A precisão na leitura de placas exige mais do que software de prateleira. Nosso sistema de reconhecimento óptico de caracteres captura imagens em alta velocidade.",
+      image: "/assets/screen_ocr_placa.jpg",
+      content: t("olhovivo_patrol.ocr.content"),
       side: "right",
     },
     {
       id: "buracos",
-      title: "Detecção de Buracos",
+      title: t("olhovivo_patrol.buracos.title"),
       icon: AlertTriangle,
-      content: "A manutenção viária precisa de dados precisos. O CORTEX identifica defeitos no pavimento em tempo real.",
+      image: "/assets/screen_defeitos_dnit.jpg",
+      content: t("olhovivo_patrol.buracos.content"),
       side: "left",
     },
     {
       id: "sinalizacao",
-      title: "Detecção de Sinalização",
+      title: t("olhovivo_patrol.sinalizacao.title"),
       icon: MapPin,
-      content: "A segurança no trânsito depende de sinalização clara. Nossa tecnologia avalia o estado de conservação de placas e faixas de rolamento.",
+      image: "/assets/screen_sinalizacao_horizontal.jpg",
+      content: t("olhovivo_patrol.sinalizacao.content"),
       side: "right",
     },
     {
       id: "anonimizacao",
-      title: "Anonimização Facial Avançada",
+      title: t("olhovivo_patrol.anonimizacao.title"),
       icon: Shield,
-      content: "A privacidade do cidadão é inegociável. Nosso sistema emprega uma tecnologia superior ao desfoque tradicional de imagens.",
+      image: "/assets/screen_busca_facial.jpg",
+      content: t("olhovivo_patrol.anonimizacao.content"),
       side: "left",
     },
     {
       id: "geotrust",
-      title: "GeoTrust",
+      title: t("olhovivo_patrol.geotrust.title"),
       icon: MapPin,
-      content: "A prova material exige localização incontestável. O protocolo GeoTrust autentica o sinal de satélite recebido pelo veículo.",
+      content: t("olhovivo_patrol.geotrust.content"),
       side: "right",
     },
     {
       id: "areachain",
-      title: "AreaChain",
+      title: t("olhovivo_patrol.areachain.title"),
       icon: Lock,
-      content: "A confiabilidade do sistema é selada com criptografia. A AreaChain é nossa blockchain privada desenvolvida para proteger a cadeia de custódia digital.",
+      content: t("olhovivo_patrol.areachain.content"),
       side: "left",
     },
   ];
@@ -190,17 +208,17 @@ export default function OlhoVivoPatrol() {
             className="text-center max-w-2xl mx-auto"
           >
             <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-              Pronto para transformar a fiscalização da sua cidade?
+              {t("cta.title")}
             </h2>
             <p className="text-white/70 mb-8 text-lg" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              Solicite uma demonstração do Olho Vivo Patrol.
+              {t("cta.subtitle")}
             </p>
             <a
               href="#contato"
               className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2F6FD0] text-white font-semibold rounded-lg shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
-              Solicitar Demonstração <ArrowRight className="w-4 h-4" />
+              {t("cta.primary")} <ArrowRight className="w-4 h-4" />
             </a>
           </motion.div>
         </div>

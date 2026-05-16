@@ -15,13 +15,13 @@ function OlhoVivoSymbol({ size = 28, className = "" }: { size?: number; classNam
   );
 }
 
-/* ── Digipare Symbol (official logo - teal/cyan brand color) ── */
+/* ── Digipare Symbol (official logo - teal/cyan #23b4c1 brand color) ── */
 function DigipareSymbol({ size = 28, className = "" }: { size?: number; className?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-label="Digipare">
-      <rect x="8" y="8" width="84" height="84" rx="20" fill="#23b4c1" opacity="0.12"/>
-      <rect x="16" y="16" width="68" height="68" rx="14" fill="#23b4c1" opacity="0.25"/>
-      <text x="50" y="68" textAnchor="middle" fontFamily="'Barlow Condensed', sans-serif" fontWeight="700" fontSize="52" fill="#23b4c1">D</text>
+      <rect x="4" y="4" width="92" height="92" rx="22" fill="#23b4c1" opacity="0.08"/>
+      <rect x="12" y="12" width="76" height="76" rx="18" fill="#23b4c1" opacity="0.15"/>
+      <path d="M35 28h20c14.36 0 26 11.64 26 26v0c0 14.36-11.64 26-26 26h-4v-16h4c5.52 0 10-4.48 10-10v0c0-5.52-4.48-10-10-10H51v52H35V28z" fill="#23b4c1"/>
     </svg>
   );
 }
@@ -69,7 +69,7 @@ const solucoes: Solucao[] = [
     taglineKey: "solucoes.3.tagline",
     descriptionKey: "solucoes.3.description",
     tag: "App",
-    tagColor: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+    tagColor: "bg-[#23b4c1]/10 text-[#23b4c1] border border-[#23b4c1]/30",
   },
   {
     icon: FileText,
@@ -210,7 +210,7 @@ function SemiFeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: bool
     >
       <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-50 rounded-full blur-[60px] pointer-events-none" />
 
-      <div className="relative flex flex-col sm:flex-row sm:items-start gap-5">
+      <div className="relative flex flex-col lg:flex-row lg:items-center gap-6">
         <div className="flex-1">
           {/* Brand + tag row */}
           <div className="flex items-center gap-3 mb-4">
@@ -238,6 +238,17 @@ function SemiFeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: bool
             <a href="/olhovivo-parking" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#2F6FD0] hover:text-blue-700 transition-colors group/link" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               {t("solucoes.saiba_mais")} <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform" />
             </a>
+          </div>
+        </div>
+
+        {/* Screenshot do sistema */}
+        <div className="lg:w-[280px] flex-shrink-0">
+          <div className="relative rounded-xl overflow-hidden border border-emerald-200/50 shadow-[0_4px_16px_rgba(16,185,129,0.12)] group/img hover:shadow-[0_8px_24px_rgba(16,185,129,0.2)] transition-shadow duration-500">
+            <img
+              src="/assets/screen_cortex_rastreamento.jpg"
+              alt="CORTEX Rastreamento Inteligente de Vaga"
+              className="w-full h-auto object-cover group-hover/img:scale-105 transition-transform duration-700"
+            />
           </div>
         </div>
       </div>
