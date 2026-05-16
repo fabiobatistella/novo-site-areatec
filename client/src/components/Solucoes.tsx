@@ -277,9 +277,9 @@ function SemiFeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: bool
       <div className="relative w-full h-48 lg:h-56 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#21212D] via-transparent to-transparent z-10 pointer-events-none" />
         <LazyImage
-          src="/assets/hb20_areatec_rack_final.png"
-          alt="Olho Vivo Parking - Veículo OCR Areatec para estacionamento rotativo"
-          className="w-full h-full object-cover object-[center_60%] group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.85] contrast-[1.1]"
+          src="/assets/parking_hero_cgi.jpg"
+          alt="Olho Vivo Parking - Maior frota OCR do mundo para estacionamento rotativo - Areatec"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
         />
       </div>
 

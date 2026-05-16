@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-function useInViewSimple(threshold = 0.15) {
+function useInViewSimple(threshold = 0.05) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -24,7 +24,7 @@ function useInViewSimple(threshold = 0.15) {
 
 function HeroSection() {
   return (
-    <section className="relative pt-32 pb-20 bg-gradient-to-b from-slate-900 via-[#21212D] to-slate-900 overflow-hidden">
+    <section className="relative pt-28 pb-10 bg-gradient-to-b from-slate-900 via-[#21212D] to-slate-900 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-96 h-96 bg-[#2F6FD0]/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px]" />
@@ -70,7 +70,7 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
       initial={{ opacity: 0, y: 40 }}
       animate={isVisible ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8 }}
-      className="relative py-16 lg:py-20"
+      className="relative py-10 lg:py-14"
     >
       <div className="container">
         <div className={`flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16 ${isLeft ? "" : "lg:flex-row-reverse"}`}>
@@ -117,7 +117,7 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
 }
 
 export default function OlhoVivoPatrol() {
-  const { ref: sectionsRef, visible: sectionsVisible } = useInViewSimple();
+  const { ref: sectionsRef, visible: sectionsVisible } = useInViewSimple(0.01);
   const { t } = useLanguage();
 
   const techSections: TechSection[] = [
@@ -181,7 +181,7 @@ export default function OlhoVivoPatrol() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
-      <section ref={sectionsRef} className="relative py-12 bg-gradient-to-b from-slate-900 via-[#21212D] to-slate-900">
+      <section ref={sectionsRef} className="relative py-4 bg-gradient-to-b from-slate-900 via-[#21212D] to-slate-900">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/3 right-0 w-96 h-96 bg-[#2F6FD0]/5 rounded-full blur-[120px]" />
           <div className="absolute bottom-1/3 left-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px]" />
