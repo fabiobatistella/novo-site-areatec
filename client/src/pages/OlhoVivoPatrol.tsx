@@ -22,6 +22,16 @@ function useInViewSimple(threshold = 0.05) {
   return { ref, visible };
 }
 
+function OlhoVivoSymbolInline({ size = 44 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M80 350.269C80 201.004 201.004 80 350.271 80H820.196C836.261 80 844.294 99.4342 832.918 110.777L655.97 287.207H422.343C347.71 287.207 287.208 347.708 287.208 422.341V655.967L110.777 832.914C99.4343 844.29 80 836.257 80 820.192V350.269Z" fill="#10B981"/>
+      <path d="M944 673.731C944 822.996 822.996 944 673.729 944H203.804C187.739 944 179.706 924.566 191.082 913.223L368.03 736.793H601.657C676.29 736.793 736.792 676.292 736.792 601.659V368.033L913.223 191.086C924.566 179.71 944 187.743 944 203.808V673.731Z" fill="#10B981"/>
+      <path d="M415.253 448.483C415.253 430.131 430.131 415.253 448.484 415.253H575.522C593.875 415.253 608.753 430.131 608.753 448.483V575.522C608.753 593.874 593.875 608.752 575.523 608.752H448.484C430.131 608.752 415.253 593.874 415.253 575.522V448.483Z" fill="#10B981"/>
+    </svg>
+  );
+}
+
 function HeroSection() {
   return (
     <section className="relative pt-28 pb-10 bg-gradient-to-b from-slate-900 via-[#21212D] to-slate-900 overflow-hidden">
@@ -36,17 +46,24 @@ function HeroSection() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-3xl mx-auto"
         >
-          <span className="inline-block text-xs font-bold text-[#2F6FD0] tracking-[0.2em] uppercase mb-4" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-            Olho Vivo
-          </span>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-            Olho Vivo Patrol
-          </h1>
+          {/* Produto Areatec badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#2F6FD0]/10 border border-[#2F6FD0]/20 rounded-full mb-6">
+            <span className="text-[10px] font-bold text-[#2F6FD0] tracking-[0.15em] uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+              Produto Areatec
+            </span>
+          </div>
+          {/* Title with OlhoVivo symbol */}
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <OlhoVivoSymbolInline size={48} />
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+              Olho Vivo Patrol
+            </h1>
+          </div>
           <p className="text-lg text-white/70 leading-relaxed mb-8" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             Fiscalização inteligente com IA embarcada
           </p>
           <p className="text-base text-white/60 leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            A fiscalização inteligente começa com tecnologia que compreende a realidade das ruas brasileiras. O Olho Vivo Patrol é mais que um veículo. É um sistema integrado de captura, processamento e prova jurídica de infrações.
+            A fiscalização inteligente começa com tecnologia que compreende a realidade das vias urbanas. O Olho Vivo Patrol é mais que um veículo. É um sistema integrado de captura, processamento e prova jurídica de infrações.
           </p>
         </motion.div>
       </div>
@@ -88,7 +105,38 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
             </p>
           </div>
           <div className="flex-1 flex items-center justify-center">
-            {section.image ? (
+            {section.image === "code_cpp" ? (
+              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500 bg-[#1a1b26] p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                  <span className="ml-3 text-[10px] text-white/40 font-mono">cortex_engine.cpp</span>
+                </div>
+                <div className="text-[10px] lg:text-[11px] leading-[1.7] overflow-hidden font-mono space-y-0.5">
+                  <p><span className="text-purple-400">{"#include"}</span><span className="text-green-400">{" <cortex/engine.hpp>"}</span></p>
+                  <p><span className="text-purple-400">{"#include"}</span><span className="text-green-400">{" <cortex/ocr_pipeline.hpp>"}</span></p>
+                  <p><span className="text-purple-400">{"#include"}</span><span className="text-green-400">{" <cortex/edge_inference.hpp>"}</span></p>
+                  <p className="text-white/30">{"// "}</p>
+                  <p><span className="text-blue-400">{"namespace"}</span><span className="text-cyan-300">{" cortex"}</span><span className="text-white/60">{" {"}</span></p>
+                  <p className="text-white/30">{"// Motor OCR proprietário Areatec"}</p>
+                  <p><span className="text-blue-400">{"class"}</span><span className="text-cyan-300">{" PlateRecognizer"}</span><span className="text-white/60">{" {"}</span></p>
+                  <p><span className="text-blue-400">{"  auto"}</span><span className="text-yellow-300">{" detect"}</span><span className="text-white/60">{"(Frame& f) -> Result {"}</span></p>
+                  <p><span className="text-white/50">{"    auto plates = "}</span><span className="text-cyan-300">{"m_pipeline"}</span><span className="text-white/50">{".scan(f);"}</span></p>
+                  <p><span className="text-white/50">{"    "}</span><span className="text-blue-400">{"for"}</span><span className="text-white/50">{"(auto& p : plates) {"}</span></p>
+                  <p><span className="text-white/50">{"      p.confidence = "}</span><span className="text-orange-400">{"validate"}</span><span className="text-white/50">{"(p);"}</span></p>
+                  <p><span className="text-white/50">{"      "}</span><span className="text-blue-400">{"if"}</span><span className="text-white/50">{"(p.confidence > "}</span><span className="text-amber-300">{"0.997"}</span><span className="text-white/50">{") {"}</span></p>
+                  <p><span className="text-white/50">{"        "}</span><span className="text-cyan-300">{"m_chain"}</span><span className="text-white/50">{".seal(p, "}</span><span className="text-cyan-300">{"GeoTrust"}</span><span className="text-white/50">{");"}</span></p>
+                  <p><span className="text-white/50">{"      }"}</span></p>
+                  <p><span className="text-white/50">{"    }"}</span></p>
+                  <p><span className="text-white/50">{"    "}</span><span className="text-blue-400">{"return"}</span><span className="text-white/50">{" Result{plates};"}</span></p>
+                  <p><span className="text-white/50">{"  }"}</span></p>
+                  <p><span className="text-white/60">{"};"}</span></p>
+                  <p><span className="text-white/60">{"}"}</span></p>
+                </div>
+                <div className="absolute inset-0 pointer-events-none rounded-xl" style={{ background: 'linear-gradient(180deg, transparent 60%, rgba(26,27,38,0.95) 100%)' }} />
+              </div>
+            ) : section.image ? (
               <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] group hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500">
                 <img
                   src={section.image}
@@ -125,7 +173,7 @@ export default function OlhoVivoPatrol() {
       id: "cortex_ai",
       title: "CORTEX Inteligência Artificial",
       icon: Brain,
-      image: "/assets/screen_cortex_rastreamento.jpg",
+      image: "code_cpp",
       content: t("olhovivo_patrol.cortex.content"),
       side: "left",
     },
