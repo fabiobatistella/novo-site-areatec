@@ -7,12 +7,14 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Home from "./pages/Home";
 import OlhoVivoPatrol from "./pages/OlhoVivoPatrol";
+import OlhoVivoParking from "./pages/OlhoVivoParking";
 
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/olhovivo-patrol"} component={OlhoVivoPatrol} />
+      <Route path={"/olhovivo-parking"} component={OlhoVivoParking} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
