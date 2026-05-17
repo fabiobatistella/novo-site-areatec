@@ -145,12 +145,12 @@ function FeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: boolean;
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-500/8 rounded-full blur-[60px] pointer-events-none" />
 
       {/* Hero image */}
-      <div className="relative w-full h-48 lg:h-56 overflow-hidden">
+      <div className="relative w-full h-48 md:h-64 lg:h-56 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#21212D] via-transparent to-transparent z-10 pointer-events-none" />
         <OptimizedImage
           src="/assets/hb20_areatec_rack_final.png"
           alt="Veículo HB20 Areatec equipado com câmeras OCR e IA embarcada para fiscalização inteligente de trânsito"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
         />
       </div>
