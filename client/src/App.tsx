@@ -8,6 +8,9 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import Home from "./pages/Home";
 import OlhoVivoPatrol from "./pages/OlhoVivoPatrol";
 import OlhoVivoParking from "./pages/OlhoVivoParking";
+import BlogList from "./pages/BlogList";
+import BlogPost from "./pages/BlogPost";
+import Contato from "./pages/Contato";
 
 function Router() {
   return (
@@ -15,6 +18,9 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/olhovivo-patrol"} component={OlhoVivoPatrol} />
       <Route path={"/olhovivo-parking"} component={OlhoVivoParking} />
+      <Route path={"/blog"} component={BlogList} />
+      <Route path={"/blog/:slug"} component={BlogPost} />
+      <Route path={"/contato"} component={Contato} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

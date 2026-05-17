@@ -11,6 +11,8 @@ const DIST_DIR = join(__dirname, "dist", "public");
 const PORT = 45678;
 
 const ROUTES = [
+  "/blog",
+  "/contato",
   "/",
   "/olhovivo-patrol",
   "/olhovivo-parking",

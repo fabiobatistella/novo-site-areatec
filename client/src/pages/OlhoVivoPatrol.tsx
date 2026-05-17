@@ -164,7 +164,7 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
 
 export default function OlhoVivoPatrol() {
   const { ref: sectionsRef, visible: sectionsVisible } = useInViewSimple(0.01);
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   const techSections: TechSection[] = [
     {
@@ -189,7 +189,7 @@ export default function OlhoVivoPatrol() {
       id: "buracos",
       title: t("olhovivo_patrol.buracos.title"),
       icon: AlertTriangle,
-      image: "/assets/defects_detection_ai.jpg",
+      image: `/assets/defects_detection_ai_${lang}.webp`,
       imageAlt: "CORTEX AI detecting potholes cracks and patches on urban road with bounding boxes and confidence scores in real time",
       content: t("olhovivo_patrol.buracos.content"),
       side: "left",
@@ -198,7 +198,7 @@ export default function OlhoVivoPatrol() {
       id: "sinalizacao",
       title: t("olhovivo_patrol.sinalizacao.title"),
       icon: MapPin,
-      image: "/assets/signage_detection_ai.jpg",
+      image: `/assets/signage_detection_ai_${lang}.webp`,
       imageAlt: "CORTEX AI analyzing traffic signs and road markings condition with color-coded bounding boxes",
       content: t("olhovivo_patrol.sinalizacao.content"),
       side: "right",
@@ -207,7 +207,7 @@ export default function OlhoVivoPatrol() {
       id: "facial_recognition",
       title: t("olhovivo_patrol.facial_recognition.title"),
       icon: Shield,
-      image: "/assets/facial_recognition_ai.jpg",
+      image: `/assets/areaface_${lang}.webp`,
       imageAlt: "CORTEX AI facial search engine identifying faces in real time with edge processing and municipal security database",
       content: t("olhovivo_patrol.facial_recognition.content"),
       side: "left",
@@ -216,7 +216,7 @@ export default function OlhoVivoPatrol() {
       id: "anonimizacao",
       title: t("olhovivo_patrol.anonimizacao.title"),
       icon: Shield,
-      image: "/assets/blur_anonymization_ai.jpg",
+      image: `/assets/synthetic_face_${lang}.webp`,
       imageAlt: "CORTEX AI facial anonymization showing before and after synthetic mask generation for LGPD compliance",
       content: t("olhovivo_patrol.anonimizacao.content"),
       side: "right",
