@@ -271,18 +271,12 @@ function SemiFeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: bool
       <div className="relative w-full h-48 lg:h-56 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#21212D] via-transparent to-transparent z-10 pointer-events-none" />
         <OptimizedImage
-          src="/assets/parking_hero_cgi.jpg"
-          alt="Veículo Areatec em operação de fiscalização de estacionamento rotativo Zona Azul com sistema Olho Vivo Parking"
+          src="/assets/parking_hero_smart.jpg"
+          alt="Vista aérea de Zona Azul Inteligente com monitoramento digital de vagas ocupadas e livres pelo sistema Olho Vivo Parking da Areatec"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           loading="lazy"
         />
-        {/* Official Areatec logo overlay positioned over AI-generated logo on car */}
-        <div className="absolute z-20 flex items-center gap-1.5" style={{ left: '28%', top: '52%', transform: 'translateY(-50%)' }}>
-          <AreatecLogoWhite size={28} />
-          <span className="text-white font-bold text-[11px] tracking-wider uppercase" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
-            AREATEC
-          </span>
-        </div>
+
       </div>
 
       {/* Content */}
