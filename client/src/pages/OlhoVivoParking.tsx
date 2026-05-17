@@ -1,12 +1,14 @@
-// OlhoVivoParking — Página detalhada do produto Olho Vivo Parking
+// OlhoVivoParking — Página detalhada do produto Olho Vivo Parking + SEO
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Activity, CreditCard, Smartphone, Store, MonitorSmartphone, Car, BarChart3, Network, SmartphoneNfc } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
+import OptimizedImage from "@/components/OptimizedImage";
+import { olhoVivoParkingSchema } from "@/components/SchemaOrg";
 
-/* ── Hook para detecção de visibilidade ── */
 function useInViewSimple(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -23,8 +25,7 @@ function useInViewSimple(threshold = 0.15) {
   return { ref, visible };
 }
 
-/* ── Hero Section ── */
-function HeroSection({ t }: { t: (k: string) => string }) {
+function ParkingHeroSection({ t }: { t: (k: string) => string }) {
   return (
     <section className="relative pt-32 pb-20 bg-gradient-to-b from-slate-900 via-[#21212D] to-slate-900 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -56,13 +57,13 @@ function HeroSection({ t }: { t: (k: string) => string }) {
   );
 }
 
-/* ── Seção individual de tecnologia ── */
 interface TechSection {
   id: string;
   title: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   content: string;
   image?: string;
+  imageAlt?: string;
   side: "left" | "right";
 }
 
@@ -77,12 +78,11 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
       className="relative py-16 lg:py-20"
     >
       <div className="container">
-        <div className={`flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16 ${isLeft ? "" : "lg:flex-row-reverse"}`}>
-          {/* Text content */}
+        <article className={`flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16 ${isLeft ? "" : "lg:flex-row-reverse"}`}>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                <section.icon className="w-6 h-6 text-emerald-500" />
+                <section.icon className="w-6 h-6 text-emerald-500" aria-hidden="true" />
               </div>
               <h2 className="text-2xl lg:text-3xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
                 {section.title}
@@ -93,14 +93,14 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
             </p>
           </div>
 
-          {/* Visual element */}
           <div className="flex-1 flex items-center justify-center">
             {section.image ? (
               <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(16,185,129,0.15)] group hover:shadow-[0_12px_48px_rgba(16,185,129,0.25)] transition-shadow duration-500">
-                <img
+                <OptimizedImage
                   src={section.image}
-                  alt={section.title}
+                  alt={section.imageAlt || section.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
                 />
               </div>
             ) : (
@@ -108,7 +108,7 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-[#2F6FD0]/5" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <section.icon className="w-24 h-24 text-emerald-500/30 mx-auto mb-4" />
+                    <section.icon className="w-24 h-24 text-emerald-500/30 mx-auto mb-4" aria-hidden="true" />
                     <p className="text-white/40 text-sm" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
                       {section.id.toUpperCase()}
                     </p>
@@ -117,13 +117,12 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
               </div>
             )}
           </div>
-        </div>
+        </article>
       </div>
     </motion.div>
   );
 }
 
-/* ── Main Page ── */
 export default function OlhoVivoParking() {
   const { ref: sectionsRef, visible: sectionsVisible } = useInViewSimple();
   const { t } = useLanguage();
@@ -134,6 +133,7 @@ export default function OlhoVivoParking() {
       title: t("olhovivo_parking.telemetria.title"),
       icon: Activity,
       image: "/assets/screen_cortex_rastreamento.jpg",
+      imageAlt: "Painel de telemetria e rastreamento de veículos do Olho Vivo Parking da Areatec",
       content: t("olhovivo_parking.telemetria.content"),
       side: "left",
     },
@@ -149,6 +149,7 @@ export default function OlhoVivoParking() {
       title: t("olhovivo_parking.fiscalizacao.title"),
       icon: Smartphone,
       image: "/assets/screen_cortex_rastreamento.jpg",
+      imageAlt: "Aplicativo nativo de fiscalização de estacionamento rotativo Olho Vivo da Areatec",
       content: t("olhovivo_parking.fiscalizacao.content"),
       side: "left",
     },
@@ -197,58 +198,65 @@ export default function OlhoVivoParking() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <HeroSection t={t} />
+    <>
+      <SEOHead
+        title="Olho Vivo Parking — Gestão Completa de Estacionamento Rotativo | Areatec"
+        description="O Olho Vivo Parking é a plataforma completa de gestão de Zona Azul da Areatec. Captura automática de placas, controle de permanência, emissão de autos, integração com parquímetros e app Digipare."
+        path="/olhovivo-parking"
+        jsonLd={olhoVivoParkingSchema}
+      />
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main>
+          <ParkingHeroSection t={t} />
 
-      {/* Tech Sections */}
-      <section ref={sectionsRef} className="relative py-12 bg-gradient-to-b from-slate-900 via-[#21212D] to-slate-900">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/3 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/3 left-0 w-80 h-80 bg-[#2F6FD0]/5 rounded-full blur-[100px]" />
-        </div>
+          <section ref={sectionsRef} className="relative py-12 bg-gradient-to-b from-slate-900 via-[#21212D] to-slate-900">
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute top-1/3 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px]" />
+              <div className="absolute bottom-1/3 left-0 w-80 h-80 bg-[#2F6FD0]/5 rounded-full blur-[100px]" />
+            </div>
 
-        <div className="relative">
-          {techSections.map((section) => (
-            <TechSectionComponent
-              key={section.id}
-              section={section}
-              isVisible={sectionsVisible}
-            />
-          ))}
-        </div>
-      </section>
+            <div className="relative">
+              {techSections.map((section) => (
+                <TechSectionComponent
+                  key={section.id}
+                  section={section}
+                  isVisible={sectionsVisible}
+                />
+              ))}
+            </div>
+          </section>
 
-      {/* CTA Section */}
-      <section className="relative py-20 bg-gradient-to-b from-slate-900 to-[#21212D] overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
-        </div>
-        <div className="container relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center max-w-2xl mx-auto"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-              {t("cta.title")}
-            </h2>
-            <p className="text-white/70 mb-8 text-lg" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              {t("cta.subtitle")}
-            </p>
-            <a
-              href="#contato"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-emerald-600 text-white font-semibold rounded-lg shadow-lg shadow-emerald-600/30 hover:shadow-xl hover:shadow-emerald-600/40 hover:bg-emerald-500 transition-all duration-300 transform hover:-translate-y-0.5"
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            >
-              {t("cta.secondary")} <ArrowRight className="w-4 h-4" />
-            </a>
-          </motion.div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
+          <section className="relative py-20 bg-gradient-to-b from-slate-900 to-[#21212D] overflow-hidden">
+            <div className="absolute inset-0">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
+            </div>
+            <div className="container relative">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="text-center max-w-2xl mx-auto"
+              >
+                <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+                  {t("cta.title")}
+                </h2>
+                <p className="text-white/70 mb-8 text-lg" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  {t("cta.subtitle")}
+                </p>
+                <a
+                  href="#contato"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-emerald-600 text-white font-semibold rounded-lg shadow-lg shadow-emerald-600/30 hover:shadow-xl hover:shadow-emerald-600/40 hover:bg-emerald-500 transition-all duration-300 transform hover:-translate-y-0.5"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  {t("cta.secondary")} <ArrowRight className="w-4 h-4" />
+                </a>
+              </motion.div>
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 }

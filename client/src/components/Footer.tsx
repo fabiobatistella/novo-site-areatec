@@ -38,7 +38,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#21212D] text-white pt-16 pb-8">
+    <footer className="bg-[#21212D] text-white pt-16 pb-8" role="contentinfo">
       <div className="container">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 mb-12">
           <div>
@@ -68,9 +68,9 @@ export default function Footer() {
 
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h4 className="text-sm font-semibold text-white mb-4 tracking-wider uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+              <p className="text-sm font-semibold text-white mb-4 tracking-wider uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
                 {category}
-              </h4>
+              </p>
               <ul className="space-y-2.5">
                 {links.map((link) => (
                   <li key={link.label}>

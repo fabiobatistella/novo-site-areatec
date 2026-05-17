@@ -365,14 +365,14 @@ export default function NucleoTecnologico() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <h4
+                        <h3
                           className={`text-sm font-bold transition-colors duration-300 ${
                             isActive ? "text-slate-900" : "text-slate-600"
                           }`}
                           style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
                         >
                           {tech.title}
-                        </h4>
+                        </h3>
                         <span className="text-[10px] text-slate-400 font-mono">
                           {tech.subtitle}
                         </span>

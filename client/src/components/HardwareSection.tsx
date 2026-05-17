@@ -141,7 +141,9 @@ export default function HardwareSection() {
             <div className="relative rounded-2xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.1),0_32px_64px_rgba(0,0,0,0.06)]">
               <img
                 src={PUMATRONIX_IMAGE}
-                alt="Câmera OCR montada no teto do veículo com bokeh urbano"
+                alt="Câmera OCR Pumatronix montada no teto do veículo Areatec para leitura automática de placas em operação urbana"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-auto object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 to-transparent" />

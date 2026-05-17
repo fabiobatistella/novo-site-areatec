@@ -2,12 +2,12 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, MessageCircle } from "lucide-react";
-import { useCountUp } from "@/hooks/useInView";
+
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const HERO_VIDEO_WEBM = "/assets/areatec_hero_video_completo.webm";
 const HERO_VIDEO_MP4 = "/assets/areatec_hero_video_completo.mp4";
-const HERO_POSTER = "/assets/hero_poster.jpg";
+const HERO_POSTER = "/assets/hero_poster.webp";
 
 const SEGMENT_2_START = 10;
 
@@ -24,7 +24,7 @@ function VideoCaption({ title, subtitle, visible }: CaptionProps) {
         visible ? "opacity-100" : "opacity-0"
       }`}
     >
-      <h3
+      <p
         className="text-lg sm:text-xl lg:text-2xl font-bold text-white leading-tight"
         style={{
           fontFamily: "'Barlow Condensed', sans-serif",
@@ -32,7 +32,7 @@ function VideoCaption({ title, subtitle, visible }: CaptionProps) {
         }}
       >
         {title}
-      </h3>
+      </p>
       <p
         className="text-sm sm:text-base lg:text-lg font-light text-white/85 mt-1"
         style={{
@@ -46,13 +46,9 @@ function VideoCaption({ title, subtitle, visible }: CaptionProps) {
   );
 }
 
-function StatItem({ value, suffix, label, isDecimal, delay }: { value: number; suffix: string; label: string; isDecimal?: boolean; delay: number }) {
-  const { count, ref } = useCountUp(isDecimal ? Math.floor(value * 10) : value, 2000, true, true);
-  const display = isDecimal ? (count / 10).toFixed(1) : count.toLocaleString("pt-BR");
-
+function StatItem({ display, suffix, label, delay }: { display: string; suffix: string; label: string; delay: number }) {
   return (
     <motion.div
-      ref={ref as React.RefObject<HTMLDivElement>}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.2 + delay * 0.08 }}
@@ -77,11 +73,12 @@ export default function HeroSection({ onOpenVideo }: HeroSectionProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [activeCaption, setActiveCaption] = useState<1 | 2>(1);
 
+  // Fixed, auditable statistics (E-E-A-T compliance)
   const heroStats = [
-    { value: 200, suffix: "+", label: t("hero.stat.cidades") },
-    { value: 10, suffix: "M+", label: t("hero.stat.placas") },
-    { value: 30, suffix: "+", label: t("hero.stat.anos") },
-    { value: 99.9, suffix: "%", label: t("hero.stat.precisao"), isDecimal: true },
+    { display: "200", suffix: "+", label: t("hero.stat.cidades") },
+    { display: "10", suffix: "M+", label: t("hero.stat.placas") },
+    { display: "30", suffix: "+", label: t("hero.stat.anos") },
+    { display: "99,9", suffix: "%", label: t("hero.stat.precisao") },
   ];
 
   useEffect(() => {

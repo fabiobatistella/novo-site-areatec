@@ -3,25 +3,7 @@ import { motion } from "framer-motion";
 import { FileText, Radio, Satellite, Bike, ArrowRight, ExternalLink } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState } from "react";
-
-/* ── LazyImage with blur-up loading effect ── */
-function LazyImage({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
-  const [loaded, setLoaded] = useState(false);
-  return (
-    <div className="relative w-full h-full">
-      {/* Skeleton placeholder */}
-      <div className={`absolute inset-0 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 animate-pulse transition-opacity duration-500 ${loaded ? "opacity-0" : "opacity-100"}`} />
-      <img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        onLoad={() => setLoaded(true)}
-        className={`${className} transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
-      />
-    </div>
-  );
-}
+import OptimizedImage from "@/components/OptimizedImage";
 
 
 
@@ -165,10 +147,11 @@ function FeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: boolean;
       {/* Hero image */}
       <div className="relative w-full h-48 lg:h-56 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#21212D] via-transparent to-transparent z-10 pointer-events-none" />
-        <LazyImage
+        <OptimizedImage
           src="/assets/hb20_areatec_rack_final.png"
-          alt="Olho Vivo Patrol - Maior frota de veículos OCR do mundo - HB20 Areatec"
+          alt="Veículo HB20 Areatec equipado com câmeras OCR e IA embarcada para fiscalização inteligente de trânsito"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          loading="lazy"
         />
       </div>
 
@@ -287,10 +270,11 @@ function SemiFeaturedCard({ sol, isVisible, t }: { sol: Solucao; isVisible: bool
       {/* Hero image with Areatec logo overlay */}
       <div className="relative w-full h-48 lg:h-56 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#21212D] via-transparent to-transparent z-10 pointer-events-none" />
-        <LazyImage
+        <OptimizedImage
           src="/assets/parking_hero_cgi.jpg"
-          alt="Olho Vivo Parking - Maior frota OCR do mundo para estacionamento rotativo - Areatec"
+          alt="Veículo Areatec em operação de fiscalização de estacionamento rotativo Zona Azul com sistema Olho Vivo Parking"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          loading="lazy"
         />
         {/* Official Areatec logo overlay positioned over AI-generated logo on car */}
         <div className="absolute z-20 flex items-center gap-1.5" style={{ left: '28%', top: '52%', transform: 'translateY(-50%)' }}>

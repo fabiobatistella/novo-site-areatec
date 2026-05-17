@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Camera, Cpu, MapPin, Wifi, ArrowRight } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
+import OptimizedImage from "@/components/OptimizedImage";
 const HB20_IMAGE = "/assets/keyframe_inicial.png";
 const features = [
   { icon: Camera, label: "Câmeras OCR de Alta Resolução" },
@@ -60,12 +61,12 @@ export default function VeiculoOCRBanner({ onOpenVideo }: VeiculoOCRBannerProps)
                 IA Embarcada em Movimento
               </span>
             </motion.div>
-            <h3
-              className="text-3xl sm:text-4xl lg:text-[2.6rem] font-bold text-slate-900 leading-tight mb-4"
+            <h2
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight mb-4"
               style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
             >
               Tecnologia em movimento
-            </h3>
+            </h2>
             <p className="text-lg text-slate-500 leading-relaxed mb-8">
               IA embarcada, câmeras de alta resolução e processamento em tempo real — tudo integrado em um único veículo HB20 equipado com a mais avançada tecnologia de fiscalização.
             </p>
@@ -113,10 +114,11 @@ export default function VeiculoOCRBanner({ onOpenVideo }: VeiculoOCRBannerProps)
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-100/60 to-slate-100/40 rounded-3xl blur-2xl scale-90" />
             <div className="relative rounded-3xl overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.10),0_32px_80px_rgba(0,0,0,0.07)] bg-white p-4 lg:p-6">
-              <img
+              <OptimizedImage
                 src={HB20_IMAGE}
-                alt="Veículo HB20 Areatec em operação OCR em rua brasileira"
+                alt="Veículo HB20 Areatec equipado com câmeras OCR e sistema CORTEX AI em operação de fiscalização em rua brasileira"
                 className="w-full h-auto object-cover rounded-xl max-h-[400px]"
+                loading="lazy"
               />
               {/* CORTEX badge */}
               <div className="absolute -bottom-3 -left-3 lg:bottom-4 lg:left-4 bg-white rounded-xl px-4 py-3 shadow-[0_4px_16px_rgba(0,0,0,0.10),0_16px_32px_rgba(0,0,0,0.06)] border border-slate-100">

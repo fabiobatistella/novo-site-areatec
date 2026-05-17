@@ -21,7 +21,7 @@ export default function CTASection({ onOpenVideo }: CTASectionProps) {
       className="relative py-24 lg:py-32 overflow-hidden"
     >
       <div className="absolute inset-0">
-        <img src={CTA_IMAGE} alt="" className="w-full h-full object-cover" />
+        <img src={CTA_IMAGE} alt="Vista aérea de cidade brasileira ao entardecer representando a cobertura nacional da Areatec" className="w-full h-full object-cover" loading="lazy" decoding="async" />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/85 via-slate-900/75 to-slate-900/90" />
       </div>
 

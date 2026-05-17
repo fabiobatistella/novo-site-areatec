@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
 
 export type Language = "pt" | "en" | "es";
 
@@ -10,7 +10,6 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-// Dynamic import of translations
 import translations from "@/i18n/translations";
 
 interface LanguageProviderProps {
@@ -18,28 +17,55 @@ interface LanguageProviderProps {
   defaultLang?: Language;
 }
 
-export function LanguageProvider({ children, defaultLang = "pt" }: LanguageProviderProps) {
-  const [lang, setLangState] = useState<Language>(() => {
+function detectInitialLang(defaultLang: Language): Language {
+  // 1. Check URL ?lang= parameter (highest priority for SEO crawlers)
+  if (typeof window !== "undefined") {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlLang = urlParams.get("lang");
+    if (urlLang && ["pt", "en", "es"].includes(urlLang)) {
+      return urlLang as Language;
+    }
+  }
+  // 2. Check localStorage
+  if (typeof localStorage !== "undefined") {
     const stored = localStorage.getItem("areatec-lang");
     if (stored && ["pt", "en", "es"].includes(stored)) return stored as Language;
-    // Detect browser language
+  }
+  // 3. Detect browser language
+  if (typeof navigator !== "undefined") {
     const browserLang = navigator.language.slice(0, 2).toLowerCase();
     if (browserLang === "es") return "es";
     if (browserLang === "en") return "en";
-    return defaultLang;
-  });
+  }
+  return defaultLang;
+}
+
+export function LanguageProvider({ children, defaultLang = "pt" }: LanguageProviderProps) {
+  const [lang, setLangState] = useState<Language>(() => detectInitialLang(defaultLang));
 
   const setLang = useCallback((newLang: Language) => {
     setLangState(newLang);
     localStorage.setItem("areatec-lang", newLang);
-    document.documentElement.lang = newLang === "pt" ? "pt-BR" : newLang;
   }, []);
+
+  // Sync html lang attribute whenever lang changes
+  useEffect(() => {
+    document.documentElement.lang = lang === "pt" ? "pt-BR" : lang;
+  }, [lang]);
 
   const t = useCallback(
     (key: string): string => {
+      // Try current language first, fall back to pt if key missing
       const langTranslations = translations[lang];
-      if (!langTranslations) return key;
-      return (langTranslations as Record<string, string>)[key] ?? key;
+      if (langTranslations && (langTranslations as Record<string, string>)[key]) {
+        return (langTranslations as Record<string, string>)[key];
+      }
+      // Fallback to Portuguese
+      const ptTranslations = translations["pt"];
+      if (ptTranslations && (ptTranslations as Record<string, string>)[key]) {
+        return (ptTranslations as Record<string, string>)[key];
+      }
+      return key;
     },
     [lang]
   );

@@ -70,8 +70,8 @@ export default function Navbar() {
       }`}
     >
       <div className="container">
-        <nav className="flex items-center justify-between h-[72px] lg:h-20">
-          <a href="#inicio" className="flex items-center gap-2 group">
+        <nav aria-label="Navegação principal" className="flex items-center justify-between h-[72px] lg:h-20">
+          <a href="#inicio" aria-label="Areatec - Ir para o início" className="flex items-center gap-2 group">
             <AreatecLogoSVG variant={scrolled ? "colored" : "light"} size={34} />
             <span
               className={`text-xl font-semibold tracking-tight transition-colors duration-300 ${scrolled ? "text-[#21212D]" : "text-white"}`}
@@ -105,6 +105,8 @@ export default function Navbar() {
             <div className="relative" ref={langRef}>
               <button
                 onClick={() => setLangOpen(!langOpen)}
+                aria-label="Selecionar idioma"
+                aria-expanded={langOpen}
                 className={`flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition-all duration-300 ${
                   scrolled
                     ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80"
@@ -161,9 +163,11 @@ export default function Navbar() {
           {/* Mobile toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={mobileOpen}
             className={`lg:hidden p-2 rounded-lg transition-colors ${scrolled ? "text-[#2F6FD0]" : "text-white"}`}
           >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
           </button>
         </nav>
       </div>

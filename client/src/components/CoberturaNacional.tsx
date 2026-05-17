@@ -136,10 +136,10 @@ export default function CoberturaNacional() {
           className="flex flex-wrap justify-center gap-8 mb-14"
         >
           {[
-            { value: "200+", label: "Municípios" },
-            { value: "4", label: "Estados" },
-            { value: "5M+", label: "Placas/mês" },
-            { value: "99.9%", label: "SLA Uptime" },
+            { value: "+200", label: "Municípios" },
+            { value: "26", label: "Estados" },
+            { value: "10M+", label: "Placas/mês" },
+            { value: "99,9%", label: "SLA Uptime" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div

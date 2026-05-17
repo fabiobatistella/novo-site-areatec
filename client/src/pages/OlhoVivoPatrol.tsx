@@ -1,10 +1,13 @@
-// OlhoVivoPatrol — Página detalhada do produto Olho Vivo Patrol
+// OlhoVivoPatrol — Página detalhada do produto Olho Vivo Patrol + SEO
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Brain, Eye, AlertTriangle, MapPin, Shield, Lock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
+import OptimizedImage from "@/components/OptimizedImage";
+import { olhoVivoPatrolSchema } from "@/components/SchemaOrg";
 
 function useInViewSimple(threshold = 0.05) {
   const ref = useRef<HTMLDivElement>(null);
@@ -24,7 +27,7 @@ function useInViewSimple(threshold = 0.05) {
 
 function OlhoVivoSymbolInline({ size = 44 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={size} height={size} viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M80 350.269C80 201.004 201.004 80 350.271 80H820.196C836.261 80 844.294 99.4342 832.918 110.777L655.97 287.207H422.343C347.71 287.207 287.208 347.708 287.208 422.341V655.967L110.777 832.914C99.4343 844.29 80 836.257 80 820.192V350.269Z" fill="#10B981"/>
       <path d="M944 673.731C944 822.996 822.996 944 673.729 944H203.804C187.739 944 179.706 924.566 191.082 913.223L368.03 736.793H601.657C676.29 736.793 736.792 676.292 736.792 601.659V368.033L913.223 191.086C924.566 179.71 944 187.743 944 203.808V673.731Z" fill="#10B981"/>
       <path d="M415.253 448.483C415.253 430.131 430.131 415.253 448.484 415.253H575.522C593.875 415.253 608.753 430.131 608.753 448.483V575.522C608.753 593.874 593.875 608.752 575.523 608.752H448.484C430.131 608.752 415.253 593.874 415.253 575.522V448.483Z" fill="#10B981"/>
@@ -32,7 +35,7 @@ function OlhoVivoSymbolInline({ size = 44 }: { size?: number }) {
   );
 }
 
-function HeroSection() {
+function PatrolHeroSection() {
   return (
     <section className="relative pt-28 pb-10 bg-gradient-to-b from-slate-900 via-[#21212D] to-slate-900 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -46,13 +49,11 @@ function HeroSection() {
           transition={{ duration: 0.8 }}
           className="text-center max-w-3xl mx-auto"
         >
-          {/* Produto Areatec badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#2F6FD0]/10 border border-[#2F6FD0]/20 rounded-full mb-6">
             <span className="text-[10px] font-bold text-[#2F6FD0] tracking-[0.15em] uppercase" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
               Produto Areatec
             </span>
           </div>
-          {/* Title with OlhoVivo symbol */}
           <div className="flex items-center justify-center gap-4 mb-6">
             <OlhoVivoSymbolInline size={48} />
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
@@ -77,6 +78,7 @@ interface TechSection {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   content: string;
   image?: string;
+  imageAlt?: string;
   side: "left" | "right";
 }
 
@@ -90,11 +92,11 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
       className="relative py-10 lg:py-14"
     >
       <div className="container">
-        <div className={`flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16 ${isLeft ? "" : "lg:flex-row-reverse"}`}>
+        <article className={`flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-16 ${isLeft ? "" : "lg:flex-row-reverse"}`}>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-lg bg-[#2F6FD0]/10 border border-[#2F6FD0]/20 flex items-center justify-center">
-                <section.icon className="w-6 h-6 text-[#2F6FD0]" />
+                <section.icon className="w-6 h-6 text-[#2F6FD0]" aria-hidden="true" />
               </div>
               <h2 className="text-2xl lg:text-3xl font-bold text-white" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
                 {section.title}
@@ -106,7 +108,7 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
           </div>
           <div className="flex-1 flex items-center justify-center">
             {section.image === "code_cpp" ? (
-              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500 bg-[#1a1b26] p-5">
+              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500 bg-[#1a1b26] p-5" role="img" aria-label="Exemplo de código C++ do motor CORTEX AI da Areatec">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-3 h-3 rounded-full bg-red-500/80" />
                   <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
@@ -138,10 +140,11 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
               </div>
             ) : section.image ? (
               <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] group hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500">
-                <img
+                <OptimizedImage
                   src={section.image}
-                  alt={section.title}
+                  alt={section.imageAlt || section.title}
                   className="w-full h-full object-cover rounded-xl hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
                 />
               </div>
             ) : (
@@ -149,7 +152,7 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
                 <div className="absolute inset-0 bg-gradient-to-br from-[#2F6FD0]/5 via-transparent to-emerald-500/5" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <section.icon className="w-24 h-24 text-[#2F6FD0]/30 mx-auto mb-4" />
+                    <section.icon className="w-24 h-24 text-[#2F6FD0]/30 mx-auto mb-4" aria-hidden="true" />
                     <p className="text-white/40 text-sm" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
                       {section.id.toUpperCase()}
                     </p>
@@ -158,7 +161,7 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
               </div>
             )}
           </div>
-        </div>
+        </article>
       </div>
     </motion.div>
   );
@@ -174,6 +177,7 @@ export default function OlhoVivoPatrol() {
       title: "CORTEX Inteligência Artificial",
       icon: Brain,
       image: "code_cpp",
+      imageAlt: "Código C++ do motor CORTEX AI de reconhecimento de placas da Areatec",
       content: t("olhovivo_patrol.cortex.content"),
       side: "left",
     },
@@ -182,6 +186,7 @@ export default function OlhoVivoPatrol() {
       title: t("olhovivo_patrol.ocr.title"),
       icon: Eye,
       image: "/assets/tablet_ocr_interior.jpg",
+      imageAlt: "Interior do veículo OCR Areatec com tablet mostrando leitura de placas em tempo real",
       content: t("olhovivo_patrol.ocr.content"),
       side: "right",
     },
@@ -190,6 +195,7 @@ export default function OlhoVivoPatrol() {
       title: t("olhovivo_patrol.buracos.title"),
       icon: AlertTriangle,
       image: "/assets/screen_defeitos_dnit.jpg",
+      imageAlt: "Tela do sistema CORTEX AI detectando defeitos e buracos no pavimento viário",
       content: t("olhovivo_patrol.buracos.content"),
       side: "left",
     },
@@ -198,6 +204,7 @@ export default function OlhoVivoPatrol() {
       title: t("olhovivo_patrol.sinalizacao.title"),
       icon: MapPin,
       image: "/assets/screen_sinalizacao_horizontal.jpg",
+      imageAlt: "Tela do sistema CORTEX AI analisando sinalização horizontal de vias urbanas",
       content: t("olhovivo_patrol.sinalizacao.content"),
       side: "right",
     },
@@ -206,6 +213,7 @@ export default function OlhoVivoPatrol() {
       title: t("olhovivo_patrol.anonimizacao.title"),
       icon: Shield,
       image: "/assets/screen_busca_facial.jpg",
+      imageAlt: "Sistema de anonimização facial com IA para conformidade LGPD da Areatec",
       content: t("olhovivo_patrol.anonimizacao.content"),
       side: "left",
     },
@@ -226,52 +234,62 @@ export default function OlhoVivoPatrol() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <HeroSection />
-      <section ref={sectionsRef} className="relative py-4 bg-gradient-to-b from-slate-900 via-[#21212D] to-slate-900">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/3 right-0 w-96 h-96 bg-[#2F6FD0]/5 rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/3 left-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px]" />
-        </div>
-        <div className="relative">
-          {techSections.map((section) => (
-            <TechSectionComponent
-              key={section.id}
-              section={section}
-              isVisible={sectionsVisible}
-            />
-          ))}
-        </div>
-      </section>
-      <section className="relative py-20 bg-gradient-to-b from-slate-900 to-[#21212D] overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#2F6FD0]/10 rounded-full blur-[120px] pointer-events-none" />
-        </div>
-        <div className="container relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center max-w-2xl mx-auto"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-              {t("cta.title")}
-            </h2>
-            <p className="text-white/70 mb-8 text-lg" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              {t("cta.subtitle")}
-            </p>
-            <a
-              href="#contato"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2F6FD0] text-white font-semibold rounded-lg shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5"
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            >
-              {t("cta.primary")} <ArrowRight className="w-4 h-4" />
-            </a>
-          </motion.div>
-        </div>
-      </section>
-      <Footer />
-    </div>
+    <>
+      <SEOHead
+        title="Olho Vivo Patrol — Fiscalização Inteligente com IA Embarcada | Areatec"
+        description="O Olho Vivo Patrol é o sistema integrado de fiscalização inteligente da Areatec com IA embarcada CORTEX. Leitura automática de placas com 99,9% de precisão, detecção de defeitos viários e cadeia de custódia digital."
+        path="/olhovivo-patrol"
+        jsonLd={olhoVivoPatrolSchema}
+      />
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main>
+          <PatrolHeroSection />
+          <section ref={sectionsRef} className="relative py-4 bg-gradient-to-b from-slate-900 via-[#21212D] to-slate-900">
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute top-1/3 right-0 w-96 h-96 bg-[#2F6FD0]/5 rounded-full blur-[120px]" />
+              <div className="absolute bottom-1/3 left-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px]" />
+            </div>
+            <div className="relative">
+              {techSections.map((section) => (
+                <TechSectionComponent
+                  key={section.id}
+                  section={section}
+                  isVisible={sectionsVisible}
+                />
+              ))}
+            </div>
+          </section>
+          <section className="relative py-20 bg-gradient-to-b from-slate-900 to-[#21212D] overflow-hidden">
+            <div className="absolute inset-0">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-[#2F6FD0]/10 rounded-full blur-[120px] pointer-events-none" />
+            </div>
+            <div className="container relative">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="text-center max-w-2xl mx-auto"
+              >
+                <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+                  {t("cta.title")}
+                </h2>
+                <p className="text-white/70 mb-8 text-lg" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  {t("cta.subtitle")}
+                </p>
+                <a
+                  href="#contato"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2F6FD0] text-white font-semibold rounded-lg shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  {t("cta.primary")} <ArrowRight className="w-4 h-4" />
+                </a>
+              </motion.div>
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 }
