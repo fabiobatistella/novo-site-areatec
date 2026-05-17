@@ -116,25 +116,20 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
                   <span className="ml-3 text-[10px] text-white/40 font-mono">cortex_engine.cpp</span>
                 </div>
                 <div className="text-[10px] lg:text-[11px] leading-[1.7] overflow-hidden font-mono space-y-0.5">
-                  <p><span className="text-purple-400">{"#include"}</span><span className="text-green-400">{" <cortex/engine.hpp>"}</span></p>
-                  <p><span className="text-purple-400">{"#include"}</span><span className="text-green-400">{" <cortex/ocr_pipeline.hpp>"}</span></p>
-                  <p><span className="text-purple-400">{"#include"}</span><span className="text-green-400">{" <cortex/edge_inference.hpp>"}</span></p>
-                  <p className="text-white/30">{"// "}</p>
-                  <p><span className="text-blue-400">{"namespace"}</span><span className="text-cyan-300">{" cortex"}</span><span className="text-white/60">{" {"}</span></p>
-                  <p className="text-white/30">{"// Motor OCR proprietário Areatec"}</p>
-                  <p><span className="text-blue-400">{"class"}</span><span className="text-cyan-300">{" PlateRecognizer"}</span><span className="text-white/60">{" {"}</span></p>
-                  <p><span className="text-blue-400">{"  auto"}</span><span className="text-yellow-300">{" detect"}</span><span className="text-white/60">{"(Frame& f) -> Result {"}</span></p>
-                  <p><span className="text-white/50">{"    auto plates = "}</span><span className="text-cyan-300">{"m_pipeline"}</span><span className="text-white/50">{".scan(f);"}</span></p>
-                  <p><span className="text-white/50">{"    "}</span><span className="text-blue-400">{"for"}</span><span className="text-white/50">{"(auto& p : plates) {"}</span></p>
-                  <p><span className="text-white/50">{"      p.confidence = "}</span><span className="text-orange-400">{"validate"}</span><span className="text-white/50">{"(p);"}</span></p>
-                  <p><span className="text-white/50">{"      "}</span><span className="text-blue-400">{"if"}</span><span className="text-white/50">{"(p.confidence > "}</span><span className="text-amber-300">{"0.997"}</span><span className="text-white/50">{") {"}</span></p>
-                  <p><span className="text-white/50">{"        "}</span><span className="text-cyan-300">{"m_chain"}</span><span className="text-white/50">{".seal(p, "}</span><span className="text-cyan-300">{"GeoTrust"}</span><span className="text-white/50">{");"}</span></p>
-                  <p><span className="text-white/50">{"      }"}</span></p>
-                  <p><span className="text-white/50">{"    }"}</span></p>
-                  <p><span className="text-white/50">{"    "}</span><span className="text-blue-400">{"return"}</span><span className="text-white/50">{" Result{plates};"}</span></p>
-                  <p><span className="text-white/50">{"  }"}</span></p>
-                  <p><span className="text-white/60">{"};"}</span></p>
-                  <p><span className="text-white/60">{"}"}</span></p>
+                  <p><span className="text-purple-400">{"namespace"}</span><span className="text-cyan-300">{" Cortex"}</span><span className="text-white/70">{" {"}</span></p>
+                  <p><span className="text-purple-400">{"class"}</span><span className="text-cyan-300">{" VehicleDetection"}</span><span className="text-white/70">{" {"}</span></p>
+                  <p><span className="text-cyan-300">{"    VehicleResult"}</span><span className="text-yellow-300">{" detect"}</span><span className="text-white/70">{"("}</span><span className="text-cyan-300">{"Frame"}</span><span className="text-white/70">{"& frame) {"}</span></p>
+                  <p><span className="text-cyan-300">{"        VehicleResult"}</span><span className="text-white/70">{" result{};"}</span></p>
+                  <p><span className="text-purple-400">{"        auto"}</span><span className="text-white/70">{" plates = "}</span><span className="text-yellow-300">{"scan"}</span><span className="text-white/70">{"(frame);"}</span></p>
+                  <p><span className="text-purple-400">{"        for"}</span><span className="text-white/70">{" ("}</span><span className="text-purple-400">{"auto"}</span><span className="text-white/70">{"& p : plates) {"}</span></p>
+                  <p><span className="text-purple-400">{"            auto"}</span><span className="text-white/70">{" confidence = "}</span><span className="text-yellow-300">{"validate"}</span><span className="text-white/70">{"(p);"}</span></p>
+                  <p><span className="text-purple-400">{"            if"}</span><span className="text-white/70">{" (confidence > "}</span><span className="text-orange-400">{"0.997"}</span><span className="text-white/70">{")"}</span></p>
+                  <p><span className="text-white/70">{"                result."}</span><span className="text-yellow-300">{"add"}</span><span className="text-white/70">{"(p);"}</span></p>
+                  <p><span className="text-white/70">{"        }"}</span></p>
+                  <p><span className="text-purple-400">{"        return"}</span><span className="text-white/70">{" result;"}</span></p>
+                  <p><span className="text-white/70">{"    }"}</span></p>
+                  <p><span className="text-white/70">{"}"}</span></p>
+                  <p><span className="text-white/70">{"}"}</span></p>
                 </div>
                 <div className="absolute inset-0 pointer-events-none rounded-xl" style={{ background: 'linear-gradient(180deg, transparent 60%, rgba(26,27,38,0.95) 100%)' }} />
               </div>
