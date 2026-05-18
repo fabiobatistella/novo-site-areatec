@@ -382,34 +382,43 @@ export default function Contato() {
                       </motion.div>
                     )}
 
-                    {/* Submit + LGPD */}
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
-                      <button
-                        type="submit"
-                        disabled={status === "sending" || selectedInterests.length === 0}
-                        className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2F6FD0] text-white font-semibold rounded-xl shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/35 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      >
-                        {status === "sending" ? l.enviando : l.enviar}
-                        <Send className="w-4 h-4" />
-                      </button>
-                      <div className="flex items-center gap-2 text-xs text-slate-400">
-                        <Shield className="w-4 h-4 text-emerald-500 shrink-0" />
-                        <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{l.lgpd}</span>
+                                        {/* Submit + LGPD */}
+                    <div className="flex flex-col gap-5 pt-2">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        <button
+                          type="submit"
+                          disabled={status === "sending" || selectedInterests.length === 0}
+                          className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2F6FD0] text-white font-semibold rounded-xl shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/35 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                        >
+                          {status === "sending" ? l.enviando : l.enviar}
+                          <Send className="w-4 h-4" />
+                        </button>
+                        <div className="flex items-center gap-2 text-xs text-slate-400">
+                          <Shield className="w-4 h-4 text-emerald-500 shrink-0" />
+                          <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{l.lgpd}</span>
+                        </div>
                       </div>
-                      {/* Certification Badges */}
-                      <div className="flex flex-wrap items-center gap-3 mt-3">
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-lg">
-                          <Shield className="w-3.5 h-3.5 text-emerald-600" />
-                          <span className="text-[10px] font-bold text-emerald-700 tracking-wider" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ISO 9001</span>
+                      {/* Trust Bar - Certifications */}
+                      <div className="flex flex-wrap items-center gap-2.5 pt-4 border-t border-slate-100">
+                        <span className="text-[9px] font-medium text-slate-400 uppercase tracking-widest mr-1" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                          {lang === "en" ? "Certified" : lang === "es" ? "Certificados" : "Certificados"}
+                        </span>
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-50 to-emerald-50/50 border border-emerald-200/70 rounded-full shadow-sm">
+                          <svg className="w-3.5 h-3.5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                          <span className="text-[10px] font-bold text-emerald-800 tracking-wide" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ISO 9001</span>
                         </div>
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-lg">
-                          <Shield className="w-3.5 h-3.5 text-blue-600" />
-                          <span className="text-[10px] font-bold text-blue-700 tracking-wider" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ISO 27001</span>
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-50 to-blue-50/50 border border-blue-200/70 rounded-full shadow-sm">
+                          <svg className="w-3.5 h-3.5 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4m0 4h.01"/></svg>
+                          <span className="text-[10px] font-bold text-blue-800 tracking-wide" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ISO 27001</span>
                         </div>
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-lg">
-                          <Shield className="w-3.5 h-3.5 text-purple-600" />
-                          <span className="text-[10px] font-bold text-purple-700 tracking-wider" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>PCI DSS</span>
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-50 to-purple-50/50 border border-purple-200/70 rounded-full shadow-sm">
+                          <svg className="w-3.5 h-3.5 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                          <span className="text-[10px] font-bold text-purple-800 tracking-wide" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>PCI DSS</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-50 to-amber-50/50 border border-amber-200/70 rounded-full shadow-sm">
+                          <svg className="w-3.5 h-3.5 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+                          <span className="text-[10px] font-bold text-amber-800 tracking-wide" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>SENATRAN</span>
                         </div>
                       </div>
                     </div>
