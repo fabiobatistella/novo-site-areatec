@@ -134,11 +134,11 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
                 <div className="absolute inset-0 pointer-events-none rounded-xl" style={{ background: 'linear-gradient(180deg, transparent 60%, rgba(26,27,38,0.95) 100%)' }} />
               </div>
             ) : section.image ? (
-              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] group hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500 bg-slate-900/50 flex items-center justify-center">
+              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] group hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500">
                 <OptimizedImage
                   src={section.image}
                   alt={section.imageAlt || section.title}
-                  className="w-full h-full object-contain rounded-xl hover:scale-105 transition-transform duration-700 p-2"
+                  className="w-full h-full object-cover rounded-xl hover:scale-105 transition-transform duration-700"
                   loading="lazy"
                 />
               </div>
@@ -189,7 +189,7 @@ export default function OlhoVivoPatrol() {
       id: "buracos",
       title: t("olhovivo_patrol.buracos.title"),
       icon: AlertTriangle,
-      image: `/assets/manual_img_013.webp`,
+      image: `/assets/manual_img_013.webp?v=2`,
       imageAlt: "Interface de Detecção e Classificação de Defeitos Viários - câmera frontal com bounding boxes em panela, remendo e trinca, tabela de classificação, mapa de calor",
       content: t("olhovivo_patrol.buracos.content"),
       side: "left",
@@ -198,7 +198,7 @@ export default function OlhoVivoPatrol() {
       id: "sinalizacao",
       title: t("olhovivo_patrol.sinalizacao.title"),
       icon: MapPin,
-      image: `/assets/manual_img_011.webp`,
+      image: `/assets/manual_img_011.webp?v=2`,
       imageAlt: "Interface de Análise de Sinalização Horizontal - câmera com faixas de pedestres, linhas de divisão, classificação de condição",
       content: t("olhovivo_patrol.sinalizacao.content"),
       side: "right",
@@ -216,7 +216,7 @@ export default function OlhoVivoPatrol() {
       id: "anonimizacao",
       title: t("olhovivo_patrol.anonimizacao.title"),
       icon: Shield,
-      image: `/assets/synthetic_face_${lang}.webp`,
+      image: `/assets/synthetic_face_${lang}.webp?v=3`,
       imageAlt: "CORTEX AI facial anonymization showing before and after synthetic mask generation for LGPD compliance",
       content: t("olhovivo_patrol.anonimizacao.content"),
       side: "right",
