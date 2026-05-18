@@ -24,10 +24,10 @@ const contactSchema = {
     "email": "comercial@areatec.com.br",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Rua Tiradentes, 700",
+      "streetAddress": "Rua Santos Dumont, 444, Vila Bressan",
       "addressLocality": "Araras",
       "addressRegion": "SP",
-      "postalCode": "13600-000",
+      "postalCode": "13600-650",
       "addressCountry": "BR",
     },
   },
@@ -109,7 +109,7 @@ const labels = {
     whatsappLabel: "WhatsApp",
     emailLabel: "E-mail",
     enderecoLabel: "Endereço",
-    endereco: "Rua Tiradentes, 700\nAraras, SP 13600-000",
+    endereco: "Rua Santos Dumont, 444, Vila Bressan\nAraras, SP 13600-650\nCNPJ: 11.406.226/0001-03",
     horario: "Seg-Sex: 8h-18h",
     lgpd: "Seus dados estão protegidos conforme a LGPD",
     seoTitle: "Contato — Areatec | Fale com nossa equipe comercial",
@@ -134,7 +134,7 @@ const labels = {
     whatsappLabel: "WhatsApp",
     emailLabel: "Email",
     enderecoLabel: "Address",
-    endereco: "Rua Tiradentes, 700\nAraras, SP 13600-000, Brazil",
+    endereco: "Rua Santos Dumont, 444, Vila Bressan\nAraras, SP 13600-650, Brazil\nCNPJ: 11.406.226/0001-03",
     horario: "Mon-Fri: 8am-6pm (BRT)",
     lgpd: "Your data is protected under LGPD (Brazilian Data Protection Law)",
     seoTitle: "Contact — Areatec | Talk to our sales team",
@@ -159,7 +159,7 @@ const labels = {
     whatsappLabel: "WhatsApp",
     emailLabel: "Correo",
     enderecoLabel: "Dirección",
-    endereco: "Rua Tiradentes, 700\nAraras, SP 13600-000, Brasil",
+    endereco: "Rua Santos Dumont, 444, Vila Bressan\nAraras, SP 13600-650, Brasil\nCNPJ: 11.406.226/0001-03",
     horario: "Lun-Vie: 8h-18h (BRT)",
     lgpd: "Sus datos están protegidos conforme a la LGPD",
     seoTitle: "Contacto — Areatec | Hable con nuestro equipo comercial",
@@ -173,7 +173,7 @@ export default function Contato() {
   const { lang } = useLanguage();
   const l = labels[lang];
 
-  const [selectedInterest, setSelectedInterest] = useState<string>("");
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [form, setForm] = useState({
     nome: "",
     email: "",
@@ -190,7 +190,7 @@ export default function Contato() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedInterest) return;
+    if (selectedInterests.length === 0) return;
     setStatus("sending");
 
     try {
@@ -198,7 +198,7 @@ export default function Contato() {
         nome: form.nome,
         email: form.email,
         whatsapp: form.whatsapp || null,
-        interesse: selectedInterest,
+        interesse: selectedInterests.join(", "),
         cidade: form.cidade || null,
         cargo: form.cargo || null,
         mensagem: form.mensagem,
@@ -283,16 +283,16 @@ export default function Contato() {
                     <button
                       key={card.value}
                       type="button"
-                      onClick={() => setSelectedInterest(card.value)}
+                      onClick={() => setSelectedInterests(prev => prev.includes(card.value) ? prev.filter(v => v !== card.value) : [...prev, card.value])}
                       className={`relative flex flex-col items-center gap-2.5 p-4 rounded-xl border-2 transition-all duration-200 text-center group ${
-                        selectedInterest === card.value
+                        selectedInterests.includes(card.value)
                           ? "border-[#2F6FD0] bg-blue-50/80 shadow-md shadow-blue-100"
                           : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm"
                       }`}
                     >
                       <div
                         className={`w-11 h-11 rounded-lg flex items-center justify-center transition-colors duration-200 ${
-                          selectedInterest === card.value
+                          selectedInterests.includes(card.value)
                             ? "bg-[#2F6FD0] text-white"
                             : "bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-700"
                         }`}
@@ -301,13 +301,13 @@ export default function Contato() {
                       </div>
                       <span
                         className={`text-xs font-medium leading-tight transition-colors duration-200 ${
-                          selectedInterest === card.value ? "text-[#2F6FD0]" : "text-slate-600"
+                          selectedInterests.includes(card.value) ? "text-[#2F6FD0]" : "text-slate-600"
                         }`}
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
                         {card.label[lang]}
                       </span>
-                      {selectedInterest === card.value && (
+                      {selectedInterests.includes(card.value) && (
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
@@ -386,7 +386,7 @@ export default function Contato() {
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
                       <button
                         type="submit"
-                        disabled={status === "sending" || !selectedInterest}
+                        disabled={status === "sending" || selectedInterests.length === 0}
                         className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2F6FD0] text-white font-semibold rounded-xl shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/35 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
@@ -396,6 +396,21 @@ export default function Contato() {
                       <div className="flex items-center gap-2 text-xs text-slate-400">
                         <Shield className="w-4 h-4 text-emerald-500 shrink-0" />
                         <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{l.lgpd}</span>
+                      </div>
+                      {/* Certification Badges */}
+                      <div className="flex flex-wrap items-center gap-3 mt-3">
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-lg">
+                          <Shield className="w-3.5 h-3.5 text-emerald-600" />
+                          <span className="text-[10px] font-bold text-emerald-700 tracking-wider" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ISO 9001</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-lg">
+                          <Shield className="w-3.5 h-3.5 text-blue-600" />
+                          <span className="text-[10px] font-bold text-blue-700 tracking-wider" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ISO 27001</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-lg">
+                          <Shield className="w-3.5 h-3.5 text-purple-600" />
+                          <span className="text-[10px] font-bold text-purple-700 tracking-wider" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>PCI DSS</span>
+                        </div>
                       </div>
                     </div>
                   </form>
