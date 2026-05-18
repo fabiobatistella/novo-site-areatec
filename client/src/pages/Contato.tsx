@@ -1,11 +1,11 @@
 // Contato — Redesign UX/UI completo para máxima conversão
-// Seletor de país com bandeira, "Outro Produto", fluxo progressivo, trust signals
-import { useState, useRef, useEffect } from "react";
+// Seletor de país com busca (todos os países), fix layout telefone, fix Supabase
+import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Send, Phone, Mail, MapPin, MessageCircle, CheckCircle, AlertCircle,
   Car, ParkingCircle, Cpu, Handshake, MessageSquare, Package, Shield,
-  Clock, ChevronDown, X, Users, Building2
+  Clock, ChevronDown, Users, Building2, Search
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
@@ -38,27 +38,195 @@ const contactSchema = {
   },
 };
 
-// ─── Country Data (seletor de país com bandeira e DDI) ────────────────────────
+// ─── Complete Country List (all countries with flag emoji and DDI) ─────────────
 interface Country {
   code: string;
-  name: { pt: string; en: string; es: string };
+  name: string;
   ddi: string;
   flag: string;
 }
 
-const countries: Country[] = [
-  { code: "BR", name: { pt: "Brasil", en: "Brazil", es: "Brasil" }, ddi: "+55", flag: "🇧🇷" },
-  { code: "AR", name: { pt: "Argentina", en: "Argentina", es: "Argentina" }, ddi: "+54", flag: "🇦🇷" },
-  { code: "CL", name: { pt: "Chile", en: "Chile", es: "Chile" }, ddi: "+56", flag: "🇨🇱" },
-  { code: "CO", name: { pt: "Colômbia", en: "Colombia", es: "Colombia" }, ddi: "+57", flag: "🇨🇴" },
-  { code: "MX", name: { pt: "México", en: "Mexico", es: "México" }, ddi: "+52", flag: "🇲🇽" },
-  { code: "PE", name: { pt: "Peru", en: "Peru", es: "Perú" }, ddi: "+51", flag: "🇵🇪" },
-  { code: "PY", name: { pt: "Paraguai", en: "Paraguay", es: "Paraguay" }, ddi: "+595", flag: "🇵🇾" },
-  { code: "UY", name: { pt: "Uruguai", en: "Uruguay", es: "Uruguay" }, ddi: "+598", flag: "🇺🇾" },
-  { code: "US", name: { pt: "Estados Unidos", en: "United States", es: "Estados Unidos" }, ddi: "+1", flag: "🇺🇸" },
-  { code: "PT", name: { pt: "Portugal", en: "Portugal", es: "Portugal" }, ddi: "+351", flag: "🇵🇹" },
-  { code: "ES", name: { pt: "Espanha", en: "Spain", es: "España" }, ddi: "+34", flag: "🇪🇸" },
-  { code: "OTHER", name: { pt: "Outro", en: "Other", es: "Otro" }, ddi: "+", flag: "🌐" },
+const allCountries: Country[] = [
+  { code: "BR", name: "Brasil", ddi: "+55", flag: "🇧🇷" },
+  { code: "AF", name: "Afeganistão", ddi: "+93", flag: "🇦🇫" },
+  { code: "ZA", name: "África do Sul", ddi: "+27", flag: "🇿🇦" },
+  { code: "AL", name: "Albânia", ddi: "+355", flag: "🇦🇱" },
+  { code: "DE", name: "Alemanha", ddi: "+49", flag: "🇩🇪" },
+  { code: "AD", name: "Andorra", ddi: "+376", flag: "🇦🇩" },
+  { code: "AO", name: "Angola", ddi: "+244", flag: "🇦🇴" },
+  { code: "AG", name: "Antígua e Barbuda", ddi: "+1268", flag: "🇦🇬" },
+  { code: "SA", name: "Arábia Saudita", ddi: "+966", flag: "🇸🇦" },
+  { code: "DZ", name: "Argélia", ddi: "+213", flag: "🇩🇿" },
+  { code: "AR", name: "Argentina", ddi: "+54", flag: "🇦🇷" },
+  { code: "AM", name: "Armênia", ddi: "+374", flag: "🇦🇲" },
+  { code: "AU", name: "Austrália", ddi: "+61", flag: "🇦🇺" },
+  { code: "AT", name: "Áustria", ddi: "+43", flag: "🇦🇹" },
+  { code: "AZ", name: "Azerbaijão", ddi: "+994", flag: "🇦🇿" },
+  { code: "BS", name: "Bahamas", ddi: "+1242", flag: "🇧🇸" },
+  { code: "BH", name: "Bahrein", ddi: "+973", flag: "🇧🇭" },
+  { code: "BD", name: "Bangladesh", ddi: "+880", flag: "🇧🇩" },
+  { code: "BB", name: "Barbados", ddi: "+1246", flag: "🇧🇧" },
+  { code: "BY", name: "Belarus", ddi: "+375", flag: "🇧🇾" },
+  { code: "BE", name: "Bélgica", ddi: "+32", flag: "🇧🇪" },
+  { code: "BZ", name: "Belize", ddi: "+501", flag: "🇧🇿" },
+  { code: "BJ", name: "Benin", ddi: "+229", flag: "🇧🇯" },
+  { code: "BO", name: "Bolívia", ddi: "+591", flag: "🇧🇴" },
+  { code: "BA", name: "Bósnia e Herzegovina", ddi: "+387", flag: "🇧🇦" },
+  { code: "BW", name: "Botsuana", ddi: "+267", flag: "🇧🇼" },
+  { code: "BN", name: "Brunei", ddi: "+673", flag: "🇧🇳" },
+  { code: "BG", name: "Bulgária", ddi: "+359", flag: "🇧🇬" },
+  { code: "BF", name: "Burkina Faso", ddi: "+226", flag: "🇧🇫" },
+  { code: "BI", name: "Burundi", ddi: "+257", flag: "🇧🇮" },
+  { code: "BT", name: "Butão", ddi: "+975", flag: "🇧🇹" },
+  { code: "CV", name: "Cabo Verde", ddi: "+238", flag: "🇨🇻" },
+  { code: "CM", name: "Camarões", ddi: "+237", flag: "🇨🇲" },
+  { code: "KH", name: "Camboja", ddi: "+855", flag: "🇰🇭" },
+  { code: "CA", name: "Canadá", ddi: "+1", flag: "🇨🇦" },
+  { code: "QA", name: "Catar", ddi: "+974", flag: "🇶🇦" },
+  { code: "KZ", name: "Cazaquistão", ddi: "+7", flag: "🇰🇿" },
+  { code: "TD", name: "Chade", ddi: "+235", flag: "🇹🇩" },
+  { code: "CL", name: "Chile", ddi: "+56", flag: "🇨🇱" },
+  { code: "CN", name: "China", ddi: "+86", flag: "🇨🇳" },
+  { code: "CY", name: "Chipre", ddi: "+357", flag: "🇨🇾" },
+  { code: "CO", name: "Colômbia", ddi: "+57", flag: "🇨🇴" },
+  { code: "KM", name: "Comores", ddi: "+269", flag: "🇰🇲" },
+  { code: "CG", name: "Congo", ddi: "+242", flag: "🇨🇬" },
+  { code: "CD", name: "Congo (RDC)", ddi: "+243", flag: "🇨🇩" },
+  { code: "KP", name: "Coreia do Norte", ddi: "+850", flag: "🇰🇵" },
+  { code: "KR", name: "Coreia do Sul", ddi: "+82", flag: "🇰🇷" },
+  { code: "CI", name: "Costa do Marfim", ddi: "+225", flag: "🇨🇮" },
+  { code: "CR", name: "Costa Rica", ddi: "+506", flag: "🇨🇷" },
+  { code: "HR", name: "Croácia", ddi: "+385", flag: "🇭🇷" },
+  { code: "CU", name: "Cuba", ddi: "+53", flag: "🇨🇺" },
+  { code: "DK", name: "Dinamarca", ddi: "+45", flag: "🇩🇰" },
+  { code: "DJ", name: "Djibuti", ddi: "+253", flag: "🇩🇯" },
+  { code: "DM", name: "Dominica", ddi: "+1767", flag: "🇩🇲" },
+  { code: "EG", name: "Egito", ddi: "+20", flag: "🇪🇬" },
+  { code: "SV", name: "El Salvador", ddi: "+503", flag: "🇸🇻" },
+  { code: "AE", name: "Emirados Árabes", ddi: "+971", flag: "🇦🇪" },
+  { code: "EC", name: "Equador", ddi: "+593", flag: "🇪🇨" },
+  { code: "ER", name: "Eritreia", ddi: "+291", flag: "🇪🇷" },
+  { code: "SK", name: "Eslováquia", ddi: "+421", flag: "🇸🇰" },
+  { code: "SI", name: "Eslovênia", ddi: "+386", flag: "🇸🇮" },
+  { code: "ES", name: "Espanha", ddi: "+34", flag: "🇪🇸" },
+  { code: "US", name: "Estados Unidos", ddi: "+1", flag: "🇺🇸" },
+  { code: "EE", name: "Estônia", ddi: "+372", flag: "🇪🇪" },
+  { code: "SZ", name: "Eswatini", ddi: "+268", flag: "🇸🇿" },
+  { code: "ET", name: "Etiópia", ddi: "+251", flag: "🇪🇹" },
+  { code: "FJ", name: "Fiji", ddi: "+679", flag: "🇫🇯" },
+  { code: "PH", name: "Filipinas", ddi: "+63", flag: "🇵🇭" },
+  { code: "FI", name: "Finlândia", ddi: "+358", flag: "🇫🇮" },
+  { code: "FR", name: "França", ddi: "+33", flag: "🇫🇷" },
+  { code: "GA", name: "Gabão", ddi: "+241", flag: "🇬🇦" },
+  { code: "GM", name: "Gâmbia", ddi: "+220", flag: "🇬🇲" },
+  { code: "GH", name: "Gana", ddi: "+233", flag: "🇬🇭" },
+  { code: "GE", name: "Geórgia", ddi: "+995", flag: "🇬🇪" },
+  { code: "GD", name: "Granada", ddi: "+1473", flag: "🇬🇩" },
+  { code: "GR", name: "Grécia", ddi: "+30", flag: "🇬🇷" },
+  { code: "GT", name: "Guatemala", ddi: "+502", flag: "🇬🇹" },
+  { code: "GY", name: "Guiana", ddi: "+592", flag: "🇬🇾" },
+  { code: "GN", name: "Guiné", ddi: "+224", flag: "🇬🇳" },
+  { code: "GQ", name: "Guiné Equatorial", ddi: "+240", flag: "🇬🇶" },
+  { code: "GW", name: "Guiné-Bissau", ddi: "+245", flag: "🇬🇼" },
+  { code: "HT", name: "Haiti", ddi: "+509", flag: "🇭🇹" },
+  { code: "HN", name: "Honduras", ddi: "+504", flag: "🇭🇳" },
+  { code: "HU", name: "Hungria", ddi: "+36", flag: "🇭🇺" },
+  { code: "YE", name: "Iêmen", ddi: "+967", flag: "🇾🇪" },
+  { code: "IN", name: "Índia", ddi: "+91", flag: "🇮🇳" },
+  { code: "ID", name: "Indonésia", ddi: "+62", flag: "🇮🇩" },
+  { code: "IQ", name: "Iraque", ddi: "+964", flag: "🇮🇶" },
+  { code: "IR", name: "Irã", ddi: "+98", flag: "🇮🇷" },
+  { code: "IE", name: "Irlanda", ddi: "+353", flag: "🇮🇪" },
+  { code: "IS", name: "Islândia", ddi: "+354", flag: "🇮🇸" },
+  { code: "IL", name: "Israel", ddi: "+972", flag: "🇮🇱" },
+  { code: "IT", name: "Itália", ddi: "+39", flag: "🇮🇹" },
+  { code: "JM", name: "Jamaica", ddi: "+1876", flag: "🇯🇲" },
+  { code: "JP", name: "Japão", ddi: "+81", flag: "🇯🇵" },
+  { code: "JO", name: "Jordânia", ddi: "+962", flag: "🇯🇴" },
+  { code: "KW", name: "Kuwait", ddi: "+965", flag: "🇰🇼" },
+  { code: "LA", name: "Laos", ddi: "+856", flag: "🇱🇦" },
+  { code: "LS", name: "Lesoto", ddi: "+266", flag: "🇱🇸" },
+  { code: "LV", name: "Letônia", ddi: "+371", flag: "🇱🇻" },
+  { code: "LB", name: "Líbano", ddi: "+961", flag: "🇱🇧" },
+  { code: "LR", name: "Libéria", ddi: "+231", flag: "🇱🇷" },
+  { code: "LY", name: "Líbia", ddi: "+218", flag: "🇱🇾" },
+  { code: "LI", name: "Liechtenstein", ddi: "+423", flag: "🇱🇮" },
+  { code: "LT", name: "Lituânia", ddi: "+370", flag: "🇱🇹" },
+  { code: "LU", name: "Luxemburgo", ddi: "+352", flag: "🇱🇺" },
+  { code: "MK", name: "Macedônia do Norte", ddi: "+389", flag: "🇲🇰" },
+  { code: "MG", name: "Madagascar", ddi: "+261", flag: "🇲🇬" },
+  { code: "MY", name: "Malásia", ddi: "+60", flag: "🇲🇾" },
+  { code: "MW", name: "Malawi", ddi: "+265", flag: "🇲🇼" },
+  { code: "MV", name: "Maldivas", ddi: "+960", flag: "🇲🇻" },
+  { code: "ML", name: "Mali", ddi: "+223", flag: "🇲🇱" },
+  { code: "MT", name: "Malta", ddi: "+356", flag: "🇲🇹" },
+  { code: "MA", name: "Marrocos", ddi: "+212", flag: "🇲🇦" },
+  { code: "MU", name: "Maurício", ddi: "+230", flag: "🇲🇺" },
+  { code: "MR", name: "Mauritânia", ddi: "+222", flag: "🇲🇷" },
+  { code: "MX", name: "México", ddi: "+52", flag: "🇲🇽" },
+  { code: "MM", name: "Mianmar", ddi: "+95", flag: "🇲🇲" },
+  { code: "MZ", name: "Moçambique", ddi: "+258", flag: "🇲🇿" },
+  { code: "MD", name: "Moldávia", ddi: "+373", flag: "🇲🇩" },
+  { code: "MC", name: "Mônaco", ddi: "+377", flag: "🇲🇨" },
+  { code: "MN", name: "Mongólia", ddi: "+976", flag: "🇲🇳" },
+  { code: "ME", name: "Montenegro", ddi: "+382", flag: "🇲🇪" },
+  { code: "NA", name: "Namíbia", ddi: "+264", flag: "🇳🇦" },
+  { code: "NP", name: "Nepal", ddi: "+977", flag: "🇳🇵" },
+  { code: "NI", name: "Nicarágua", ddi: "+505", flag: "🇳🇮" },
+  { code: "NE", name: "Níger", ddi: "+227", flag: "🇳🇪" },
+  { code: "NG", name: "Nigéria", ddi: "+234", flag: "🇳🇬" },
+  { code: "NO", name: "Noruega", ddi: "+47", flag: "🇳🇴" },
+  { code: "NZ", name: "Nova Zelândia", ddi: "+64", flag: "🇳🇿" },
+  { code: "OM", name: "Omã", ddi: "+968", flag: "🇴🇲" },
+  { code: "NL", name: "Países Baixos", ddi: "+31", flag: "🇳🇱" },
+  { code: "PK", name: "Paquistão", ddi: "+92", flag: "🇵🇰" },
+  { code: "PA", name: "Panamá", ddi: "+507", flag: "🇵🇦" },
+  { code: "PG", name: "Papua Nova Guiné", ddi: "+675", flag: "🇵🇬" },
+  { code: "PY", name: "Paraguai", ddi: "+595", flag: "🇵🇾" },
+  { code: "PE", name: "Peru", ddi: "+51", flag: "🇵🇪" },
+  { code: "PL", name: "Polônia", ddi: "+48", flag: "🇵🇱" },
+  { code: "PT", name: "Portugal", ddi: "+351", flag: "🇵🇹" },
+  { code: "KE", name: "Quênia", ddi: "+254", flag: "🇰🇪" },
+  { code: "KG", name: "Quirguistão", ddi: "+996", flag: "🇰🇬" },
+  { code: "GB", name: "Reino Unido", ddi: "+44", flag: "🇬🇧" },
+  { code: "CF", name: "República Centro-Africana", ddi: "+236", flag: "🇨🇫" },
+  { code: "DO", name: "República Dominicana", ddi: "+1809", flag: "🇩🇴" },
+  { code: "CZ", name: "República Tcheca", ddi: "+420", flag: "🇨🇿" },
+  { code: "RO", name: "Romênia", ddi: "+40", flag: "🇷🇴" },
+  { code: "RW", name: "Ruanda", ddi: "+250", flag: "🇷🇼" },
+  { code: "RU", name: "Rússia", ddi: "+7", flag: "🇷🇺" },
+  { code: "WS", name: "Samoa", ddi: "+685", flag: "🇼🇸" },
+  { code: "LC", name: "Santa Lúcia", ddi: "+1758", flag: "🇱🇨" },
+  { code: "SN", name: "Senegal", ddi: "+221", flag: "🇸🇳" },
+  { code: "SL", name: "Serra Leoa", ddi: "+232", flag: "🇸🇱" },
+  { code: "RS", name: "Sérvia", ddi: "+381", flag: "🇷🇸" },
+  { code: "SG", name: "Singapura", ddi: "+65", flag: "🇸🇬" },
+  { code: "SY", name: "Síria", ddi: "+963", flag: "🇸🇾" },
+  { code: "SO", name: "Somália", ddi: "+252", flag: "🇸🇴" },
+  { code: "LK", name: "Sri Lanka", ddi: "+94", flag: "🇱🇰" },
+  { code: "SE", name: "Suécia", ddi: "+46", flag: "🇸🇪" },
+  { code: "CH", name: "Suíça", ddi: "+41", flag: "🇨🇭" },
+  { code: "SR", name: "Suriname", ddi: "+597", flag: "🇸🇷" },
+  { code: "TH", name: "Tailândia", ddi: "+66", flag: "🇹🇭" },
+  { code: "TW", name: "Taiwan", ddi: "+886", flag: "🇹🇼" },
+  { code: "TZ", name: "Tanzânia", ddi: "+255", flag: "🇹🇿" },
+  { code: "TJ", name: "Tajiquistão", ddi: "+992", flag: "🇹🇯" },
+  { code: "TL", name: "Timor-Leste", ddi: "+670", flag: "🇹🇱" },
+  { code: "TG", name: "Togo", ddi: "+228", flag: "🇹🇬" },
+  { code: "TO", name: "Tonga", ddi: "+676", flag: "🇹🇴" },
+  { code: "TT", name: "Trinidad e Tobago", ddi: "+1868", flag: "🇹🇹" },
+  { code: "TN", name: "Tunísia", ddi: "+216", flag: "🇹🇳" },
+  { code: "TM", name: "Turcomenistão", ddi: "+993", flag: "🇹🇲" },
+  { code: "TR", name: "Turquia", ddi: "+90", flag: "🇹🇷" },
+  { code: "UA", name: "Ucrânia", ddi: "+380", flag: "🇺🇦" },
+  { code: "UG", name: "Uganda", ddi: "+256", flag: "🇺🇬" },
+  { code: "UY", name: "Uruguai", ddi: "+598", flag: "🇺🇾" },
+  { code: "UZ", name: "Uzbequistão", ddi: "+998", flag: "🇺🇿" },
+  { code: "VU", name: "Vanuatu", ddi: "+678", flag: "🇻🇺" },
+  { code: "VE", name: "Venezuela", ddi: "+58", flag: "🇻🇪" },
+  { code: "VN", name: "Vietnã", ddi: "+84", flag: "🇻🇳" },
+  { code: "ZM", name: "Zâmbia", ddi: "+260", flag: "🇿🇲" },
+  { code: "ZW", name: "Zimbábue", ddi: "+263", flag: "🇿🇼" },
 ];
 
 // ─── Interest Cards Data ──────────────────────────────────────────────────────
@@ -151,6 +319,7 @@ const labels = {
     trustSecurityDesc: "LGPD compliant",
     trustExperts: "Especialistas",
     trustExpertsDesc: "Equipe dedicada",
+    searchCountry: "Buscar país...",
   },
   en: {
     pageTitle: "Let's talk about your project",
@@ -193,6 +362,7 @@ const labels = {
     trustSecurityDesc: "LGPD compliant",
     trustExperts: "Experts",
     trustExpertsDesc: "Dedicated team",
+    searchCountry: "Search country...",
   },
   es: {
     pageTitle: "Hablemos sobre su proyecto",
@@ -235,47 +405,68 @@ const labels = {
     trustSecurityDesc: "LGPD compliant",
     trustExperts: "Especialistas",
     trustExpertsDesc: "Equipo dedicado",
+    searchCountry: "Buscar país...",
   },
 };
 
 type FormStatus = "idle" | "sending" | "success" | "error";
 
-// ─── Country Selector Component ──────────────────────────────────────────────
+// ─── Country Selector Component (Searchable) ─────────────────────────────────
 function CountrySelector({
   selectedCountry,
   onSelect,
-  lang,
+  searchPlaceholder,
 }: {
   selectedCountry: Country;
   onSelect: (c: Country) => void;
-  lang: "pt" | "en" | "es";
+  searchPlaceholder: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
   const ref = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
+        setSearch("");
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (open && searchInputRef.current) {
+      setTimeout(() => searchInputRef.current?.focus(), 50);
+    }
+  }, [open]);
+
+  const filteredCountries = useMemo(() => {
+    if (!search.trim()) return allCountries;
+    const q = search.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return allCountries.filter((c) => {
+      const name = c.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const ddi = c.ddi;
+      const code = c.code.toLowerCase();
+      return name.includes(q) || ddi.includes(q) || code.includes(q);
+    });
+  }, [search]);
+
   return (
-    <div className="relative" ref={ref}>
+    <div className="relative flex-shrink-0" ref={ref}>
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 px-3 py-3 bg-slate-50 border border-slate-200 border-r-0 rounded-l-xl text-sm hover:bg-slate-100 transition-colors min-w-[90px] justify-between"
+        className="flex items-center gap-1.5 h-[46px] px-3 bg-slate-50 border border-slate-200 rounded-l-xl text-sm hover:bg-slate-100 transition-colors min-w-[100px] justify-between"
         aria-label="Select country code"
       >
         <span className="text-base leading-none">{selectedCountry.flag}</span>
-        <span className="text-slate-700 font-medium text-xs" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+        <span className="text-slate-700 font-medium text-xs whitespace-nowrap" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
           {selectedCountry.ddi}
         </span>
-        <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
 
       <AnimatePresence>
@@ -285,25 +476,47 @@ function CountrySelector({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full left-0 mt-1 w-56 bg-white border border-slate-200 rounded-xl shadow-xl shadow-slate-200/50 z-50 overflow-hidden"
+            className="absolute top-full left-0 mt-1 w-72 bg-white border border-slate-200 rounded-xl shadow-xl shadow-slate-200/50 z-50 overflow-hidden"
           >
-            <div className="max-h-64 overflow-y-auto py-1">
-              {countries.map((country) => (
-                <button
-                  key={country.code}
-                  type="button"
-                  onClick={() => { onSelect(country); setOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-blue-50 transition-colors ${
-                    selectedCountry.code === country.code ? "bg-blue-50/70" : ""
-                  }`}
-                >
-                  <span className="text-lg leading-none">{country.flag}</span>
-                  <span className="text-sm text-slate-700 flex-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    {country.name[lang]}
-                  </span>
-                  <span className="text-xs text-slate-400 font-mono">{country.ddi}</span>
-                </button>
-              ))}
+            {/* Search input */}
+            <div className="p-2 border-b border-slate-100">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder={searchPlaceholder}
+                  className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                />
+              </div>
+            </div>
+            {/* Country list */}
+            <div className="max-h-60 overflow-y-auto">
+              {filteredCountries.length === 0 ? (
+                <div className="px-4 py-3 text-sm text-slate-400 text-center">
+                  {search ? "Nenhum país encontrado" : ""}
+                </div>
+              ) : (
+                filteredCountries.map((country) => (
+                  <button
+                    key={country.code}
+                    type="button"
+                    onClick={() => { onSelect(country); setOpen(false); setSearch(""); }}
+                    className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-blue-50 transition-colors ${
+                      selectedCountry.code === country.code ? "bg-blue-50/70" : ""
+                    }`}
+                  >
+                    <span className="text-lg leading-none flex-shrink-0">{country.flag}</span>
+                    <span className="text-sm text-slate-700 flex-1 truncate" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      {country.name}
+                    </span>
+                    <span className="text-xs text-slate-400 font-mono flex-shrink-0">{country.ddi}</span>
+                  </button>
+                ))
+              )}
             </div>
           </motion.div>
         )}
@@ -318,7 +531,7 @@ export default function Contato() {
   const l = labels[lang];
 
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<Country>(countries[0]);
+  const [selectedCountry, setSelectedCountry] = useState<Country>(allCountries[0]);
   const [outroProdutoText, setOutroProdutoText] = useState("");
   const [form, setForm] = useState({
     nome: "",
@@ -347,26 +560,41 @@ export default function Contato() {
     setStatus("sending");
 
     try {
-      const fullPhone = form.telefone ? `${selectedCountry.ddi} ${form.telefone}` : null;
+      // Build interests list with "outro-produto" detail
       const interessesList = [...selectedInterests];
       if (selectedInterests.includes("outro-produto") && outroProdutoText) {
         const idx = interessesList.indexOf("outro-produto");
         interessesList[idx] = `outro-produto: ${outroProdutoText}`;
       }
 
-      const payload = {
+      // Build whatsapp field: use telefone with DDI if provided, or whatsapp field
+      const fullPhone = form.telefone ? `${selectedCountry.ddi} ${form.telefone}` : null;
+      const whatsappValue = form.whatsapp || fullPhone || null;
+
+      // Build cargo field: include empresa info if provided
+      const cargoValue = form.empresa
+        ? (form.cargo ? `${form.cargo} — ${form.empresa}` : form.empresa)
+        : (form.cargo || null);
+
+      // Payload matching exact Supabase columns:
+      // nome, email, whatsapp, interesse, cidade, cargo, mensagem, lang, source, created_at
+      const payload: Record<string, string | null> = {
         nome: form.nome,
         email: form.email,
-        telefone: fullPhone,
-        whatsapp: form.whatsapp || null,
-        empresa: form.empresa || null,
+        whatsapp: whatsappValue,
         interesse: interessesList.join(", "),
         cidade: form.cidade || null,
-        cargo: form.cargo || null,
+        cargo: cargoValue,
         mensagem: form.mensagem,
         lang,
         source: "website",
+        created_at: new Date().toISOString(),
       };
+
+      // Remove null values to avoid sending them
+      const cleanPayload = Object.fromEntries(
+        Object.entries(payload).filter(([, v]) => v !== null)
+      );
 
       const res = await fetch(`${SUPABASE_URL}/rest/v1/contact_leads`, {
         method: "POST",
@@ -376,7 +604,7 @@ export default function Contato() {
           "Content-Type": "application/json",
           "Prefer": "return=minimal",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(cleanPayload),
       });
 
       if (res.ok || res.status === 201) {
@@ -385,7 +613,8 @@ export default function Contato() {
         setSelectedInterests([]);
         setOutroProdutoText("");
       } else {
-        console.error("Supabase error:", await res.text());
+        const errText = await res.text();
+        console.error("Supabase error:", errText);
         setStatus("error");
       }
     } catch (err) {
@@ -394,7 +623,8 @@ export default function Contato() {
     }
   };
 
-  const inputClass = "w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all duration-200 text-sm";
+  const inputClass = "w-full h-[46px] px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all duration-200 text-sm";
+  const textareaClass = "w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all duration-200 text-sm resize-none";
   const labelClass = "block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5";
 
   return (
@@ -620,11 +850,11 @@ export default function Contato() {
                         <label htmlFor="telefone" className={labelClass} style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
                           {l.telefone} <span className="text-slate-300 font-normal lowercase">({l.opcional})</span>
                         </label>
-                        <div className="flex">
+                        <div className="flex items-stretch">
                           <CountrySelector
                             selectedCountry={selectedCountry}
                             onSelect={setSelectedCountry}
-                            lang={lang}
+                            searchPlaceholder={l.searchCountry}
                           />
                           <input
                             type="tel"
@@ -633,7 +863,7 @@ export default function Contato() {
                             value={form.telefone}
                             onChange={handleChange}
                             placeholder={l.telefonePlaceholder}
-                            className={`${inputClass} rounded-l-none border-l-0`}
+                            className="flex-1 min-w-0 h-[46px] px-4 py-3 bg-white border border-slate-200 border-l-0 rounded-r-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all duration-200 text-sm"
                             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                           />
                         </div>
@@ -716,7 +946,7 @@ export default function Contato() {
                         value={form.mensagem}
                         onChange={handleChange}
                         placeholder={l.mensagemPlaceholder}
-                        className={`${inputClass} resize-none`}
+                        className={textareaClass}
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       />
                     </div>
