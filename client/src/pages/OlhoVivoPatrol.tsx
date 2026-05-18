@@ -134,7 +134,7 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
                 <div className="absolute inset-0 pointer-events-none rounded-xl" style={{ background: 'linear-gradient(180deg, transparent 60%, rgba(26,27,38,0.95) 100%)' }} />
               </div>
             ) : section.image ? (
-              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] group hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500">
+              <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] group hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500">
                 <OptimizedImage
                   src={section.image}
                   alt={section.imageAlt || section.title}
@@ -212,15 +212,7 @@ export default function OlhoVivoPatrol() {
       content: t("olhovivo_patrol.facial_recognition.content"),
       side: "left",
     },
-    {
-      id: "anonimizacao",
-      title: t("olhovivo_patrol.anonimizacao.title"),
-      icon: Shield,
-      image: `/assets/synthetic_face_${lang}.webp?v=3`,
-      imageAlt: "CORTEX AI facial anonymization showing before and after synthetic mask generation for LGPD compliance",
-      content: t("olhovivo_patrol.anonimizacao.content"),
-      side: "right",
-    },
+
     {
       id: "geotrust",
       title: t("olhovivo_patrol.geotrust.title"),
