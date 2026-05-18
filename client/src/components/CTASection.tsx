@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Phone, Mail } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Link } from "wouter";
 
 const CTA_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663455526845/8qVNj49snqzVP2qLuHSLCr/cta-cityscape-myLvYUBhk3w4MoyWy3uL77.webp";
 
@@ -62,14 +63,14 @@ export default function CTASection({ onOpenVideo }: CTASectionProps) {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
           >
-            <a
-              href="mailto:contato@areatec.com.br"
+            <Link
+              href="/contato"
               className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-[#2F6FD0] to-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-300 transform hover:-translate-y-0.5"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               {t("cta.primary")}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
             <button
               onClick={onOpenVideo}
               className="group inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white/10 backdrop-blur-md text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300"
@@ -86,13 +87,14 @@ export default function CTASection({ onOpenVideo }: CTASectionProps) {
             transition={{ duration: 0.5, delay: 0.5 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-6 text-white/50 text-sm"
           >
-            <a href="mailto:contato@areatec.com.br" className="flex items-center gap-2 hover:text-white/80 transition-colors">
+            <a href="mailto:comercial@areatec.com.br" className="flex items-center gap-2 hover:text-white/80 transition-colors">
               <Mail className="w-4 h-4 text-blue-400" />
-              contato@areatec.com.br
+              comercial@areatec.com.br
             </a>
             <span className="hidden sm:block w-px h-4 bg-white/20" />
-            <a href="https://app.areatec.com.br" className="flex items-center gap-2 hover:text-white/80 transition-colors">
-              app.areatec.com.br
+            <a href="https://wa.me/5511991287417" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white/80 transition-colors">
+              <Phone className="w-4 h-4 text-blue-400" />
+              (11) 99128-7417
             </a>
           </motion.div>
         </div>

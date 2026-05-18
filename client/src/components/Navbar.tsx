@@ -1,7 +1,7 @@
-// Navbar — Areatec Brand Guidelines + i18n + Mega Dropdowns
-import { useState, useEffect, useRef } from "react";
+// Navbar — Areatec Brand Guidelines + i18n + Mega Menu with product images
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X, Check } from "lucide-react";
+import { ChevronDown, Menu, X, Check, Car, ParkingCircle, MapPin, Link2, Brain, ScanFace, EyeOff } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { Link, useLocation } from "wouter";
 
@@ -21,10 +21,257 @@ function AreatecLogoSVG({ variant = "light", size = 32 }: { variant?: "light" | 
   );
 }
 
+// ─── Mega Menu Data ───────────────────────────────────────────────────────────
+
+interface MegaMenuItem {
+  label: string;
+  href: string;
+  desc: string;
+  icon: React.ReactNode;
+  image: string;
+}
+
 interface NavDropdown {
   label: string;
   items: { label: string; href: string; desc?: string }[];
+  megaItems?: MegaMenuItem[];
+  isMega?: boolean;
 }
+
+function getMegaMenuData(lang: Language): { products: MegaMenuItem[]; technology: MegaMenuItem[] } {
+  return {
+    products: [
+      {
+        label: "Olho Vivo Patrol",
+        href: "/olhovivo-patrol",
+        desc: lang === "en" ? "Intelligent traffic enforcement" : lang === "es" ? "Fiscalización inteligente de tránsito" : "Fiscalização inteligente de trânsito",
+        icon: <Car className="w-5 h-5" />,
+        image: "/assets/hb20_areatec_rack_final.webp",
+      },
+      {
+        label: "Olho Vivo Parking",
+        href: "/olhovivo-parking",
+        desc: lang === "en" ? "Digital rotary parking" : lang === "es" ? "Estacionamiento rotativo digital" : "Estacionamento rotativo digital",
+        icon: <ParkingCircle className="w-5 h-5" />,
+        image: "/assets/parking_hero_smart.webp",
+      },
+      {
+        label: "GeoTrust",
+        href: "/olhovivo-patrol#geotrust",
+        desc: lang === "en" ? "Authenticated geolocation" : lang === "es" ? "Geolocalización autenticada" : "Geolocalização autenticada",
+        icon: <MapPin className="w-5 h-5" />,
+        image: "/assets/geotrust_crypto_ai.webp",
+      },
+      {
+        label: "AreaChain",
+        href: "/olhovivo-patrol#areachain",
+        desc: lang === "en" ? "Blockchain chain of custody" : lang === "es" ? "Blockchain cadena de custodia" : "Blockchain cadeia de custódia",
+        icon: <Link2 className="w-5 h-5" />,
+        image: "/assets/areachain_blockchain_ai.webp",
+      },
+    ],
+    technology: [
+      {
+        label: lang === "en" ? "CORTEX Artificial Intelligence" : lang === "es" ? "CORTEX Inteligencia Artificial" : "CORTEX Inteligência Artificial",
+        href: "/olhovivo-patrol#cortex_ai",
+        desc: lang === "en" ? "Embedded AI engine" : lang === "es" ? "Motor de IA embarcado" : "Motor de IA embarcado",
+        icon: <Brain className="w-5 h-5" />,
+        image: "/assets/screen_cortex_rastreamento.webp",
+      },
+      {
+        label: "AreaFace",
+        href: "/olhovivo-patrol#reconhecimento_facial",
+        desc: lang === "en" ? "Facial recognition in motion" : lang === "es" ? "Reconocimiento facial en movimiento" : "Reconhecimento facial em movimento",
+        icon: <ScanFace className="w-5 h-5" />,
+        image: "/assets/screen_busca_facial.webp",
+      },
+      {
+        label: lang === "en" ? "Intelligent Blur" : lang === "es" ? "Blur Inteligente" : "Blur Inteligente",
+        href: "/olhovivo-patrol#anonimizacao",
+        desc: lang === "en" ? "AI-powered facial anonymization" : lang === "es" ? "Anonimización facial por IA" : "Anonimização facial por IA",
+        icon: <EyeOff className="w-5 h-5" />,
+        image: "/assets/blur_anonymization_ai.webp",
+      },
+    ],
+  };
+}
+
+// ─── Mega Menu Panel ──────────────────────────────────────────────────────────
+
+function MegaMenuPanel({
+  items,
+  onClose,
+}: {
+  items: MegaMenuItem[];
+  onClose: () => void;
+}) {
+  const [hoveredIndex, setHoveredIndex] = useState(0);
+  const currentImage = items[hoveredIndex]?.image ?? items[0]?.image;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 8 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[680px] bg-[#1a1a2e]/[0.98] backdrop-blur-2xl rounded-2xl border border-white/[0.08] shadow-[0_25px_60px_rgba(0,0,0,0.5)] overflow-hidden"
+    >
+      <div className="grid grid-cols-[1fr_280px] min-h-[320px]">
+        {/* Left: product list */}
+        <div className="p-3">
+          {items.map((item, idx) => {
+            const isInternal = item.href.startsWith("/") && !item.href.startsWith("/#");
+            const Comp = isInternal ? Link : "a";
+            const linkProps = isInternal
+              ? { href: item.href, onClick: onClose }
+              : { href: item.href, onClick: onClose };
+
+            return (
+              <Comp
+                key={item.label}
+                {...(linkProps as any)}
+                onMouseEnter={() => setHoveredIndex(idx)}
+                className={`flex items-start gap-3.5 px-4 py-3.5 rounded-xl transition-all duration-200 group/item cursor-pointer ${
+                  hoveredIndex === idx
+                    ? "bg-white/[0.08]"
+                    : "hover:bg-white/[0.05]"
+                }`}
+              >
+                <div
+                  className={`mt-0.5 w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-200 ${
+                    hoveredIndex === idx
+                      ? "bg-[#2F6FD0] text-white"
+                      : "bg-white/[0.06] text-white/50 group-hover/item:text-white/70"
+                  }`}
+                >
+                  {item.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span
+                    className={`block text-sm font-semibold transition-colors duration-200 ${
+                      hoveredIndex === idx ? "text-white" : "text-white/80 group-hover/item:text-white"
+                    }`}
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                  >
+                    {item.label}
+                  </span>
+                  <span
+                    className="block text-xs text-white/40 mt-0.5 leading-relaxed"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                  >
+                    {item.desc}
+                  </span>
+                </div>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 -rotate-90 mt-1 shrink-0 transition-all duration-200 ${
+                    hoveredIndex === idx
+                      ? "text-[#2F6FD0] translate-x-0.5"
+                      : "text-white/20"
+                  }`}
+                />
+              </Comp>
+            );
+          })}
+        </div>
+
+        {/* Right: product image preview */}
+        <div className="relative border-l border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentImage}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="absolute inset-0 flex items-center justify-center p-5"
+            >
+              <img
+                src={currentImage}
+                alt={items[hoveredIndex]?.label ?? ""}
+                className="w-full h-full object-cover rounded-xl shadow-lg"
+                loading="eager"
+              />
+            </motion.div>
+          </AnimatePresence>
+          {/* Subtle gradient overlay at bottom */}
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#1a1a2e] to-transparent pointer-events-none" />
+          <div className="absolute bottom-3 left-0 right-0 text-center">
+            <span
+              className="text-[10px] font-semibold text-white/30 uppercase tracking-widest"
+              style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+            >
+              {items[hoveredIndex]?.label}
+            </span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Simple Dropdown Panel (for Cases, Blog, Empresa) ─────────────────────────
+
+function SimpleDropdownPanel({
+  items,
+  onClose,
+}: {
+  items: { label: string; href: string; desc?: string }[];
+  onClose: () => void;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 8, scale: 0.96 }}
+      transition={{ duration: 0.15 }}
+      className="absolute top-full left-0 mt-1 w-64 bg-white/95 backdrop-blur-xl rounded-xl border border-slate-200/80 shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)] overflow-hidden"
+    >
+      <div className="p-1.5">
+        {items.map((item) => {
+          const isInternal = item.href.startsWith("/") && !item.href.startsWith("/#");
+          if (isInternal) {
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={onClose}
+                className="block px-3 py-2.5 rounded-lg hover:bg-blue-50/80 transition-colors group/item"
+              >
+                <span className="block text-sm font-semibold text-slate-800 group-hover/item:text-[#2F6FD0] transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  {item.label}
+                </span>
+                {item.desc && (
+                  <span className="block text-xs text-slate-400 mt-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    {item.desc}
+                  </span>
+                )}
+              </Link>
+            );
+          }
+          return (
+            <a
+              key={item.label}
+              href={item.href}
+              onClick={onClose}
+              className="block px-3 py-2.5 rounded-lg hover:bg-blue-50/80 transition-colors group/item"
+            >
+              <span className="block text-sm font-semibold text-slate-800 group-hover/item:text-[#2F6FD0] transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                {item.label}
+              </span>
+              {item.desc && (
+                <span className="block text-xs text-slate-400 mt-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  {item.desc}
+                </span>
+              )}
+            </a>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Main Navbar ──────────────────────────────────────────────────────────────
 
 export default function Navbar() {
   const { lang, setLang, t } = useLanguage();
@@ -36,24 +283,23 @@ export default function Navbar() {
   const dropdownTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [location] = useLocation();
 
+  const megaData = getMegaMenuData(lang);
+
+  const productsLabel = lang === "en" ? "Products" : lang === "es" ? "Productos" : "Produtos";
+  const technologyLabel = lang === "en" ? "Technology" : lang === "es" ? "Tecnología" : "Tecnologia";
+
   const navDropdowns: NavDropdown[] = [
     {
-      label: lang === "en" ? "Products" : lang === "es" ? "Productos" : "Produtos",
-      items: [
-        { label: "Olho Vivo Patrol", href: "/olhovivo-patrol", desc: lang === "en" ? "Intelligent traffic enforcement" : lang === "es" ? "Fiscalización inteligente de tránsito" : "Fiscalização inteligente de trânsito" },
-        { label: "Olho Vivo Parking", href: "/olhovivo-parking", desc: lang === "en" ? "Digital rotary parking" : lang === "es" ? "Estacionamiento rotativo digital" : "Estacionamento rotativo digital" },
-        { label: "GeoTrust", href: "/olhovivo-patrol#geotrust", desc: lang === "en" ? "Authenticated geolocation" : lang === "es" ? "Geolocalización autenticada" : "Geolocalização autenticada" },
-        { label: "AreaChain", href: "/olhovivo-patrol#areachain", desc: lang === "en" ? "Blockchain chain of custody" : lang === "es" ? "Blockchain cadena de custodia" : "Blockchain cadeia de custódia" },
-      ],
+      label: productsLabel,
+      isMega: true,
+      megaItems: megaData.products,
+      items: megaData.products.map((p) => ({ label: p.label, href: p.href, desc: p.desc })),
     },
     {
-      label: lang === "en" ? "Technology" : lang === "es" ? "Tecnología" : "Tecnologia",
-      items: [
-        { label: "CORTEX AI", href: "/olhovivo-patrol#cortex_ai", desc: lang === "en" ? "Embedded AI engine" : lang === "es" ? "Motor de IA embarcada" : "Motor de IA embarcada" },
-        { label: lang === "en" ? "OCR Engine" : lang === "es" ? "Motor OCR" : "Motor OCR", href: "/olhovivo-patrol#ocr", desc: lang === "en" ? "99.9% plate recognition" : lang === "es" ? "99,9% reconocimiento de placas" : "99,9% reconhecimento de placas" },
-        { label: "AreaFace", href: "/olhovivo-patrol#reconhecimento_facial", desc: lang === "en" ? "Embedded facial recognition" : lang === "es" ? "Reconocimiento facial embarcado" : "Reconhecimento facial embarcado" },
-        { label: "AreaChain", href: "/olhovivo-patrol#areachain", desc: lang === "en" ? "Private blockchain" : lang === "es" ? "Blockchain privada" : "Blockchain privada" },
-      ],
+      label: technologyLabel,
+      isMega: true,
+      megaItems: megaData.technology,
+      items: megaData.technology.map((t) => ({ label: t.label, href: t.href, desc: t.desc })),
     },
     {
       label: "Cases",
@@ -105,19 +351,22 @@ export default function Navbar() {
     setLangOpen(false);
   };
 
-  const handleDropdownEnter = (label: string) => {
+  const handleDropdownEnter = useCallback((label: string) => {
     if (dropdownTimeout.current) clearTimeout(dropdownTimeout.current);
     setActiveDropdown(label);
-  };
+  }, []);
 
-  const handleDropdownLeave = () => {
-    dropdownTimeout.current = setTimeout(() => setActiveDropdown(null), 150);
-  };
+  const handleDropdownLeave = useCallback(() => {
+    dropdownTimeout.current = setTimeout(() => setActiveDropdown(null), 200);
+  }, []);
 
-  const handleNavClick = (href: string) => {
+  const closeDropdown = useCallback(() => {
     setActiveDropdown(null);
     setMobileOpen(false);
-    // If it's a hash link on the same page, scroll to it
+  }, []);
+
+  const handleNavClick = (href: string) => {
+    closeDropdown();
     if (href.startsWith("/#") && location === "/") {
       const el = document.querySelector(href.slice(1));
       if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -147,7 +396,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Nav with Dropdowns */}
+          {/* Desktop Nav with Mega Menus + Simple Dropdowns */}
           <div className="hidden lg:flex items-center gap-0.5">
             {navDropdowns.map((dropdown) => (
               <div
@@ -161,7 +410,7 @@ export default function Navbar() {
                     scrolled
                       ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80"
                       : "text-white/80 hover:text-white hover:bg-white/10"
-                  }`}
+                  } ${activeDropdown === dropdown.label ? (scrolled ? "text-slate-900 bg-slate-100/80" : "text-white bg-white/10") : ""}`}
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   {dropdown.label}
@@ -169,55 +418,17 @@ export default function Navbar() {
                 </button>
                 <AnimatePresence>
                   {activeDropdown === dropdown.label && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute top-full left-0 mt-1 w-64 bg-white/95 backdrop-blur-xl rounded-xl border border-slate-200/80 shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)] overflow-hidden"
-                    >
-                      <div className="p-1.5">
-                        {dropdown.items.map((item) => {
-                          const isInternal = item.href.startsWith("/") && !item.href.startsWith("/#");
-                          if (isInternal) {
-                            return (
-                              <Link
-                                key={item.label}
-                                href={item.href}
-                                onClick={() => handleNavClick(item.href)}
-                                className="block px-3 py-2.5 rounded-lg hover:bg-blue-50/80 transition-colors group/item"
-                              >
-                                <span className="block text-sm font-semibold text-slate-800 group-hover/item:text-[#2F6FD0] transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                                  {item.label}
-                                </span>
-                                {item.desc && (
-                                  <span className="block text-xs text-slate-400 mt-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                                    {item.desc}
-                                  </span>
-                                )}
-                              </Link>
-                            );
-                          }
-                          return (
-                            <a
-                              key={item.label}
-                              href={item.href}
-                              onClick={() => handleNavClick(item.href)}
-                              className="block px-3 py-2.5 rounded-lg hover:bg-blue-50/80 transition-colors group/item"
-                            >
-                              <span className="block text-sm font-semibold text-slate-800 group-hover/item:text-[#2F6FD0] transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                                {item.label}
-                              </span>
-                              {item.desc && (
-                                <span className="block text-xs text-slate-400 mt-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                                  {item.desc}
-                                </span>
-                              )}
-                            </a>
-                          );
-                        })}
-                      </div>
-                    </motion.div>
+                    dropdown.isMega && dropdown.megaItems ? (
+                      <MegaMenuPanel
+                        items={dropdown.megaItems}
+                        onClose={closeDropdown}
+                      />
+                    ) : (
+                      <SimpleDropdownPanel
+                        items={dropdown.items}
+                        onClose={closeDropdown}
+                      />
+                    )
                   )}
                 </AnimatePresence>
               </div>
@@ -296,7 +507,7 @@ export default function Navbar() {
         </nav>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — keeps simple list behavior */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -345,6 +556,8 @@ export default function Navbar() {
     </motion.header>
   );
 }
+
+// ─── Mobile Dropdown (unchanged behavior) ─────────────────────────────────────
 
 function MobileDropdown({ dropdown, onNavigate }: { dropdown: NavDropdown; onNavigate: () => void }) {
   const [open, setOpen] = useState(false);
