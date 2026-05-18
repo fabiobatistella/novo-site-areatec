@@ -1,7 +1,23 @@
-// Navbar — Areatec Brand Guidelines + i18n + Mega Menu with product images
+// Navbar — Areatec Mega Menu (Minimalist 3-Column Layout)
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X, Check, Car, ParkingCircle, MapPin, Link2, Brain, ScanFace, EyeOff } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  Menu,
+  X,
+  Check,
+  Car,
+  ParkingCircle,
+  MapPin,
+  Link2,
+  BrainCircuit,
+  ScanFace,
+  EyeOff,
+  CircleAlert,
+  Signpost,
+  ArrowUpRight,
+} from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { Link, useLocation } from "wouter";
 
@@ -24,9 +40,11 @@ function AreatecLogoSVG({ variant = "light", size = 32 }: { variant?: "light" | 
 // ─── Mega Menu Data ───────────────────────────────────────────────────────────
 
 interface MegaMenuItem {
+  id: string;
   label: string;
   href: string;
   desc: string;
+  features: string[];
   icon: React.ReactNode;
   image: string;
 }
@@ -42,61 +60,93 @@ function getMegaMenuData(lang: Language): { products: MegaMenuItem[]; technology
   return {
     products: [
       {
+        id: "patrol",
         label: "Olho Vivo Patrol",
         href: "/olhovivo-patrol",
-        desc: lang === "en" ? "Intelligent traffic enforcement" : lang === "es" ? "Fiscalización inteligente de tránsito" : "Fiscalização inteligente de trânsito",
+        desc: lang === "en" ? "Intelligent traffic enforcement with embedded AI, OCR and real-time processing." : lang === "es" ? "Fiscalización inteligente de tránsito con IA embarcada, OCR y procesamiento en tiempo real." : "Fiscalização inteligente de trânsito com IA embarcada, OCR e processamento em tempo real.",
+        features: lang === "en" ? ["OCR in motion", "99.2% accuracy", "Real-time processing"] : lang === "es" ? ["OCR en movimiento", "99.2% precisión", "Procesamiento en tiempo real"] : ["OCR em movimento", "99,2% de acurácia", "Processamento em tempo real"],
         icon: <Car className="w-5 h-5" />,
         image: "/assets/hb20_areatec_rack_final.webp",
       },
       {
+        id: "parking",
         label: "Olho Vivo Parking",
         href: "/olhovivo-parking",
-        desc: lang === "en" ? "Digital rotary parking" : lang === "es" ? "Estacionamiento rotativo digital" : "Estacionamento rotativo digital",
+        desc: lang === "en" ? "Digital rotary parking with automatic plate recognition and mobile payment." : lang === "es" ? "Estacionamiento rotativo digital con reconocimiento automático de placas y pago móvil." : "Estacionamento rotativo digital com reconhecimento automático de placas e pagamento mobile.",
+        features: lang === "en" ? ["Plate recognition", "Mobile payment", "Real-time monitoring"] : lang === "es" ? ["Reconocimiento de placas", "Pago móvil", "Monitoreo en tiempo real"] : ["Reconhecimento de placas", "Pagamento mobile", "Monitoramento em tempo real"],
         icon: <ParkingCircle className="w-5 h-5" />,
         image: "/assets/parking_hero_smart.webp",
       },
       {
+        id: "geotrust",
         label: "GeoTrust",
         href: "/olhovivo-patrol#geotrust",
-        desc: lang === "en" ? "Authenticated geolocation" : lang === "es" ? "Geolocalización autenticada" : "Geolocalização autenticada",
+        desc: lang === "en" ? "Cryptographically authenticated geolocation ensuring legal validity of evidence." : lang === "es" ? "Geolocalización autenticada criptográficamente garantizando validez legal de evidencias." : "Geolocalização autenticada criptograficamente garantindo validade jurídica das evidências.",
+        features: lang === "en" ? ["Crypto authentication", "Legal validity", "Tamper-proof"] : lang === "es" ? ["Autenticación cripto", "Validez legal", "A prueba de manipulación"] : ["Autenticação cripto", "Validade jurídica", "À prova de adulteração"],
         icon: <MapPin className="w-5 h-5" />,
         image: `/assets/geotrust_${lang}.webp`,
       },
       {
+        id: "areachain",
         label: "AreaChain",
         href: "/olhovivo-patrol#areachain",
-        desc: lang === "en" ? "Blockchain chain of custody" : lang === "es" ? "Blockchain cadena de custodia" : "Blockchain cadeia de custódia",
+        desc: lang === "en" ? "Blockchain-based chain of custody for immutable digital evidence management." : lang === "es" ? "Cadena de custodia basada en blockchain para gestión inmutable de evidencias digitales." : "Cadeia de custódia baseada em blockchain para gestão imutável de evidências digitais.",
+        features: lang === "en" ? ["Blockchain registry", "Immutable evidence", "Full traceability"] : lang === "es" ? ["Registro blockchain", "Evidencia inmutable", "Trazabilidad total"] : ["Registro blockchain", "Evidência imutável", "Rastreabilidade total"],
         icon: <Link2 className="w-5 h-5" />,
         image: `/assets/areachain_${lang}.webp`,
       },
     ],
     technology: [
       {
-        label: lang === "en" ? "CORTEX Artificial Intelligence" : lang === "es" ? "CORTEX Inteligencia Artificial" : "CORTEX Inteligência Artificial",
+        id: "cortex",
+        label: "CORTEX AI",
         href: "/olhovivo-patrol#cortex_ai",
-        desc: lang === "en" ? "Embedded AI engine" : lang === "es" ? "Motor de IA embarcado" : "Motor de IA embarcado",
-        icon: <Brain className="w-5 h-5" />,
+        desc: lang === "en" ? "Proprietary embedded AI engine powering all Areatec products with edge computing." : lang === "es" ? "Motor de IA embarcado propietario que impulsa todos los productos Areatec con edge computing." : "Motor de IA embarcado proprietário que impulsiona todos os produtos Areatec com edge computing.",
+        features: lang === "en" ? ["Edge computing", "Real-time inference", "Self-learning"] : lang === "es" ? ["Edge computing", "Inferencia en tiempo real", "Auto-aprendizaje"] : ["Edge computing", "Inferência em tempo real", "Auto-aprendizado"],
+        icon: <BrainCircuit className="w-5 h-5" />,
         image: "/assets/screen_cortex_rastreamento.webp",
       },
       {
+        id: "facial",
         label: "AreaFace",
         href: "/olhovivo-patrol#reconhecimento_facial",
-        desc: lang === "en" ? "Facial recognition in motion" : lang === "es" ? "Reconocimiento facial en movimiento" : "Reconhecimento facial em movimento",
+        desc: lang === "en" ? "Facial recognition in motion for public safety and access control applications." : lang === "es" ? "Reconocimiento facial en movimiento para seguridad pública y control de acceso." : "Reconhecimento facial em movimento para segurança pública e controle de acesso.",
+        features: lang === "en" ? ["Recognition in motion", "Alert database", "98.7% accuracy"] : lang === "es" ? ["Reconocimiento en movimiento", "Base de alertas", "98.7% precisión"] : ["Reconhecimento em movimento", "Base de alertas", "98,7% de acurácia"],
         icon: <ScanFace className="w-5 h-5" />,
         image: "/assets/screen_busca_facial.webp",
       },
       {
+        id: "blur",
         label: lang === "en" ? "Intelligent Blur" : lang === "es" ? "Blur Inteligente" : "Blur Inteligente",
         href: "/olhovivo-patrol#anonimizacao",
-        desc: lang === "en" ? "AI-powered facial anonymization" : lang === "es" ? "Anonimización facial por IA" : "Anonimização facial por IA",
+        desc: lang === "en" ? "AI-powered facial anonymization compliant with LGPD/GDPR privacy regulations." : lang === "es" ? "Anonimización facial por IA compatible con regulaciones de privacidad LGPD/GDPR." : "Anonimização facial por IA em conformidade com regulações de privacidade LGPD/GDPR.",
+        features: lang === "en" ? ["LGPD/GDPR compliant", "Automatic blur", "Selective processing"] : lang === "es" ? ["Compatible LGPD/GDPR", "Blur automático", "Procesamiento selectivo"] : ["Conformidade LGPD/GDPR", "Blur automático", "Processamento seletivo"],
         icon: <EyeOff className="w-5 h-5" />,
         image: "/assets/blur_anonymization_ai.webp",
+      },
+      {
+        id: "buracos",
+        label: lang === "en" ? "Pothole Detection" : lang === "es" ? "Detección de Baches" : "Detecção de Buracos",
+        href: "/olhovivo-patrol#zeladoria",
+        desc: lang === "en" ? "Automated road surface defect detection for urban stewardship and maintenance." : lang === "es" ? "Detección automatizada de defectos en la superficie vial para gestión urbana." : "Detecção automatizada de defeitos no pavimento para zeladoria urbana e manutenção.",
+        features: lang === "en" ? ["Automatic detection", "Severity classification", "GPS mapping"] : lang === "es" ? ["Detección automática", "Clasificación de severidad", "Mapeo GPS"] : ["Detecção automática", "Classificação de severidade", "Mapeamento GPS"],
+        icon: <CircleAlert className="w-5 h-5" />,
+        image: "/assets/screen_zeladoria_buracos.webp",
+      },
+      {
+        id: "sinalizacao",
+        label: lang === "en" ? "Signage Detection" : lang === "es" ? "Detección de Señalización" : "Sinalização",
+        href: "/olhovivo-patrol#sinalizacao",
+        desc: lang === "en" ? "Automated road signage inventory and condition assessment via computer vision." : lang === "es" ? "Inventario automatizado de señalización vial y evaluación de condición por visión computacional." : "Inventário automatizado de sinalização viária e avaliação de condição por visão computacional.",
+        features: lang === "en" ? ["Automatic inventory", "Condition assessment", "Maintenance alerts"] : lang === "es" ? ["Inventario automático", "Evaluación de condición", "Alertas de mantenimiento"] : ["Inventário automático", "Avaliação de condição", "Alertas de manutenção"],
+        icon: <Signpost className="w-5 h-5" />,
+        image: "/assets/screen_sinalizacao_horizontal.webp",
       },
     ],
   };
 }
 
-// ─── Mega Menu Panel ──────────────────────────────────────────────────────────
+// ─── Mega Menu Panel (3-Column: Categories | Image | Details) ────────────────
 
 function MegaMenuPanel({
   items,
@@ -105,103 +155,173 @@ function MegaMenuPanel({
   items: MegaMenuItem[];
   onClose: () => void;
 }) {
-  const [hoveredIndex, setHoveredIndex] = useState(0);
-  const currentImage = items[hoveredIndex]?.image ?? items[0]?.image;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(true);
+  const activeItem = items[activeIndex];
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setActiveIndex((prev) => (prev + 1) % items.length);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setActiveIndex((prev) => (prev - 1 + items.length) % items.length);
+      } else if (e.key === "Escape") {
+        onClose();
+      }
+    },
+    [items.length, onClose]
+  );
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
+      ref={panelRef}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[680px] bg-[#1a1a2e]/[0.98] backdrop-blur-2xl rounded-2xl border border-white/[0.08] shadow-[0_25px_60px_rgba(0,0,0,0.5)] overflow-hidden"
+      transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+      className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[860px] bg-[#0f1021]/[0.98] backdrop-blur-3xl rounded-2xl border border-white/[0.06] shadow-[0_32px_80px_rgba(0,0,0,0.6),0_0_0_1px_rgba(255,255,255,0.03)] overflow-hidden"
+      role="menu"
+      aria-label="Mega menu"
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
     >
-      <div className="grid grid-cols-[1fr_280px] min-h-[320px]">
-        {/* Left: product list */}
-        <div className="p-3">
-          {items.map((item, idx) => {
-            const isInternal = item.href.startsWith("/") && !item.href.startsWith("/#");
-            const Comp = isInternal ? Link : "a";
-            const linkProps = isInternal
-              ? { href: item.href, onClick: onClose }
-              : { href: item.href, onClick: onClose };
-
-            return (
-              <Comp
-                key={item.label}
-                {...(linkProps as any)}
-                onMouseEnter={() => setHoveredIndex(idx)}
-                className={`flex items-start gap-3.5 px-4 py-3.5 rounded-xl transition-all duration-200 group/item cursor-pointer ${
-                  hoveredIndex === idx
-                    ? "bg-white/[0.08]"
-                    : "hover:bg-white/[0.05]"
-                }`}
-              >
-                <div
-                  className={`mt-0.5 w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-200 ${
-                    hoveredIndex === idx
-                      ? "bg-[#2F6FD0] text-white"
-                      : "bg-white/[0.06] text-white/50 group-hover/item:text-white/70"
+      <div className="grid grid-cols-[220px_1fr_260px] min-h-[380px]">
+        {/* Column 1: Category Navigation */}
+        <nav className="py-4 px-3 border-r border-white/[0.05]" aria-label="Categorias">
+          <div className="space-y-0.5">
+            {items.map((item, idx) => {
+              const isActive = activeIndex === idx;
+              return (
+                <button
+                  key={item.id}
+                  onMouseEnter={() => {
+                    setActiveIndex(idx);
+                    setImageLoaded(false);
+                  }}
+                  onFocus={() => setActiveIndex(idx)}
+                  role="menuitem"
+                  aria-current={isActive ? "true" : undefined}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-all duration-200 ${
+                    isActive
+                      ? "bg-[#2F6FD0]/15 text-white"
+                      : "text-white/50 hover:text-white/80 hover:bg-white/[0.03]"
                   }`}
                 >
-                  {item.icon}
-                </div>
-                <div className="flex-1 min-w-0">
                   <span
-                    className={`block text-sm font-semibold transition-colors duration-200 ${
-                      hoveredIndex === idx ? "text-white" : "text-white/80 group-hover/item:text-white"
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 ${
+                      isActive
+                        ? "bg-[#2F6FD0] text-white shadow-lg shadow-blue-500/20"
+                        : "bg-white/[0.05] text-white/40"
                     }`}
+                  >
+                    {item.icon}
+                  </span>
+                  <span
+                    className="text-[13px] font-medium leading-tight truncate"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     {item.label}
                   </span>
-                  <span
-                    className="block text-xs text-white/40 mt-0.5 leading-relaxed"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                  >
-                    {item.desc}
-                  </span>
-                </div>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 -rotate-90 mt-1 shrink-0 transition-all duration-200 ${
-                    hoveredIndex === idx
-                      ? "text-[#2F6FD0] translate-x-0.5"
-                      : "text-white/20"
-                  }`}
-                />
-              </Comp>
-            );
-          })}
-        </div>
+                  <ChevronRight
+                    className={`w-3 h-3 ml-auto shrink-0 transition-all duration-200 ${
+                      isActive ? "text-[#2F6FD0] opacity-100" : "opacity-0"
+                    }`}
+                  />
+                </button>
+              );
+            })}
+          </div>
+        </nav>
 
-        {/* Right: product image preview */}
-        <div className="relative border-l border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent overflow-hidden">
+        {/* Column 2: Product Image */}
+        <div className="relative flex items-center justify-center p-6 overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
-              key={currentImage}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
+              key={activeItem.image}
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: imageLoaded ? 1 : 0.6, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className="absolute inset-0 flex items-center justify-center p-5"
+              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+              className="relative w-full h-full flex items-center justify-center"
             >
               <img
-                src={currentImage}
-                alt={items[hoveredIndex]?.label ?? ""}
-                className="w-full h-full object-cover rounded-xl shadow-lg"
+                src={activeItem.image}
+                alt={activeItem.label}
+                className="max-w-full max-h-[300px] w-auto h-auto object-contain rounded-xl"
                 loading="eager"
+                onLoad={() => setImageLoaded(true)}
               />
             </motion.div>
           </AnimatePresence>
-          {/* Subtle gradient overlay at bottom */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#1a1a2e] to-transparent pointer-events-none" />
-          <div className="absolute bottom-3 left-0 right-0 text-center">
-            <span
-              className="text-[10px] font-semibold text-white/30 uppercase tracking-widest"
-              style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-            >
-              {items[hoveredIndex]?.label}
-            </span>
+          {/* Subtle radial glow */}
+          <div className="absolute inset-0 bg-gradient-radial from-[#2F6FD0]/[0.04] via-transparent to-transparent pointer-events-none" />
+        </div>
+
+        {/* Column 3: Description & Features */}
+        <div className="py-5 px-5 border-l border-white/[0.05] flex flex-col justify-between">
+          <div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeItem.id}
+                initial={{ opacity: 0, x: 8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -4 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+              >
+                <h3
+                  className="text-white text-[15px] font-semibold mb-2"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  {activeItem.label}
+                </h3>
+                <p
+                  className="text-white/45 text-xs leading-relaxed mb-5"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  {activeItem.desc}
+                </p>
+                <div className="space-y-2">
+                  {activeItem.features.map((feature, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <span className="w-1 h-1 rounded-full bg-[#2F6FD0] shrink-0" />
+                      <span
+                        className="text-white/60 text-xs"
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                      >
+                        {feature}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* CTA Link */}
+          <div className="mt-4">
+            {(() => {
+              const isInternal = activeItem.href.startsWith("/") && !activeItem.href.startsWith("/#");
+              const Comp = isInternal ? Link : "a";
+              return (
+                <Comp
+                  href={activeItem.href}
+                  onClick={onClose}
+                  className="inline-flex items-center gap-1.5 text-[#2F6FD0] text-xs font-semibold hover:text-blue-300 transition-colors duration-200 group/cta"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  {activeItem.label === "CORTEX AI" ? "Explorar" : (
+                    activeItem.href.includes("patrol") || activeItem.href.includes("parking")
+                      ? "Ver produto"
+                      : "Saiba mais"
+                  )}
+                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
+                </Comp>
+              );
+            })()}
           </div>
         </div>
       </div>
@@ -224,7 +344,8 @@ function SimpleDropdownPanel({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 8, scale: 0.96 }}
       transition={{ duration: 0.15 }}
-      className="absolute top-full left-0 mt-1 w-64 bg-white/95 backdrop-blur-xl rounded-xl border border-slate-200/80 shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)] overflow-hidden"
+      className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-xl rounded-xl border border-slate-200/80 shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.06)] overflow-hidden"
+      role="menu"
     >
       <div className="p-1.5">
         {items.map((item) => {
@@ -235,6 +356,7 @@ function SimpleDropdownPanel({
                 key={item.label}
                 href={item.href}
                 onClick={onClose}
+                role="menuitem"
                 className="block px-3 py-2.5 rounded-lg hover:bg-blue-50/80 transition-colors group/item"
               >
                 <span className="block text-sm font-semibold text-slate-800 group-hover/item:text-[#2F6FD0] transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -253,6 +375,7 @@ function SimpleDropdownPanel({
               key={item.label}
               href={item.href}
               onClick={onClose}
+              role="menuitem"
               className="block px-3 py-2.5 rounded-lg hover:bg-blue-50/80 transition-colors group/item"
             >
               <span className="block text-sm font-semibold text-slate-800 group-hover/item:text-[#2F6FD0] transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -314,7 +437,7 @@ export default function Navbar() {
       items: [
         { label: lang === "en" ? "All Articles" : lang === "es" ? "Todos los Artículos" : "Todos os Artigos", href: "/blog" },
         { label: lang === "en" ? "Technology" : lang === "es" ? "Tecnología" : "Tecnologia", href: "/blog" },
-        { label: lang === "en" ? "Smart City" : lang === "es" ? "Ciudad Inteligente" : "Smart City", href: "/blog" },
+        { label: lang === "en" ? "Smart City" : lang === "es" ? "Ciudad Inteligente" : "Cidade Inteligente", href: "/blog" },
       ],
     },
     {
@@ -357,7 +480,7 @@ export default function Navbar() {
   }, []);
 
   const handleDropdownLeave = useCallback(() => {
-    dropdownTimeout.current = setTimeout(() => setActiveDropdown(null), 200);
+    dropdownTimeout.current = setTimeout(() => setActiveDropdown(null), 180);
   }, []);
 
   const closeDropdown = useCallback(() => {
@@ -397,7 +520,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav with Mega Menus + Simple Dropdowns */}
-          <div className="hidden lg:flex items-center gap-0.5">
+          <div className="hidden lg:flex items-center gap-0.5" role="menubar">
             {navDropdowns.map((dropdown) => (
               <div
                 key={dropdown.label}
@@ -406,6 +529,8 @@ export default function Navbar() {
                 onMouseLeave={handleDropdownLeave}
               >
                 <button
+                  aria-haspopup="true"
+                  aria-expanded={activeDropdown === dropdown.label}
                   className={`flex items-center gap-1 px-3.5 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
                     scrolled
                       ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80"
@@ -507,7 +632,7 @@ export default function Navbar() {
         </nav>
       </div>
 
-      {/* Mobile Menu — keeps simple list behavior */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -557,7 +682,7 @@ export default function Navbar() {
   );
 }
 
-// ─── Mobile Dropdown (unchanged behavior) ─────────────────────────────────────
+// ─── Mobile Dropdown ─────────────────────────────────────────────────────────
 
 function MobileDropdown({ dropdown, onNavigate }: { dropdown: NavDropdown; onNavigate: () => void }) {
   const [open, setOpen] = useState(false);
@@ -565,6 +690,7 @@ function MobileDropdown({ dropdown, onNavigate }: { dropdown: NavDropdown; onNav
     <div>
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
         className="w-full flex items-center justify-between px-4 py-3 text-slate-700 hover:text-[#2F6FD0] hover:bg-blue-50/50 rounded-lg transition-colors font-medium"
         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
