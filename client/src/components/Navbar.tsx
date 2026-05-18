@@ -60,14 +60,14 @@ function getMegaMenuData(lang: Language): { products: MegaMenuItem[]; technology
         href: "/olhovivo-patrol#geotrust",
         desc: lang === "en" ? "Authenticated geolocation" : lang === "es" ? "Geolocalización autenticada" : "Geolocalização autenticada",
         icon: <MapPin className="w-5 h-5" />,
-        image: "/assets/geotrust_crypto_ai.webp",
+        image: `/assets/geotrust_${lang}.webp`,
       },
       {
         label: "AreaChain",
         href: "/olhovivo-patrol#areachain",
         desc: lang === "en" ? "Blockchain chain of custody" : lang === "es" ? "Blockchain cadena de custodia" : "Blockchain cadeia de custódia",
         icon: <Link2 className="w-5 h-5" />,
-        image: "/assets/areachain_blockchain_ai.webp",
+        image: `/assets/areachain_${lang}.webp`,
       },
     ],
     technology: [

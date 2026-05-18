@@ -134,11 +134,11 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
                 <div className="absolute inset-0 pointer-events-none rounded-xl" style={{ background: 'linear-gradient(180deg, transparent 60%, rgba(26,27,38,0.95) 100%)' }} />
               </div>
             ) : section.image ? (
-              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] group hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500">
+              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] group hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500 bg-[#0f1729] p-4 flex items-center justify-center">
                 <OptimizedImage
                   src={section.image}
                   alt={section.imageAlt || section.title}
-                  className="w-full h-full object-cover rounded-xl hover:scale-105 transition-transform duration-700"
+                  className="max-w-full max-h-full object-contain rounded-lg shadow-lg hover:scale-105 transition-transform duration-700"
                   loading="lazy"
                 />
               </div>
@@ -225,8 +225,8 @@ export default function OlhoVivoPatrol() {
       id: "geotrust",
       title: t("olhovivo_patrol.geotrust.title"),
       icon: MapPin,
-      image: "/assets/geotrust_crypto_ai.jpg",
-      imageAlt: "GeoTrust authenticated geolocation with cryptographic satellite signal and chain of custody",
+      image: `/assets/geotrust_${lang}.webp`,
+      imageAlt: lang === "en" ? "GeoTrust OSNMA dashboard showing authenticated position certificate with SHA-256 hash and digital signature verified" : lang === "es" ? "Panel GeoTrust OSNMA mostrando certificado de posición autenticada con firma digital verificada" : "Dashboard GeoTrust OSNMA mostrando certificado de posição autenticada com assinatura digital verificada",
       content: t("olhovivo_patrol.geotrust.content"),
       side: "left",
     },
@@ -234,8 +234,8 @@ export default function OlhoVivoPatrol() {
       id: "areachain",
       title: t("olhovivo_patrol.areachain.title"),
       icon: Lock,
-      image: "/assets/areachain_blockchain_ai.jpg",
-      imageAlt: "AreaChain private blockchain network for traffic data integrity with immutable blocks",
+      image: `/assets/areachain_${lang}.webp`,
+      imageAlt: lang === "en" ? "AreaChain private blockchain dashboard showing OCR capture to SHA-256 hash to block record chain of custody flow" : lang === "es" ? "Panel blockchain privado AreaChain mostrando flujo de cadena de custodia desde captura OCR hasta hash SHA-256" : "Dashboard blockchain privado AreaChain mostrando fluxo de cadeia de custódia da captura OCR ao hash SHA-256",
       content: t("olhovivo_patrol.areachain.content"),
       side: "right",
     },
