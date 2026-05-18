@@ -134,11 +134,11 @@ function TechSectionComponent({ section, isVisible }: { section: TechSection; is
                 <div className="absolute inset-0 pointer-events-none rounded-xl" style={{ background: 'linear-gradient(180deg, transparent 60%, rgba(26,27,38,0.95) 100%)' }} />
               </div>
             ) : section.image ? (
-              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] group hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500">
+              <div className="relative w-full h-64 lg:h-80 rounded-xl overflow-hidden border border-slate-700/50 shadow-[0_8px_32px_rgba(47,111,208,0.15)] group hover:shadow-[0_12px_48px_rgba(47,111,208,0.25)] transition-shadow duration-500 bg-slate-900/50 flex items-center justify-center">
                 <OptimizedImage
                   src={section.image}
                   alt={section.imageAlt || section.title}
-                  className="w-full h-full object-cover rounded-xl hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-contain rounded-xl hover:scale-105 transition-transform duration-700 p-2"
                   loading="lazy"
                 />
               </div>
