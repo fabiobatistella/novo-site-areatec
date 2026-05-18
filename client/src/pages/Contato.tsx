@@ -1,22 +1,21 @@
-// Contato — Redesign UX/UI completo para máxima conversão
-// Seletor de país com busca (todos os países), fix layout telefone, fix Supabase
 import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Send, Phone, Mail, MapPin, MessageCircle, CheckCircle, AlertCircle,
   Car, ParkingCircle, Cpu, Handshake, MessageSquare, Package, Shield,
-  Clock, ChevronDown, Users, Building2, Search
+  Clock, ChevronDown, Users, Building2, Search, ArrowLeft, ArrowRight,
+  SkipForward
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 
-// ─── Supabase Config ──────────────────────────────────────────────────────────
+// ─── Supabase Config ─────────────────────────────────────────────────────────
 const SUPABASE_URL = "https://zqyvrktovkhxjrfospjm.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpxeXZya3RvdmtoeGpyZm9zcGptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NzE1NDEsImV4cCI6MjA4OTQ0NzU0MX0.vTUrIQWQS88DDok7G4xHptzlCmxLfbSpygF7TYTifdo";
 
-// ─── Schema.org ───────────────────────────────────────────────────────────────
+// ─── Schema.org ──────────────────────────────────────────────────────────────
 const contactSchema = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
@@ -38,7 +37,7 @@ const contactSchema = {
   },
 };
 
-// ─── Complete Country List (all countries with flag emoji and DDI) ─────────────
+// ─── Complete Country List (all countries with flag emoji and DDI) ────────────
 interface Country {
   code: string;
   name: string;
@@ -111,7 +110,6 @@ const allCountries: Country[] = [
   { code: "ES", name: "Espanha", ddi: "+34", flag: "🇪🇸" },
   { code: "US", name: "Estados Unidos", ddi: "+1", flag: "🇺🇸" },
   { code: "EE", name: "Estônia", ddi: "+372", flag: "🇪🇪" },
-  { code: "SZ", name: "Eswatini", ddi: "+268", flag: "🇸🇿" },
   { code: "ET", name: "Etiópia", ddi: "+251", flag: "🇪🇹" },
   { code: "FJ", name: "Fiji", ddi: "+679", flag: "🇫🇯" },
   { code: "PH", name: "Filipinas", ddi: "+63", flag: "🇵🇭" },
@@ -121,8 +119,8 @@ const allCountries: Country[] = [
   { code: "GM", name: "Gâmbia", ddi: "+220", flag: "🇬🇲" },
   { code: "GH", name: "Gana", ddi: "+233", flag: "🇬🇭" },
   { code: "GE", name: "Geórgia", ddi: "+995", flag: "🇬🇪" },
-  { code: "GD", name: "Granada", ddi: "+1473", flag: "🇬🇩" },
   { code: "GR", name: "Grécia", ddi: "+30", flag: "🇬🇷" },
+  { code: "GD", name: "Granada", ddi: "+1473", flag: "🇬🇩" },
   { code: "GT", name: "Guatemala", ddi: "+502", flag: "🇬🇹" },
   { code: "GY", name: "Guiana", ddi: "+592", flag: "🇬🇾" },
   { code: "GN", name: "Guiné", ddi: "+224", flag: "🇬🇳" },
@@ -189,9 +187,9 @@ const allCountries: Country[] = [
   { code: "KE", name: "Quênia", ddi: "+254", flag: "🇰🇪" },
   { code: "KG", name: "Quirguistão", ddi: "+996", flag: "🇰🇬" },
   { code: "GB", name: "Reino Unido", ddi: "+44", flag: "🇬🇧" },
-  { code: "CF", name: "República Centro-Africana", ddi: "+236", flag: "🇨🇫" },
-  { code: "DO", name: "República Dominicana", ddi: "+1809", flag: "🇩🇴" },
-  { code: "CZ", name: "República Tcheca", ddi: "+420", flag: "🇨🇿" },
+  { code: "CF", name: "Rep. Centro-Africana", ddi: "+236", flag: "🇨🇫" },
+  { code: "DO", name: "Rep. Dominicana", ddi: "+1809", flag: "🇩🇴" },
+  { code: "CZ", name: "Rep. Tcheca", ddi: "+420", flag: "🇨🇿" },
   { code: "RO", name: "Romênia", ddi: "+40", flag: "🇷🇴" },
   { code: "RW", name: "Ruanda", ddi: "+250", flag: "🇷🇼" },
   { code: "RU", name: "Rússia", ddi: "+7", flag: "🇷🇺" },
@@ -229,7 +227,7 @@ const allCountries: Country[] = [
   { code: "ZW", name: "Zimbábue", ddi: "+263", flag: "🇿🇼" },
 ];
 
-// ─── Interest Cards Data ──────────────────────────────────────────────────────
+// ─── Interest Cards Data ─────────────────────────────────────────────────────
 interface InterestCard {
   value: string;
   icon: React.ReactNode;
@@ -276,7 +274,7 @@ const interestCards: InterestCard[] = [
   },
 ];
 
-// ─── Labels i18n ──────────────────────────────────────────────────────────────
+// ─── Labels i18n ─────────────────────────────────────────────────────────────
 const labels = {
   pt: {
     pageTitle: "Vamos conversar sobre seu projeto",
@@ -320,6 +318,16 @@ const labels = {
     trustExperts: "Especialistas",
     trustExpertsDesc: "Equipe dedicada",
     searchCountry: "Buscar país...",
+    step1Title: "Interesse",
+    step2Title: "Dados básicos",
+    step3Title: "Complementar",
+    next: "Próximo",
+    back: "Voltar",
+    skipAndSend: "Pular e enviar",
+    step3Headline: "Quer nos contar mais?",
+    step3Sub: "Esses dados são opcionais, mas nos ajudam a personalizar o atendimento.",
+    step2Headline: "Seus dados de contato",
+    step2Sub: "Precisamos apenas do essencial para retornar sua mensagem.",
   },
   en: {
     pageTitle: "Let's talk about your project",
@@ -363,6 +371,16 @@ const labels = {
     trustExperts: "Experts",
     trustExpertsDesc: "Dedicated team",
     searchCountry: "Search country...",
+    step1Title: "Interest",
+    step2Title: "Basic info",
+    step3Title: "Additional",
+    next: "Next",
+    back: "Back",
+    skipAndSend: "Skip & send",
+    step3Headline: "Want to tell us more?",
+    step3Sub: "These fields are optional, but help us personalize your experience.",
+    step2Headline: "Your contact details",
+    step2Sub: "We only need the essentials to get back to you.",
   },
   es: {
     pageTitle: "Hablemos sobre su proyecto",
@@ -406,6 +424,16 @@ const labels = {
     trustExperts: "Especialistas",
     trustExpertsDesc: "Equipo dedicado",
     searchCountry: "Buscar país...",
+    step1Title: "Interés",
+    step2Title: "Datos básicos",
+    step3Title: "Complementar",
+    next: "Siguiente",
+    back: "Volver",
+    skipAndSend: "Saltar y enviar",
+    step3Headline: "¿Quiere contarnos más?",
+    step3Sub: "Estos campos son opcionales, pero nos ayudan a personalizar la atención.",
+    step2Headline: "Sus datos de contacto",
+    step2Sub: "Solo necesitamos lo esencial para responderle.",
   },
 };
 
@@ -418,7 +446,7 @@ function CountrySelector({
   searchPlaceholder,
 }: {
   selectedCountry: Country;
-  onSelect: (c: Country) => void;
+  onSelect: (country: Country) => void;
   searchPlaceholder: string;
 }) {
   const [open, setOpen] = useState(false);
@@ -426,59 +454,54 @@ function CountrySelector({
   const ref = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
+  const filteredCountries = useMemo(() => {
+    if (!search) return allCountries;
+    const q = search.toLowerCase();
+    return allCountries.filter(
+      (c) => c.name.toLowerCase().includes(q) || c.ddi.includes(q) || c.code.toLowerCase().includes(q)
+    );
+  }, [search]);
+
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    if (open && searchInputRef.current) {
+      setTimeout(() => searchInputRef.current?.focus(), 100);
+    }
+  }, [open]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
         setSearch("");
       }
-    }
+    };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    if (open && searchInputRef.current) {
-      setTimeout(() => searchInputRef.current?.focus(), 50);
-    }
-  }, [open]);
-
-  const filteredCountries = useMemo(() => {
-    if (!search.trim()) return allCountries;
-    const q = search.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    return allCountries.filter((c) => {
-      const name = c.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      const ddi = c.ddi;
-      const code = c.code.toLowerCase();
-      return name.includes(q) || ddi.includes(q) || code.includes(q);
-    });
-  }, [search]);
-
   return (
-    <div className="relative flex-shrink-0" ref={ref}>
+    <div ref={ref} className="relative">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 h-[46px] px-3 bg-slate-50 border border-slate-200 rounded-l-xl text-sm hover:bg-slate-100 transition-colors min-w-[100px] justify-between"
+        className="flex items-center gap-1.5 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors shrink-0"
         aria-label="Select country code"
       >
         <span className="text-base leading-none">{selectedCountry.flag}</span>
-        <span className="text-slate-700 font-medium text-xs whitespace-nowrap" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+        <span className="text-sm font-medium text-slate-700" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
           {selectedCountry.ddi}
         </span>
-        <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
-
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -4, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -4, scale: 0.95 }}
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.15 }}
             className="absolute top-full left-0 mt-1 w-72 bg-white border border-slate-200 rounded-xl shadow-xl shadow-slate-200/50 z-50 overflow-hidden"
           >
-            {/* Search input */}
             <div className="p-2 border-b border-slate-100">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -493,7 +516,6 @@ function CountrySelector({
                 />
               </div>
             </div>
-            {/* Country list */}
             <div className="max-h-60 overflow-y-auto">
               {filteredCountries.length === 0 ? (
                 <div className="px-4 py-3 text-sm text-slate-400 text-center">
@@ -525,11 +547,78 @@ function CountrySelector({
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+// ─── Step Progress Bar Component ─────────────────────────────────────────────
+function StepProgressBar({ currentStep, labels: stepLabels }: { currentStep: number; labels: string[] }) {
+  return (
+    <div className="w-full mb-8">
+      <div className="flex items-center justify-between relative">
+        {/* Background line */}
+        <div className="absolute top-5 left-0 right-0 h-0.5 bg-slate-200 z-0" />
+        {/* Progress line */}
+        <motion.div
+          className="absolute top-5 left-0 h-0.5 bg-[#2F6FD0] z-0"
+          initial={false}
+          animate={{ width: `${((currentStep - 1) / (stepLabels.length - 1)) * 100}%` }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+        />
+        {stepLabels.map((label, idx) => {
+          const stepNum = idx + 1;
+          const isActive = stepNum === currentStep;
+          const isCompleted = stepNum < currentStep;
+          return (
+            <div key={idx} className="flex flex-col items-center z-10 relative">
+              <motion.div
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-colors duration-300 ${
+                  isCompleted
+                    ? "bg-[#2F6FD0] border-[#2F6FD0] text-white"
+                    : isActive
+                    ? "bg-white border-[#2F6FD0] text-[#2F6FD0] shadow-lg shadow-[#2F6FD0]/20"
+                    : "bg-white border-slate-200 text-slate-400"
+                }`}
+                animate={isActive ? { scale: [1, 1.1, 1] } : {}}
+                transition={{ duration: 0.3 }}
+              >
+                {isCompleted ? <CheckCircle className="w-5 h-5" /> : stepNum}
+              </motion.div>
+              <span
+                className={`mt-2 text-xs font-medium whitespace-nowrap ${
+                  isActive ? "text-[#2F6FD0]" : isCompleted ? "text-slate-600" : "text-slate-400"
+                }`}
+                style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+              >
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── Slide Variants for Framer Motion ────────────────────────────────────────
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 300 : -300,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? 300 : -300,
+    opacity: 0,
+  }),
+};
+
+// ─── Main Component ──────────────────────────────────────────────────────────
 export default function Contato() {
   const { lang } = useLanguage();
   const l = labels[lang];
 
+  const [currentStep, setCurrentStep] = useState(1);
+  const [direction, setDirection] = useState(0);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<Country>(allCountries[0]);
   const [outroProdutoText, setOutroProdutoText] = useState("");
@@ -555,29 +644,35 @@ export default function Contato() {
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("sending");
+  const goNext = () => {
+    setDirection(1);
+    setCurrentStep((s) => Math.min(s + 1, 3));
+  };
 
+  const goBack = () => {
+    setDirection(-1);
+    setCurrentStep((s) => Math.max(s - 1, 1));
+  };
+
+  const canProceedStep1 = selectedInterests.length > 0;
+  const canProceedStep2 = form.nome.trim() !== "" && form.email.trim() !== "" && form.mensagem.trim() !== "";
+
+  const handleSubmit = async () => {
+    setStatus("sending");
     try {
-      // Build interests list with "outro-produto" detail
       const interessesList = [...selectedInterests];
       if (selectedInterests.includes("outro-produto") && outroProdutoText) {
         const idx = interessesList.indexOf("outro-produto");
         interessesList[idx] = `outro-produto: ${outroProdutoText}`;
       }
 
-      // Build whatsapp field: use telefone with DDI if provided, or whatsapp field
       const fullPhone = form.telefone ? `${selectedCountry.ddi} ${form.telefone}` : null;
       const whatsappValue = form.whatsapp || fullPhone || null;
 
-      // Build cargo field: include empresa info if provided
       const cargoValue = form.empresa
         ? (form.cargo ? `${form.cargo} — ${form.empresa}` : form.empresa)
         : (form.cargo || null);
 
-      // Payload matching exact Supabase columns:
-      // nome, email, whatsapp, interesse, cidade, cargo, mensagem, lang, source, created_at
       const payload: Record<string, string | null> = {
         nome: form.nome,
         email: form.email,
@@ -591,7 +686,6 @@ export default function Contato() {
         created_at: new Date().toISOString(),
       };
 
-      // Remove null values to avoid sending them
       const cleanPayload = Object.fromEntries(
         Object.entries(payload).filter(([, v]) => v !== null)
       );
@@ -599,466 +693,540 @@ export default function Contato() {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/contact_leads`, {
         method: "POST",
         headers: {
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
           "Content-Type": "application/json",
-          "Prefer": "return=minimal",
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          Prefer: "return=minimal",
         },
         body: JSON.stringify(cleanPayload),
       });
 
-      if (res.ok || res.status === 201) {
-        setStatus("success");
-        setForm({ nome: "", email: "", telefone: "", whatsapp: "", empresa: "", cidade: "", cargo: "", mensagem: "" });
-        setSelectedInterests([]);
-        setOutroProdutoText("");
-      } else {
-        const errText = await res.text();
-        console.error("Supabase error:", errText);
-        setStatus("error");
-      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setStatus("success");
     } catch (err) {
       console.error("Submit error:", err);
       setStatus("error");
     }
   };
 
-  const inputClass = "w-full h-[46px] px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all duration-200 text-sm";
-  const textareaClass = "w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all duration-200 text-sm resize-none";
-  const labelClass = "block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5";
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (currentStep === 3) {
+      handleSubmit();
+    } else if (currentStep === 2) {
+      goNext();
+    }
+  };
+
+  const handleSkipAndSend = () => {
+    handleSubmit();
+  };
+
+  const stepLabels = [l.step1Title, l.step2Title, l.step3Title];
 
   return (
     <>
-      <SEOHead title={l.seoTitle} description={l.seoDesc} path="/contato" jsonLd={contactSchema} />
-      <div className="min-h-screen bg-white">
+      <SEOHead title={l.seoTitle} description={l.seoDesc} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }} />
+      <div className="min-h-screen flex flex-col bg-white">
         <Navbar />
-        <main>
+        <main className="flex-1">
           {/* Hero Section */}
-          <section className="relative pt-28 pb-20 bg-gradient-to-b from-slate-900 via-[#1a1a2e] to-slate-800 overflow-hidden">
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <div className="absolute top-10 right-[10%] w-[500px] h-[500px] bg-[#2F6FD0]/8 rounded-full blur-[150px]" />
-              <div className="absolute bottom-0 left-[20%] w-80 h-80 bg-blue-400/5 rounded-full blur-[120px]" />
+          <section className="relative bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 pt-32 pb-16 overflow-hidden">
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#2F6FD0] rounded-full blur-3xl" />
+              <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#2F6FD0] rounded-full blur-3xl" />
             </div>
-            <div className="container relative max-w-3xl mx-auto text-center px-4">
-              <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full mb-6">
+            <div className="relative max-w-4xl mx-auto px-4 text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6">
                   <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-                  <span className="text-[11px] font-medium text-white/70 tracking-wide" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                  <span className="text-emerald-300 text-sm font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {l.socialProof}
                   </span>
                 </div>
                 <h1
-                  className="text-4xl sm:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.1] mb-5"
+                  className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight"
                   style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
                 >
                   {l.pageTitle}
                 </h1>
-                <p
-                  className="text-base sm:text-lg text-white/55 leading-relaxed max-w-xl mx-auto"
-                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                >
+                <p className="text-slate-300 text-lg max-w-2xl mx-auto" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   {l.pageSubtitle}
                 </p>
               </motion.div>
-
-              {/* Trust Indicators */}
+              {/* Trust indicators */}
               <motion.div
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-                className="flex flex-wrap items-center justify-center gap-6 mt-10"
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex flex-wrap justify-center gap-6 mt-8"
               >
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
-                    <Clock className="w-4 h-4 text-[#2F6FD0]" />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-xs font-semibold text-white/90">{l.trustResponse}</p>
-                    <p className="text-[10px] text-white/40">{l.trustResponseDesc}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
-                    <Shield className="w-4 h-4 text-emerald-400" />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-xs font-semibold text-white/90">{l.trustSecurity}</p>
-                    <p className="text-[10px] text-white/40">{l.trustSecurityDesc}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
-                    <Users className="w-4 h-4 text-amber-400" />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-xs font-semibold text-white/90">{l.trustExperts}</p>
-                    <p className="text-[10px] text-white/40">{l.trustExpertsDesc}</p>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </section>
-
-          {/* Interest Cards */}
-          <section className="py-12 lg:py-16 bg-slate-50/60">
-            <div className="container max-w-5xl mx-auto px-4">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-center mb-8"
-              >
-                <h2
-                  className="text-xl sm:text-2xl font-bold text-slate-800 mb-2"
-                  style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
-                >
-                  {l.selectInterest}
-                </h2>
-                <p className="text-sm text-slate-500" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                  {l.selectInterestSub}
-                </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"
-              >
-                {interestCards.map((card, idx) => (
-                  <motion.button
-                    key={card.value}
-                    type="button"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.05 * idx }}
-                    onClick={() => toggleInterest(card.value)}
-                    className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200 text-center group cursor-pointer ${
-                      selectedInterests.includes(card.value)
-                        ? "border-[#2F6FD0] bg-blue-50/80 shadow-md shadow-blue-100/50"
-                        : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm"
-                    }`}
-                  >
-                    <div
-                      className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                        selectedInterests.includes(card.value)
-                          ? "bg-[#2F6FD0] text-white shadow-md shadow-blue-200"
-                          : "bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-700"
-                      }`}
-                    >
-                      {card.icon}
+                {[
+                  { icon: <Clock className="w-4 h-4" />, title: l.trustResponse, desc: l.trustResponseDesc },
+                  { icon: <Shield className="w-4 h-4" />, title: l.trustSecurity, desc: l.trustSecurityDesc },
+                  { icon: <Users className="w-4 h-4" />, title: l.trustExperts, desc: l.trustExpertsDesc },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-[#2F6FD0]/20 flex items-center justify-center text-[#2F6FD0]">
+                      {item.icon}
                     </div>
-                    <div>
-                      <span
-                        className={`text-[11px] font-bold leading-tight block transition-colors duration-200 ${
-                          selectedInterests.includes(card.value) ? "text-[#2F6FD0]" : "text-slate-700"
-                        }`}
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      >
-                        {card.label[lang]}
-                      </span>
-                      <span className="text-[9px] text-slate-400 mt-0.5 block" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        {card.desc[lang]}
-                      </span>
+                    <div className="text-left">
+                      <p className="text-white text-sm font-semibold">{item.title}</p>
+                      <p className="text-slate-400 text-xs">{item.desc}</p>
                     </div>
-                    {selectedInterests.includes(card.value) && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-[#2F6FD0] rounded-full flex items-center justify-center shadow-sm"
-                      >
-                        <CheckCircle className="w-3 h-3 text-white" />
-                      </motion.div>
-                    )}
-                  </motion.button>
+                  </div>
                 ))}
               </motion.div>
-
-              {/* Outro Produto - campo livre */}
-              <AnimatePresence>
-                {selectedInterests.includes("outro-produto") && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="mt-4 max-w-lg mx-auto overflow-hidden"
-                  >
-                    <input
-                      type="text"
-                      value={outroProdutoText}
-                      onChange={(e) => setOutroProdutoText(e.target.value)}
-                      placeholder={l.outroProdutoPlaceholder}
-                      className={`${inputClass} border-[#2F6FD0]/30 bg-blue-50/30`}
-                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
           </section>
 
-          {/* Form + Sidebar */}
-          <section className="py-12 lg:py-20 bg-white">
-            <div className="container max-w-6xl mx-auto px-4">
-              <div className="grid lg:grid-cols-3 gap-10 lg:gap-16">
-                {/* Form */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  className="lg:col-span-2"
-                >
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Row 1: Nome + Email */}
-                    <div className="grid sm:grid-cols-2 gap-5">
-                      <div>
-                        <label htmlFor="nome" className={labelClass} style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                          {l.nome} *
-                        </label>
-                        <input
-                          type="text"
-                          id="nome"
-                          name="nome"
-                          required
-                          value={form.nome}
-                          onChange={handleChange}
-                          className={inputClass}
-                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className={labelClass} style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                          {l.email} *
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          required
-                          value={form.email}
-                          onChange={handleChange}
-                          className={inputClass}
-                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                        />
-                      </div>
-                    </div>
+          {/* Form Section */}
+          <section className="py-16 bg-gradient-to-b from-slate-50 to-white">
+            <div className="max-w-7xl mx-auto px-4">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                {/* Form Column (2/3) */}
+                <div className="lg:col-span-2">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-10"
+                  >
+                    {/* Step Progress Bar */}
+                    <StepProgressBar currentStep={currentStep} labels={stepLabels} />
 
-                    {/* Row 2: Telefone com seletor de país + WhatsApp */}
-                    <div className="grid sm:grid-cols-2 gap-5">
-                      <div>
-                        <label htmlFor="telefone" className={labelClass} style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                          {l.telefone} <span className="text-slate-300 font-normal lowercase">({l.opcional})</span>
-                        </label>
-                        <div className="flex items-stretch">
-                          <CountrySelector
-                            selectedCountry={selectedCountry}
-                            onSelect={setSelectedCountry}
-                            searchPlaceholder={l.searchCountry}
-                          />
-                          <input
-                            type="tel"
-                            id="telefone"
-                            name="telefone"
-                            value={form.telefone}
-                            onChange={handleChange}
-                            placeholder={l.telefonePlaceholder}
-                            className="flex-1 min-w-0 h-[46px] px-4 py-3 bg-white border border-slate-200 border-l-0 rounded-r-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all duration-200 text-sm"
-                            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                          />
+                    {/* Success State */}
+                    {status === "success" ? (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="text-center py-12"
+                      >
+                        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <CheckCircle className="w-8 h-8 text-emerald-600" />
                         </div>
+                        <p className="text-lg font-semibold text-slate-800 mb-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                          {l.sucesso}
+                        </p>
+                      </motion.div>
+                    ) : (
+                      <form onSubmit={handleFormSubmit}>
+                        {/* Animated Steps Container */}
+                        <div className="relative overflow-hidden min-h-[380px]">
+                          <AnimatePresence initial={false} custom={direction} mode="wait">
+                            {/* Step 1: Interests */}
+                            {currentStep === 1 && (
+                              <motion.div
+                                key="step1"
+                                custom={direction}
+                                variants={slideVariants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                className="w-full"
+                              >
+                                <h2
+                                  className="text-xl font-bold text-slate-800 mb-2"
+                                  style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+                                >
+                                  {l.selectInterest}
+                                </h2>
+                                <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                                  {l.selectInterestSub}
+                                </p>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                  {interestCards.map((card) => {
+                                    const isSelected = selectedInterests.includes(card.value);
+                                    return (
+                                      <button
+                                        key={card.value}
+                                        type="button"
+                                        onClick={() => toggleInterest(card.value)}
+                                        className={`relative flex flex-col items-center text-center p-4 rounded-xl border-2 transition-all duration-200 ${
+                                          isSelected
+                                            ? "border-[#2F6FD0] bg-[#2F6FD0]/5 shadow-md shadow-[#2F6FD0]/10"
+                                            : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm"
+                                        }`}
+                                      >
+                                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-2 ${
+                                          isSelected ? "bg-[#2F6FD0]/10 text-[#2F6FD0]" : "bg-slate-100 text-slate-500"
+                                        }`}>
+                                          {card.icon}
+                                        </div>
+                                        <span className="text-xs font-semibold text-slate-700 leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                                          {card.label[lang]}
+                                        </span>
+                                        <span className="text-[10px] text-slate-400 mt-0.5" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                                          {card.desc[lang]}
+                                        </span>
+                                        {isSelected && (
+                                          <div className="absolute top-2 right-2 w-5 h-5 bg-[#2F6FD0] rounded-full flex items-center justify-center">
+                                            <CheckCircle className="w-3 h-3 text-white" />
+                                          </div>
+                                        )}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                                {/* Outro Produto text field */}
+                                <AnimatePresence>
+                                  {selectedInterests.includes("outro-produto") && (
+                                    <motion.div
+                                      initial={{ opacity: 0, height: 0 }}
+                                      animate={{ opacity: 1, height: "auto" }}
+                                      exit={{ opacity: 0, height: 0 }}
+                                      transition={{ duration: 0.2 }}
+                                      className="mt-4"
+                                    >
+                                      <input
+                                        type="text"
+                                        value={outroProdutoText}
+                                        onChange={(e) => setOutroProdutoText(e.target.value)}
+                                        placeholder={l.outroProdutoPlaceholder}
+                                        className="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all"
+                                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                      />
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
+                              </motion.div>
+                            )}
+
+                            {/* Step 2: Basic Data */}
+                            {currentStep === 2 && (
+                              <motion.div
+                                key="step2"
+                                custom={direction}
+                                variants={slideVariants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                className="w-full"
+                              >
+                                <h2
+                                  className="text-xl font-bold text-slate-800 mb-2"
+                                  style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+                                >
+                                  {l.step2Headline}
+                                </h2>
+                                <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                                  {l.step2Sub}
+                                </p>
+                                <div className="space-y-5">
+                                  {/* Nome */}
+                                  <div>
+                                    <label htmlFor="nome" className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                                      {l.nome} *
+                                    </label>
+                                    <input
+                                      id="nome"
+                                      name="nome"
+                                      type="text"
+                                      required
+                                      value={form.nome}
+                                      onChange={handleChange}
+                                      className="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all"
+                                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                    />
+                                  </div>
+                                  {/* Email */}
+                                  <div>
+                                    <label htmlFor="email" className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                                      {l.email} *
+                                    </label>
+                                    <input
+                                      id="email"
+                                      name="email"
+                                      type="email"
+                                      required
+                                      value={form.email}
+                                      onChange={handleChange}
+                                      className="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all"
+                                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                    />
+                                  </div>
+                                  {/* Mensagem */}
+                                  <div>
+                                    <label htmlFor="mensagem" className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                                      {l.mensagem} *
+                                    </label>
+                                    <textarea
+                                      id="mensagem"
+                                      name="mensagem"
+                                      required
+                                      rows={4}
+                                      value={form.mensagem}
+                                      onChange={handleChange}
+                                      placeholder={l.mensagemPlaceholder}
+                                      className="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all resize-none"
+                                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                    />
+                                  </div>
+                                </div>
+                              </motion.div>
+                            )}
+
+                            {/* Step 3: Optional Data */}
+                            {currentStep === 3 && (
+                              <motion.div
+                                key="step3"
+                                custom={direction}
+                                variants={slideVariants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                className="w-full"
+                              >
+                                <h2
+                                  className="text-xl font-bold text-slate-800 mb-2"
+                                  style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+                                >
+                                  {l.step3Headline}
+                                </h2>
+                                <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                                  {l.step3Sub}
+                                </p>
+                                <div className="space-y-5">
+                                  {/* Telefone with Country Selector */}
+                                  <div>
+                                    <label htmlFor="telefone" className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                                      {l.telefone} <span className="text-slate-400 normal-case">({l.opcional})</span>
+                                    </label>
+                                    <div className="flex gap-2">
+                                      <CountrySelector
+                                        selectedCountry={selectedCountry}
+                                        onSelect={setSelectedCountry}
+                                        searchPlaceholder={l.searchCountry}
+                                      />
+                                      <input
+                                        id="telefone"
+                                        name="telefone"
+                                        type="tel"
+                                        value={form.telefone}
+                                        onChange={handleChange}
+                                        placeholder={l.telefonePlaceholder}
+                                        className="flex-1 px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all"
+                                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                      />
+                                    </div>
+                                  </div>
+                                  {/* WhatsApp */}
+                                  <div>
+                                    <label htmlFor="whatsapp" className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                                      {l.whatsapp} <span className="text-slate-400 normal-case">({l.opcional})</span>
+                                    </label>
+                                    <input
+                                      id="whatsapp"
+                                      name="whatsapp"
+                                      type="tel"
+                                      value={form.whatsapp}
+                                      onChange={handleChange}
+                                      placeholder={l.whatsappPlaceholder}
+                                      className="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all"
+                                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                    />
+                                  </div>
+                                  {/* Empresa + Cargo */}
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                      <label htmlFor="empresa" className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                                        {l.empresa} <span className="text-slate-400 normal-case">({l.opcional})</span>
+                                      </label>
+                                      <input
+                                        id="empresa"
+                                        name="empresa"
+                                        type="text"
+                                        value={form.empresa}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all"
+                                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                      />
+                                    </div>
+                                    <div>
+                                      <label htmlFor="cargo" className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                                        {l.cargo} <span className="text-slate-400 normal-case">({l.opcional})</span>
+                                      </label>
+                                      <input
+                                        id="cargo"
+                                        name="cargo"
+                                        type="text"
+                                        value={form.cargo}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all"
+                                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                      />
+                                    </div>
+                                  </div>
+                                  {/* Cidade */}
+                                  <div>
+                                    <label htmlFor="cidade" className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                                      {l.cidade} <span className="text-slate-400 normal-case">({l.opcional})</span>
+                                    </label>
+                                    <input
+                                      id="cidade"
+                                      name="cidade"
+                                      type="text"
+                                      value={form.cidade}
+                                      onChange={handleChange}
+                                      className="w-full px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F6FD0]/20 focus:border-[#2F6FD0] transition-all"
+                                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                                    />
+                                  </div>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+
+                        {/* Navigation Buttons */}
+                        <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-100">
+                          {/* Back button */}
+                          <div>
+                            {currentStep > 1 && (
+                              <button
+                                type="button"
+                                onClick={goBack}
+                                className="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
+                                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                              >
+                                <ArrowLeft className="w-4 h-4" />
+                                {l.back}
+                              </button>
+                            )}
+                          </div>
+
+                          {/* Right side buttons */}
+                          <div className="flex items-center gap-3">
+                            {/* Skip and Send (only on step 3) */}
+                            {currentStep === 3 && (
+                              <button
+                                type="button"
+                                onClick={handleSkipAndSend}
+                                disabled={status === "sending"}
+                                className="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors disabled:opacity-50"
+                                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                              >
+                                <SkipForward className="w-4 h-4" />
+                                {l.skipAndSend}
+                              </button>
+                            )}
+
+                            {/* Next / Send button */}
+                            {currentStep === 1 && (
+                              <button
+                                type="button"
+                                onClick={goNext}
+                                disabled={!canProceedStep1}
+                                className="flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-[#2F6FD0] rounded-lg hover:bg-[#2563b8] transition-colors disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-[#2F6FD0]/20"
+                                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                              >
+                                {l.next}
+                                <ArrowRight className="w-4 h-4" />
+                              </button>
+                            )}
+                            {currentStep === 2 && (
+                              <button
+                                type="submit"
+                                disabled={!canProceedStep2}
+                                className="flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-[#2F6FD0] rounded-lg hover:bg-[#2563b8] transition-colors disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-[#2F6FD0]/20"
+                                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                              >
+                                {l.next}
+                                <ArrowRight className="w-4 h-4" />
+                              </button>
+                            )}
+                            {currentStep === 3 && (
+                              <button
+                                type="submit"
+                                disabled={status === "sending"}
+                                className="flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-[#2F6FD0] rounded-lg hover:bg-[#2563b8] transition-colors disabled:opacity-50 shadow-lg shadow-[#2F6FD0]/20"
+                                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                              >
+                                {status === "sending" ? (
+                                  <>
+                                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    {l.enviando}
+                                  </>
+                                ) : (
+                                  <>
+                                    <Send className="w-4 h-4" />
+                                    {l.enviar}
+                                  </>
+                                )}
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Error message */}
+                        <AnimatePresence>
+                          {status === "error" && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 5 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0 }}
+                              className="flex items-center gap-2 mt-4 p-3 bg-red-50 border border-red-200 rounded-lg"
+                            >
+                              <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+                              <p className="text-sm text-red-600" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                                {l.erro}
+                              </p>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </form>
+                    )}
+
+                    {/* LGPD + Trust Bar */}
+                    <div className="mt-8 pt-6 border-t border-slate-100">
+                      <div className="flex items-start gap-2 mb-4">
+                        <Shield className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
+                        <p className="text-xs text-slate-500" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                          {l.lgpd}
+                        </p>
                       </div>
-                      <div>
-                        <label htmlFor="whatsapp" className={labelClass} style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                          {l.whatsapp} <span className="text-slate-300 font-normal lowercase">({l.opcional})</span>
-                        </label>
-                        <input
-                          type="tel"
-                          id="whatsapp"
-                          name="whatsapp"
-                          value={form.whatsapp}
-                          onChange={handleChange}
-                          placeholder={l.whatsappPlaceholder}
-                          className={inputClass}
-                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                        />
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                          Certificados
+                        </span>
+                        {["ISO 9001", "ISO 27001", "PCI DSS", "SENATRAN"].map((cert) => (
+                          <span
+                            key={cert}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-medium bg-gradient-to-r from-slate-50 to-blue-50/50 border border-slate-200 rounded-full text-slate-600"
+                            style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                          >
+                            <Shield className="w-3 h-3 text-[#2F6FD0]" />
+                            {cert}
+                          </span>
+                        ))}
                       </div>
                     </div>
+                  </motion.div>
+                </div>
 
-                    {/* Row 3: Empresa + Cargo */}
-                    <div className="grid sm:grid-cols-2 gap-5">
-                      <div>
-                        <label htmlFor="empresa" className={labelClass} style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                          {l.empresa} <span className="text-slate-300 font-normal lowercase">({l.opcional})</span>
-                        </label>
-                        <input
-                          type="text"
-                          id="empresa"
-                          name="empresa"
-                          value={form.empresa}
-                          onChange={handleChange}
-                          className={inputClass}
-                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="cargo" className={labelClass} style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                          {l.cargo} <span className="text-slate-300 font-normal lowercase">({l.opcional})</span>
-                        </label>
-                        <input
-                          type="text"
-                          id="cargo"
-                          name="cargo"
-                          value={form.cargo}
-                          onChange={handleChange}
-                          className={inputClass}
-                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Row 4: Cidade */}
-                    <div>
-                      <label htmlFor="cidade" className={labelClass} style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                        {l.cidade} <span className="text-slate-300 font-normal lowercase">({l.opcional})</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="cidade"
-                        name="cidade"
-                        value={form.cidade}
-                        onChange={handleChange}
-                        className={inputClass}
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      />
-                    </div>
-
-                    {/* Row 5: Mensagem */}
-                    <div>
-                      <label htmlFor="mensagem" className={labelClass} style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                        {l.mensagem} *
-                      </label>
-                      <textarea
-                        id="mensagem"
-                        name="mensagem"
-                        required
-                        rows={4}
-                        value={form.mensagem}
-                        onChange={handleChange}
-                        placeholder={l.mensagemPlaceholder}
-                        className={textareaClass}
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      />
-                    </div>
-
-                    {/* Status Messages */}
-                    <AnimatePresence>
-                      {status === "success" && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0 }}
-                          className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-700"
-                        >
-                          <CheckCircle className="w-5 h-5 shrink-0" />
-                          <span className="text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{l.sucesso}</span>
-                        </motion.div>
-                      )}
-                      {status === "error" && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0 }}
-                          className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700"
-                        >
-                          <AlertCircle className="w-5 h-5 shrink-0" />
-                          <span className="text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{l.erro}</span>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    {/* Submit + LGPD */}
-                    <div className="flex flex-col gap-4 pt-2">
-                      <button
-                        type="submit"
-                        disabled={status === "sending"}
-                        className="inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-8 py-4 bg-[#2F6FD0] text-white font-bold rounded-xl shadow-lg shadow-blue-600/20 hover:shadow-xl hover:shadow-blue-600/30 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none text-base"
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      >
-                        {status === "sending" ? (
-                          <>
-                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            {l.enviando}
-                          </>
-                        ) : (
-                          <>
-                            {l.enviar}
-                            <Send className="w-4 h-4" />
-                          </>
-                        )}
-                      </button>
-                      <div className="flex items-center gap-2 text-xs text-slate-400">
-                        <Shield className="w-4 h-4 text-emerald-500 shrink-0" />
-                        <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{l.lgpd}</span>
-                      </div>
-                    </div>
-
-                    {/* Trust Bar - Certifications */}
-                    <div className="flex flex-wrap items-center gap-2.5 pt-6 border-t border-slate-100">
-                      <span
-                        className="text-[9px] font-medium text-slate-400 uppercase tracking-widest mr-1"
-                        style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-                      >
-                        {lang === "en" ? "Certified" : "Certificados"}
-                      </span>
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-50 to-emerald-50/50 border border-emerald-200/70 rounded-full shadow-sm">
-                        <svg className="w-3.5 h-3.5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                          <path d="M9 12l2 2 4-4" />
-                        </svg>
-                        <span className="text-[10px] font-bold text-emerald-800 tracking-wide" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ISO 9001</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-50 to-blue-50/50 border border-blue-200/70 rounded-full shadow-sm">
-                        <svg className="w-3.5 h-3.5 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                          <path d="M12 8v4m0 4h.01" />
-                        </svg>
-                        <span className="text-[10px] font-bold text-blue-800 tracking-wide" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>ISO 27001</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-50 to-purple-50/50 border border-purple-200/70 rounded-full shadow-sm">
-                        <svg className="w-3.5 h-3.5 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                          <path d="M7 11V7a5 5 0 0110 0v4" />
-                        </svg>
-                        <span className="text-[10px] font-bold text-purple-800 tracking-wide" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>PCI DSS</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-50 to-amber-50/50 border border-amber-200/70 rounded-full shadow-sm">
-                        <svg className="w-3.5 h-3.5 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                          <path d="M9 12l2 2 4-4" />
-                          <circle cx="12" cy="12" r="10" />
-                        </svg>
-                        <span className="text-[10px] font-bold text-amber-800 tracking-wide" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>SENATRAN</span>
-                      </div>
-                    </div>
-                  </form>
-                </motion.div>
-
-                {/* Contact Info Sidebar */}
+                {/* Sidebar (1/3) */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
                   className="space-y-4"
                 >
                   <h3
-                    className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-5"
+                    className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-3"
                     style={{ fontFamily: "'IBM Plex Mono', monospace" }}
                   >
                     {l.canaisTitle}
                   </h3>
-
                   {/* Telefone */}
-                  <a href="tel:+551920421373" className="block p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-[#2F6FD0]/30 hover:bg-blue-50/30 transition-all duration-200 group">
+                  <a href="tel:+551920421373" className="block p-4 bg-white rounded-xl border border-slate-200 hover:border-[#2F6FD0]/30 hover:bg-blue-50/30 transition-all duration-200 group shadow-sm">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-[#2F6FD0]/10 flex items-center justify-center shrink-0 group-hover:bg-[#2F6FD0]/20 transition-colors">
                         <Phone className="w-5 h-5 text-[#2F6FD0]" />
@@ -1073,11 +1241,10 @@ export default function Contato() {
                       </div>
                     </div>
                   </a>
-
                   {/* WhatsApp */}
-                  <a href="https://wa.me/5511991287417" target="_blank" rel="noopener noreferrer" className="block p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-emerald-300/50 hover:bg-emerald-50/30 transition-all duration-200 group">
+                  <a href="https://wa.me/5511991287417" target="_blank" rel="noopener noreferrer" className="block p-4 bg-white rounded-xl border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/30 transition-all duration-200 group shadow-sm">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/20 transition-colors">
+                      <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/20 transition-colors">
                         <MessageCircle className="w-5 h-5 text-emerald-600" />
                       </div>
                       <div>
@@ -1090,9 +1257,8 @@ export default function Contato() {
                       </div>
                     </div>
                   </a>
-
                   {/* Email */}
-                  <a href="mailto:comercial@areatec.com.br" className="block p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-[#2F6FD0]/30 hover:bg-blue-50/30 transition-all duration-200 group">
+                  <a href="mailto:comercial@areatec.com.br" className="block p-4 bg-white rounded-xl border border-slate-200 hover:border-[#2F6FD0]/30 hover:bg-blue-50/30 transition-all duration-200 group shadow-sm">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-[#2F6FD0]/10 flex items-center justify-center shrink-0 group-hover:bg-[#2F6FD0]/20 transition-colors">
                         <Mail className="w-5 h-5 text-[#2F6FD0]" />
@@ -1107,9 +1273,8 @@ export default function Contato() {
                       </div>
                     </div>
                   </a>
-
                   {/* Endereço */}
-                  <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                  <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 rounded-lg bg-[#2F6FD0]/10 flex items-center justify-center shrink-0 mt-0.5">
                         <MapPin className="w-5 h-5 text-[#2F6FD0]" />
@@ -1131,7 +1296,6 @@ export default function Contato() {
                       </div>
                     </div>
                   </div>
-
                   {/* WhatsApp CTA */}
                   <a
                     href="https://wa.me/5511991287417"
@@ -1143,7 +1307,6 @@ export default function Contato() {
                     <MessageCircle className="w-5 h-5" />
                     {l.whatsappCta}
                   </a>
-
                   {/* Social Proof Mini */}
                   <div className="p-4 bg-gradient-to-br from-slate-50 to-blue-50/30 rounded-xl border border-slate-100 mt-4">
                     <div className="flex items-center gap-3">
