@@ -95,7 +95,7 @@ export default function OlhoVivoSection({ onOpenVideo }: OlhoVivoSectionProps) {
               className="mt-8"
             >
               <a
-                href="#contato"
+                href="/contato"
                 className="group inline-flex items-center gap-2 text-[#2F6FD0] font-semibold hover:text-blue-700 transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >

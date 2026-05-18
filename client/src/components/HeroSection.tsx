@@ -177,7 +177,7 @@ export default function HeroSection({ onOpenVideo }: HeroSectionProps) {
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
             <a
-              href="#contato"
+              href="/contato"
               className="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-white/10 backdrop-blur-md text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >

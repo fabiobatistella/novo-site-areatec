@@ -286,7 +286,7 @@ export default function OlhoVivoPatrol() {
                   {t("cta.subtitle")}
                 </p>
                 <a
-                  href="#contato"
+                  href="/contato"
                   className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2F6FD0] text-white font-semibold rounded-lg shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 hover:bg-[#2563C4] transition-all duration-300 transform hover:-translate-y-0.5"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >

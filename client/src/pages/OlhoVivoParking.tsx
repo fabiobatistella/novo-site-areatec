@@ -245,7 +245,7 @@ export default function OlhoVivoParking() {
                   {t("cta.subtitle")}
                 </p>
                 <a
-                  href="#contato"
+                  href="/contato"
                   className="inline-flex items-center gap-2 px-7 py-3.5 bg-emerald-600 text-white font-semibold rounded-lg shadow-lg shadow-emerald-600/30 hover:shadow-xl hover:shadow-emerald-600/40 hover:bg-emerald-500 transition-all duration-300 transform hover:-translate-y-0.5"
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >

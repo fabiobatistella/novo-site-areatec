@@ -224,7 +224,7 @@ export default function ExpansaoGlobal() {
           className="mt-14 text-center"
         >
           <a
-            href="#contato"
+            href="/contato"
             className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold text-sm tracking-wide uppercase hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20"
             style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
           >

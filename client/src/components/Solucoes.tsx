@@ -347,7 +347,7 @@ function SolutionCard({ sol, idx, isVisible, t }: { sol: Solucao; idx: number; i
         {t(sol.descriptionKey)}
       </p>
       <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-        <a href="#contato" className="flex items-center gap-1.5 text-sm font-semibold text-[#2F6FD0] hover:text-blue-700 transition-colors group/link" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+        <a href="/contato" className="flex items-center gap-1.5 text-sm font-semibold text-[#2F6FD0] hover:text-blue-700 transition-colors group/link" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           {t("solucoes.saiba_mais")} <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform" />
         </a>
         {sol.partnerUrl && (
@@ -429,7 +429,7 @@ export default function Solucoes() {
           transition={{ duration: 0.5, delay: 0.9 }}
           className="text-center mt-14"
         >
-          <a href="#contato" className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-[#2F6FD0] to-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-300 transform hover:-translate-y-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          <a href="/contato" className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-[#2F6FD0] to-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 hover:from-blue-500 hover:to-blue-600 transition-all duration-300 transform hover:-translate-y-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {t("solucoes.cta")} <ArrowRight className="w-4 h-4" />
           </a>
         </motion.div>
