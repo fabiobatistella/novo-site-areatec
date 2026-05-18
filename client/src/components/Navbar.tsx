@@ -497,6 +497,7 @@ export default function Navbar() {
   };
 
   return (
+    <>
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -679,6 +680,21 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </motion.header>
+    {/* Backdrop overlay when mega menu is open */}
+    <AnimatePresence>
+      {activeDropdown && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+          onClick={() => setActiveDropdown(null)}
+          aria-hidden="true"
+        />
+      )}
+    </AnimatePresence>
+    </>
   );
 }
 
